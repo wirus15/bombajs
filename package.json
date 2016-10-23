@@ -25,7 +25,7 @@
     "@angular/upgrade": "^2.1.0",
     "core-js": "^2.4.1",
     "es6-shim": "^0.35.1",
-    "phaser": "^2.6.2",
+    "phaser": "https://github.com/jamesgroat/phaser/tarball/typings",
     "reflect-metadata": "^0.1.8",
     "rxjs": "^5.0.0-rc.1",
     "systemjs": "^0.19.39",
