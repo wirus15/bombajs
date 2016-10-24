@@ -13,16 +13,17 @@ export class GameComponent {
     private cursors: Phaser.CursorKeys;
     private weapon: Phaser.Weapon;
     private fireButton: Phaser.Key;
+    private playerSpeed = 300;
 
     constructor() {
         this.game = new Phaser.Game(
-            800, 600,         // width x height
-            Phaser.AUTO,      // the game context, 2D/3D
-            'gameCanvas',    // id of the DOM element to add the game
+            '100', '100',
+            Phaser.AUTO,
+            'gameCanvas',
             {
-                preload: this.preload,
-                create: this.create,
-                update: this.update
+                preload: this.preload.bind(this),
+                create: this.create.bind(this),
+                update: this.update.bind(this)
             }
         )
     }
@@ -33,7 +34,10 @@ export class GameComponent {
     }
 
     create() {
-        this.player = this.game.add.sprite(400, 400, 'ship_player');
+        this.player = this.game.add.sprite(0, 0, 'ship_player');
+        this.player.left = (this.game.width - this.player.width) / 2;
+        this.player.top = this.game.height - this.player.height - 50;
+
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.weapon = this.game.add.weapon(30, 'missle_player_0');
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -62,22 +66,22 @@ export class GameComponent {
         this.player.body.velocity.x = 0;
         this.player.body.velocity.y = 0;
 
-        if (this.cursors.left.isDown)
+        if (this.cursors.left.isDown && this.player.left > 0)
         {
-            this.player.body.velocity.x = -200;
+            this.player.body.velocity.x = -this.playerSpeed;
         }
-        else if (this.cursors.right.isDown)
+        else if (this.cursors.right.isDown && this.player.right < this.game.width)
         {
-            this.player.body.velocity.x = 200;
+            this.player.body.velocity.x = this.playerSpeed;
         }
 
-        if (this.cursors.up.isDown)
+        if (this.cursors.up.isDown && this.player.top > 0)
         {
-            this.player.body.velocity.y = -200;
+            this.player.body.velocity.y = -this.playerSpeed;
         }
-        else if (this.cursors.down.isDown)
+        else if (this.cursors.down.isDown && this.player.bottom < this.game.height)
         {
-            this.player.body.velocity.y = 200;
+            this.player.body.velocity.y = this.playerSpeed;
         }
 
         if (this.fireButton.isDown)
