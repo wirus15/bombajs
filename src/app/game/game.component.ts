@@ -33,7 +33,7 @@ export class GameComponent {
     }
 
     create() {
-        this.player = this.game.add.sprite(356, 450, 'ship_player');
+        this.player = this.game.add.sprite(400, 400, 'ship_player');
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.weapon = this.game.add.weapon(30, 'missle_player_0');
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -42,7 +42,7 @@ export class GameComponent {
         this.weapon.bulletAngleOffset = 90;
 
         //  The speed at which the bullet is fired
-        this.weapon.bulletSpeed = 700;
+        this.weapon.bulletSpeed = 800;
 
         //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
         this.weapon.fireRate = 100;
@@ -62,20 +62,20 @@ export class GameComponent {
         this.player.body.velocity.x = 0;
         this.player.body.velocity.y = 0;
 
-        if (this.cursors.left.isDown && this.player.body.position.x > 0)
+        if (this.cursors.left.isDown)
         {
             this.player.body.velocity.x = -200;
         }
-        else if (this.cursors.right.isDown && this.player.body.position.x < 712)
+        else if (this.cursors.right.isDown)
         {
             this.player.body.velocity.x = 200;
         }
 
-        if (this.cursors.up.isDown && this.player.body.position.y > 0)
+        if (this.cursors.up.isDown)
         {
             this.player.body.velocity.y = -200;
         }
-        else if (this.cursors.down.isDown && this.player.body.position.y < 512)
+        else if (this.cursors.down.isDown)
         {
             this.player.body.velocity.y = 200;
         }
