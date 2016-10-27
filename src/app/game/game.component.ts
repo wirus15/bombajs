@@ -14,6 +14,7 @@ export class GameComponent {
     private weapon: Phaser.Weapon;
     private fireButton: Phaser.Key;
     private playerSpeed = 300;
+    private stars;
 
     constructor() {
         this.game = new Phaser.Game(
@@ -38,28 +39,29 @@ export class GameComponent {
         this.player.left = (this.game.width - this.player.width) / 2;
         this.player.top = this.game.height - this.player.height - 50;
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
         this.weapon = this.game.add.weapon(30, 'missle_player_0');
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-
-        //  Because our bullet is drawn facing up, we need to offset its rotation:
         this.weapon.bulletAngleOffset = 90;
-
-        //  The speed at which the bullet is fired
         this.weapon.bulletSpeed = 800;
-
-        //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
         this.weapon.fireRate = 100;
-
-        //  Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
         this.weapon.trackSprite(this.player, 44, 0);
 
-
+        this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-
-
-
         this.game.physics.arcade.enable(this.player);
+
+        let star = this.game.add
+            .bitmapData(1, 1, 'star')
+            .setPixel(0, 0, 255, 255, 255);
+
+        this.stars = this.game.add.emitter(this.game.world.centerX, 0, 200);
+        this.stars.width = this.game.world.width;
+        this.stars.makeParticles(star);
+        this.stars.minParticleScale = 1;
+        this.stars.maxParticleScale = 3;
+        this.stars.setYSpeed(100, 400);
+        this.stars.setXSpeed(0, 0);
+        this.stars.start(false, 3000, 5, 0);
     }
 
     update() {
