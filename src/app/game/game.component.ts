@@ -17,6 +17,8 @@ export class GameComponent {
     private stars: Phaser.Particles.Arcade.Emitter;
     private enemies: Phaser.Group;
     private explosions: Phaser.Group;
+    private backgroundMusic: Phaser.Sound;
+    private explosionSound: Phaser.Sound;
 
     constructor() {
         this.game = new Phaser.Game(
@@ -36,6 +38,8 @@ export class GameComponent {
         this.game.load.image('missle_player_0', 'public/images/missle_player_0.png');
         this.game.load.image('ship_normal_01', 'public/images/ship_normal_01.png');
         this.game.load.spritesheet('explosion', 'public/images/explosion.png', 71, 100);
+        this.game.load.audio('background_music_0', 'public/audio/background_music_0.wav');
+        this.game.load.audio('explosion', 'public/audio/explosion.wav');
     }
 
     create() {
@@ -90,6 +94,11 @@ export class GameComponent {
             explosion.anchor.y = 0.5;
             explosion.animations.add('explosion');
         }, this);
+
+        this.backgroundMusic = this.game.add.audio('background_music_0', 1, true);
+        this.backgroundMusic.play();
+
+        this.explosionSound = this.game.add.audio('explosion');
     }
 
     update() {
@@ -160,6 +169,8 @@ export class GameComponent {
         let explosion = this.explosions.getFirstExists(false);
         explosion.reset(enemy.x, enemy.y);
         explosion.play('explosion', 20, false, true);
+
+        this.explosionSound.play();
 
         this.resetEnemy(enemy, true);
     }
