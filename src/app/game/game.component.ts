@@ -16,6 +16,7 @@ export class GameComponent {
     private playerSpeed = 300;
     private stars: Phaser.Particles.Arcade.Emitter;
     private enemies: Phaser.Group;
+    private explosions: Phaser.Group;
 
     constructor() {
         this.game = new Phaser.Game(
@@ -34,12 +35,16 @@ export class GameComponent {
         this.game.load.image('ship_player', 'public/images/ship_player.png');
         this.game.load.image('missle_player_0', 'public/images/missle_player_0.png');
         this.game.load.image('ship_normal_01', 'public/images/ship_normal_01.png');
+        this.game.load.spritesheet('explosion', 'public/images/explosion.png', 71, 100);
     }
 
     create() {
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
         this.player = this.game.add.sprite(0, 0, 'ship_player');
         this.player.left = (this.game.width - this.player.width) / 2;
         this.player.top = this.game.height - this.player.height - 50;
+        this.game.physics.arcade.enable(this.player);
 
         this.weapon = this.game.add.weapon(30, 'missle_player_0');
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -50,7 +55,6 @@ export class GameComponent {
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-        this.game.physics.arcade.enable(this.player);
 
         let star = this.game.add
             .bitmapData(1, 1, 'star')
@@ -75,7 +79,17 @@ export class GameComponent {
             enemy.events.onOutOfBounds.add(this.resetEnemy, this);
             enemy.body.velocity.y = 100 + Math.random() * 200;
             enemy.body.velocity.x = 50 - Math.random() * 100;
+            enemy.anchor.x = 0.5;
+            enemy.anchor.y = 0.5;
         }
+
+        this.explosions = this.game.add.group();
+        this.explosions.createMultiple(30, 'explosion');
+        this.explosions.forEach((explosion: Phaser.Sprite) => {
+            explosion.anchor.x = 0.5;
+            explosion.anchor.y = 0.5;
+            explosion.animations.add('explosion');
+        }, this);
     }
 
     update() {
@@ -104,13 +118,49 @@ export class GameComponent {
         {
             this.weapon.fire();
         }
+
+        this.game.physics.arcade.overlap(
+            this.weapon.bullets,
+            this.enemies,
+            this.enemyHitBullet,
+            null,
+            this
+        );
+
+        this.game.physics.arcade.overlap(
+            this.player,
+            this.enemies,
+            this.enemyHitPlayer,
+            null,
+            this
+        );
     }
 
-    resetEnemy(enemy: Phaser.Sprite) {
-        if (enemy.top > this.game.height) {
-            enemy.reset(Math.random() * this.game.width, -enemy.height);
+    resetEnemy(enemy: Phaser.Sprite, force: boolean) {
+        if (enemy.top > 0 || force) {
+            enemy.reset(Math.random() * this.game.width, -this.game.height);
             enemy.body.velocity.y = 150 + Math.random() * 150;
             enemy.body.velocity.x = 50 - Math.random() * 100;
+            enemy.revive();
         }
+    }
+
+    enemyHitBullet(bullet: Phaser.Sprite, enemy: Phaser.Sprite) {
+        bullet.kill();
+        this.destroyEnemy(enemy);
+    }
+
+    enemyHitPlayer(player: Phaser.Sprite, enemy: Phaser.Sprite) {
+        this.destroyEnemy(enemy);
+    }
+
+    destroyEnemy(enemy: Phaser.Sprite) {
+        enemy.kill();
+
+        let explosion = this.explosions.getFirstExists(false);
+        explosion.reset(enemy.x, enemy.y);
+        explosion.play('explosion', 20, false, true);
+
+        this.resetEnemy(enemy, true);
     }
 }
