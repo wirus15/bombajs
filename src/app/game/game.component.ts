@@ -14,7 +14,8 @@ export class GameComponent {
     private weapon: Phaser.Weapon;
     private fireButton: Phaser.Key;
     private playerSpeed = 300;
-    private stars;
+    private stars: Phaser.Particles.Arcade.Emitter;
+    private enemies: Phaser.Group;
 
     constructor() {
         this.game = new Phaser.Game(
@@ -32,6 +33,7 @@ export class GameComponent {
     preload() {
         this.game.load.image('ship_player', 'public/images/ship_player.png');
         this.game.load.image('missle_player_0', 'public/images/missle_player_0.png');
+        this.game.load.image('ship_normal_01', 'public/images/ship_normal_01.png');
     }
 
     create() {
@@ -62,6 +64,18 @@ export class GameComponent {
         this.stars.setYSpeed(100, 400);
         this.stars.setXSpeed(0, 0);
         this.stars.start(false, 3000, 5, 0);
+
+        this.enemies = this.game.add.group();
+        this.enemies.enableBody = true;
+        this.enemies.physicsBodyType = Phaser.Physics.ARCADE;
+        for (let i = 0; i < 10; i++) {
+            let x = Math.random() * this.game.width;
+            let enemy = this.enemies.create(x, -Math.random()*this.game.height, 'ship_normal_01');
+            enemy.checkWorldBounds = true;
+            enemy.events.onOutOfBounds.add(this.resetEnemy, this);
+            enemy.body.velocity.y = 100 + Math.random() * 200;
+            enemy.body.velocity.x = 50 - Math.random() * 100;
+        }
     }
 
     update() {
@@ -89,6 +103,14 @@ export class GameComponent {
         if (this.fireButton.isDown)
         {
             this.weapon.fire();
+        }
+    }
+
+    resetEnemy(enemy: Phaser.Sprite) {
+        if (enemy.top > this.game.height) {
+            enemy.reset(Math.random() * this.game.width, -enemy.height);
+            enemy.body.velocity.y = 150 + Math.random() * 150;
+            enemy.body.velocity.x = 50 - Math.random() * 100;
         }
     }
 }
