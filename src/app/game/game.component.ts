@@ -19,6 +19,7 @@ export class GameComponent {
     private explosions: Phaser.Group;
     private backgroundMusic: Phaser.Sound;
     private explosionSound: Phaser.Sound;
+    private weaponSound: Phaser.Sound;
 
     constructor() {
         this.game = new Phaser.Game(
@@ -40,10 +41,17 @@ export class GameComponent {
         this.game.load.spritesheet('explosion', 'public/images/explosion.png', 71, 100);
         this.game.load.audio('background_music_0', 'public/audio/background_music_0.wav');
         this.game.load.audio('explosion', 'public/audio/explosion.wav');
+        this.game.load.audio('fire_0', 'public/audio/fire_0.wav');
     }
 
     create() {
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
+        this.backgroundMusic = this.game.add.audio('background_music_0', 1, true);
+        this.backgroundMusic.play();
+
+        this.explosionSound = this.game.add.audio('explosion');
+        this.weaponSound = this.game.add.audio('fire_0');
 
         this.player = this.game.add.sprite(0, 0, 'ship_player');
         this.player.left = (this.game.width - this.player.width) / 2;
@@ -56,6 +64,7 @@ export class GameComponent {
         this.weapon.bulletSpeed = 800;
         this.weapon.fireRate = 100;
         this.weapon.trackSprite(this.player, 44, 0);
+        this.weapon.onFire.add(() => this.weaponSound.play());
 
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
@@ -94,11 +103,6 @@ export class GameComponent {
             explosion.anchor.y = 0.5;
             explosion.animations.add('explosion');
         }, this);
-
-        this.backgroundMusic = this.game.add.audio('background_music_0', 1, true);
-        this.backgroundMusic.play();
-
-        this.explosionSound = this.game.add.audio('explosion');
     }
 
     update() {
