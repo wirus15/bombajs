@@ -1,3 +1,5 @@
+/// <reference path="../node_modules/phaser/typescript/phaser.comments.d.ts"/>
+
 import '@angular/platform-browser';
 import '@angular/platform-browser-dynamic';
 import '@angular/core';
