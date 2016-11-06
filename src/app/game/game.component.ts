@@ -21,7 +21,7 @@ export class GameComponent {
 
     constructor() {
         this.game = new Phaser.Game(
-            '100', '100',
+            800, 600,
             Phaser.AUTO,
             'gameCanvas',
             {
@@ -34,6 +34,7 @@ export class GameComponent {
     }
 
     create() {
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.game.physics.startSystem(Phaser.Physics.ARCADE);
         this.game.time.advancedTiming = true;
         this.game.add.audio(Assets.background_music_0, 1, true).play();
@@ -52,14 +53,15 @@ export class GameComponent {
     }
 
     render() {
-        this.game.debug.text(`FPS: ${this.game.time.fps}`, 20, 20);
-        this.game.debug.text(`HP: ${this.player.health}`, this.game.width - 150, 20);
-        this.game.debug.text(`LIVES: ${this.lives}`, this.game.width - 150, 40);
-        this.game.debug.text(`POINTS: ${this.points}`, this.game.width - 150, 60);
+        console.log(this.game.time.fps);
+        // this.game.debug.text(`FPS: ${this.game.time.fps}`, 20, 20);
+        // this.game.debug.text(`HP: ${this.player.health}`, this.game.width - 150, 20);
+        // this.game.debug.text(`LIVES: ${this.lives}`, this.game.width - 150, 40);
+        // this.game.debug.text(`POINTS: ${this.points}`, this.game.width - 150, 60);
 
-        if (this.gameOver) {
-            this.game.debug.text('GAME OVER', this.game.width / 2 - 45, this.game.height / 2);
-        }
+        // if (this.gameOver) {
+        //     this.game.debug.text('GAME OVER', this.game.width / 2 - 45, this.game.height / 2);
+        // }
     }
 
     private checkCollisions() {
