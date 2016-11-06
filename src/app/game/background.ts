@@ -1,12 +1,12 @@
 import * as Phaser from 'phaser';
+import GameAware from "./game_aware";
 
-export default class Background {
-    private game: Phaser.Game;
-    private backgrounds = [];
+export default class Background extends GameAware {
+    private readonly backgrounds = [];
     private static readonly STAR_COLOR = '#ffffff';
 
     constructor(game: Phaser.Game) {
-        this.game = game;
+        super(game);
         for (let i = 0; i < 3; i++) {
             const bitmap = this.createBitmap(600, 600, 20);
             const background = this.createTileSprite(bitmap, i);

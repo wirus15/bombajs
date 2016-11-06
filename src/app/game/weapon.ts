@@ -1,17 +1,17 @@
 import * as Phaser from 'phaser';
 import Player from './player';
 import Assets from './assets';
+import GameAware from "./game_aware";
 
-export default class Weapon {
-    private game: Phaser.Game;
-    private weapon: Phaser.Weapon;
-    private player: Player;
-    private sound: Phaser.Sound;
+export default class Weapon extends GameAware {
+    private readonly weapon: Phaser.Weapon;
+    private readonly player: Player;
+    private readonly sound: Phaser.Sound;
+    private weaponPower = 20;
 
     constructor(game: Phaser.Game, player: Player) {
-        this.game = game;
+        super(game);
         this.player = player;
-
         this.sound = this.game.add.audio(Assets.fire_0);
         this.weapon = this.game.add.weapon(30, Assets.missle_player_0);
         this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
@@ -28,5 +28,9 @@ export default class Weapon {
 
     get bullets() {
         return this.weapon.bullets;
+    }
+
+    get power() {
+        return this.weaponPower;
     }
 }

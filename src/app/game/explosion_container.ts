@@ -1,13 +1,13 @@
 import * as Phaser from 'phaser';
 import Assets from './assets';
+import GameAware from "./game_aware";
 
-export default class ExplosionContainer {
-    private game: Phaser.Game;
-    private explosions: Phaser.Group;
-    private sound: Phaser.Sound;
+export default class ExplosionContainer extends GameAware {
+    private readonly explosions: Phaser.Group;
+    private readonly sound: Phaser.Sound;
 
     constructor(game: Phaser.Game) {
-        this.game = game;
+        super(game);
         this.explosions = this.game.add.group();
         this.explosions.createMultiple(30, Assets.explosion);
         this.explosions.forEach((explosion: Phaser.Sprite) => {

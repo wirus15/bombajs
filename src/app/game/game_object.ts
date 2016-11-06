@@ -1,12 +1,17 @@
 import * as Phaser from 'phaser';
+import GameAware from "./game_aware";
 
-export default class GameSprite {
+export default class GameObject extends GameAware {
     public readonly sprite: Phaser.Sprite;
-    protected readonly game: Phaser.Game;
 
     constructor(game: Phaser.Game, sprite: Phaser.Sprite) {
-        this.game = game;
+        super(game);
         this.sprite = sprite;
+        this.sprite.data.object = this;
+    }
+
+    get object() {
+        return this.sprite.data.object;
     }
 
     get width() {

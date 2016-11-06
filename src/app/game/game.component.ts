@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, style} from "@angular/core";
 import * as Phaser from 'phaser';
 import Background from './background';
 import Player from './player';
@@ -18,6 +18,11 @@ export class GameComponent {
     private points = 0;
     private lives = 3;
     private gameOver = false;
+    private textFps: Phaser.Text;
+    private textHp: Phaser.Text;
+    private textPoints: Phaser.Text;
+    private textLives: Phaser.Text;
+    private textGameOver: Phaser.Text;
 
     constructor() {
         this.game = new Phaser.Game(
@@ -27,8 +32,7 @@ export class GameComponent {
             {
                 preload: () => Assets.load(this.game),
                 create: this.create.bind(this),
-                update: this.update.bind(this),
-                render: this.render.bind(this)
+                update: this.update.bind(this)
             }
         )
     }
@@ -45,23 +49,26 @@ export class GameComponent {
         this.enemies = new EnemyContainer(this.game);
         this.enemies.init(10);
         this.enemies.enemyKilled.add(this.onEnemyKilled, this);
+
+        const style = {font: "16px Arial", fill: "#fff", boundsAlignH: "left", boundsAlignV: "top" };
+        this.textFps = this.game.add.text(0, 20, '', style);
+        this.textHp = this.game.add.text(this.game.width - 150, 20, '', style);
+        this.textPoints = this.game.add.text(this.game.width - 150, 40, '', style);
+        this.textLives = this.game.add.text(this.game.width - 150, 60, '', style);
+        this.textGameOver = this.game.add.text(0, 0, 'GAME OVER', {
+            font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle"
+        });
+        this.textGameOver.setTextBounds(0, 0, this.game.width, this.game.height);
     }
 
     update() {
         this.player.update();
         this.checkCollisions();
-    }
-
-    render() {
-        console.log(this.game.time.fps);
-        // this.game.debug.text(`FPS: ${this.game.time.fps}`, 20, 20);
-        // this.game.debug.text(`HP: ${this.player.health}`, this.game.width - 150, 20);
-        // this.game.debug.text(`LIVES: ${this.lives}`, this.game.width - 150, 40);
-        // this.game.debug.text(`POINTS: ${this.points}`, this.game.width - 150, 60);
-
-        // if (this.gameOver) {
-        //     this.game.debug.text('GAME OVER', this.game.width / 2 - 45, this.game.height / 2);
-        // }
+        this.textFps.text = `FPS: ${this.game.time.fps}`;
+        this.textHp.text = `HP: ${this.player.health}`;
+        this.textLives.text = `LIVES: ${this.lives}`;
+        this.textPoints.text = `POINTS: ${this.points}`;
+        this.textGameOver.visible = this.gameOver;
     }
 
     private checkCollisions() {
@@ -70,7 +77,7 @@ export class GameComponent {
             this.enemies.group,
             (bullet: Phaser.Sprite, enemy: Phaser.Sprite) => {
                 bullet.kill();
-                enemy.kill();
+                enemy.data.object.hit(this.player.weapon.power);
             }
         );
 
@@ -79,9 +86,7 @@ export class GameComponent {
             this.enemies.group,
             (player: Phaser.Sprite, enemy: Phaser.Sprite) => {
                 enemy.kill();
-                if (!player.data.isProtected) {
-                    player.damage(20);
-                }
+                player.data.object.hit(enemy.health);
             }
         );
     }

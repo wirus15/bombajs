@@ -1,15 +1,15 @@
 import * as Phaser from 'phaser';
 import Enemy from "./enemy";
 import ExplosionContainer from "./explosion_container";
+import GameAware from "./game_aware";
 
-export default class EnemyContainer {
+export default class EnemyContainer extends GameAware {
     public readonly group: Phaser.Group;
     public readonly enemyKilled: Phaser.Signal;
-    private game: Phaser.Game;
-    private explosions: ExplosionContainer;
+    private readonly explosions: ExplosionContainer;
 
     constructor(game: Phaser.Game) {
-        this.game = game;
+        super(game);
         this.group = this.game.add.group();
         this.group.enableBody = true;
         this.group.physicsBodyType = Phaser.Physics.ARCADE;
@@ -29,7 +29,7 @@ export default class EnemyContainer {
         }
     }
 
-    explosion(enemy: Phaser.Sprite) {
+    private explosion(enemy: Phaser.Sprite) {
         this.explosions.display(enemy.x, enemy.y);
     }
 }
