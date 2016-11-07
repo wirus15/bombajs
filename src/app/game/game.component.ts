@@ -1,7 +1,10 @@
-/// <reference path="../../../node_modules/phaser/typescript/phaser.comments.d.ts"/>
-
-import {Component} from "@angular/core";
+import {Component, style} from "@angular/core";
 import * as Phaser from 'phaser';
+import Background from './background';
+import Player from './player';
+import Assets from './assets';
+import EnemyContainer from "./enemy_container";
+import Enemy from "./enemy";
 
 @Component({
     selector: 'b-game',
@@ -9,84 +12,95 @@ import * as Phaser from 'phaser';
 })
 export class GameComponent {
     private game: Phaser.Game;
-    private player: Phaser.Sprite;
-    private cursors: Phaser.CursorKeys;
-    private weapon: Phaser.Weapon;
-    private fireButton: Phaser.Key;
-    private playerSpeed = 300;
+    private player: Player;
+    private enemies: EnemyContainer;
+    private background: Background;
+    private points = 0;
+    private lives = 3;
+    private gameOver = false;
+    private textFps: Phaser.Text;
+    private textHp: Phaser.Text;
+    private textPoints: Phaser.Text;
+    private textLives: Phaser.Text;
+    private textGameOver: Phaser.Text;
 
     constructor() {
         this.game = new Phaser.Game(
-            '100', '100',
+            800, 600,
             Phaser.AUTO,
             'gameCanvas',
             {
-                preload: this.preload.bind(this),
+                preload: () => Assets.load(this.game),
                 create: this.create.bind(this),
                 update: this.update.bind(this)
             }
         )
     }
 
-    preload() {
-        this.game.load.image('ship_player', 'public/images/ship_player.png');
-        this.game.load.image('missle_player_0', 'public/images/missle_player_0.png');
-    }
-
     create() {
-        this.player = this.game.add.sprite(0, 0, 'ship_player');
-        this.player.left = (this.game.width - this.player.width) / 2;
-        this.player.top = this.game.height - this.player.height - 50;
+        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.game.physics.startSystem(Phaser.Physics.ARCADE);
+        this.game.time.advancedTiming = true;
+        this.game.add.audio(Assets.background_music_0, 1, true).play();
 
-        this.cursors = this.game.input.keyboard.createCursorKeys();
-        this.weapon = this.game.add.weapon(30, 'missle_player_0');
-        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.background = new Background(this.game);
+        this.player = new Player(this.game);
+        this.player.onKilled.add(this.onPlayerKilled, this);
+        this.enemies = new EnemyContainer(this.game);
+        this.enemies.init(10);
+        this.enemies.enemyKilled.add(this.onEnemyKilled, this);
 
-        //  Because our bullet is drawn facing up, we need to offset its rotation:
-        this.weapon.bulletAngleOffset = 90;
-
-        //  The speed at which the bullet is fired
-        this.weapon.bulletSpeed = 800;
-
-        //  Speed-up the rate of fire, allowing them to shoot 1 bullet every 60ms
-        this.weapon.fireRate = 100;
-
-        //  Tell the Weapon to track the 'player' Sprite, offset by 14px horizontally, 0 vertically
-        this.weapon.trackSprite(this.player, 44, 0);
-
-
-        this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
-
-
-
-        this.game.physics.arcade.enable(this.player);
+        const style = {font: "16px Arial", fill: "#fff", boundsAlignH: "left", boundsAlignV: "top" };
+        this.textFps = this.game.add.text(0, 20, '', style);
+        this.textHp = this.game.add.text(this.game.width - 150, 20, '', style);
+        this.textPoints = this.game.add.text(this.game.width - 150, 40, '', style);
+        this.textLives = this.game.add.text(this.game.width - 150, 60, '', style);
+        this.textGameOver = this.game.add.text(0, 0, 'GAME OVER', {
+            font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle"
+        });
+        this.textGameOver.setTextBounds(0, 0, this.game.width, this.game.height);
     }
 
     update() {
-        this.player.body.velocity.x = 0;
-        this.player.body.velocity.y = 0;
+        this.player.update();
+        this.checkCollisions();
+        this.textFps.text = `FPS: ${this.game.time.fps}`;
+        this.textHp.text = `HP: ${this.player.health}`;
+        this.textLives.text = `LIVES: ${this.lives}`;
+        this.textPoints.text = `POINTS: ${this.points}`;
+        this.textGameOver.visible = this.gameOver;
+    }
 
-        if (this.cursors.left.isDown && this.player.left > 0)
-        {
-            this.player.body.velocity.x = -this.playerSpeed;
-        }
-        else if (this.cursors.right.isDown && this.player.right < this.game.width)
-        {
-            this.player.body.velocity.x = this.playerSpeed;
-        }
+    private checkCollisions() {
+        this.game.physics.arcade.overlap(
+            this.player.weapon.bullets,
+            this.enemies.group,
+            (bullet: Phaser.Sprite, enemy: Phaser.Sprite) => {
+                bullet.kill();
+                enemy.data.object.hit(this.player.weapon.power);
+            }
+        );
 
-        if (this.cursors.up.isDown && this.player.top > 0)
-        {
-            this.player.body.velocity.y = -this.playerSpeed;
-        }
-        else if (this.cursors.down.isDown && this.player.bottom < this.game.height)
-        {
-            this.player.body.velocity.y = this.playerSpeed;
-        }
+        this.game.physics.arcade.overlap(
+            this.player.sprite,
+            this.enemies.group,
+            (player: Phaser.Sprite, enemy: Phaser.Sprite) => {
+                enemy.kill();
+                player.data.object.hit(enemy.health);
+            }
+        );
+    }
 
-        if (this.fireButton.isDown)
-        {
-            this.weapon.fire();
+    private onPlayerKilled() {
+        if (this.lives > 0) {
+            this.player.revive();
+            this.lives--;
+        } else {
+            this.gameOver = true;
         }
+    }
+
+    private onEnemyKilled(enemy: Enemy) {
+        this.points += 20;
     }
 }
