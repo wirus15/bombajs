@@ -37,6 +37,10 @@ export default class Enemy extends GameObject {
         this.sprite.damage(damage);
     }
 
+    get health() {
+        return this.sprite.health;
+    }
+
     get onKilled() {
         return this.sprite.events.onKilled;
     }
