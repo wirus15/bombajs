@@ -1,35 +1,46 @@
 import * as Phaser from 'phaser';
-import Enemy from "./enemy";
 import ExplosionContainer from "./explosion_container";
-import GameAware from "./game_aware";
+import Enemy from "./enemy";
 
-export default class EnemyContainer extends GameAware {
-    public readonly group: Phaser.Group;
+export default class EnemyContainer extends Phaser.Group {
     public readonly enemyKilled: Phaser.Signal;
     private readonly explosions: ExplosionContainer;
 
     constructor(game: Phaser.Game) {
-        super(game);
-        this.group = this.game.add.group();
-        this.group.enableBody = true;
-        this.group.physicsBodyType = Phaser.Physics.ARCADE;
+        super(game, undefined, 'enemies', false, true);
+        this.classType = Enemy;
         this.explosions = new ExplosionContainer(this.game);
         this.enemyKilled = new Phaser.Signal();
+        this.enableBody = true;
+        this.physicsBodyType = Phaser.Physics.ARCADE;
+        this.start();
     }
 
-    init(number: number) {
-        for (let i = 0; i < number; i++) {
-            const enemy = new Enemy(this.game);
-            this.group.add(enemy.sprite);
-            enemy.onKilled.add((sprite: Phaser.Sprite) => {
-                this.explosion(sprite);
-                this.enemyKilled.dispatch(enemy);
-                enemy.reset();
-            }, this);
-        }
+    create(x: number, y: number, key?: string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video, frame?: string|number, exists?: boolean, index?: number): any {
+        const enemy = super.create(x, y, key, frame, exists, index);
+        enemy.events.onKilled.add(this.onEnemyKilled, this);
+
+        return enemy;
+    }
+
+    start() {
+        this.game.time.events.loop(Phaser.Timer.HALF, this.reviveEnemy, this);
+    }
+
+    private onEnemyKilled(enemy: Enemy) {
+        this.explosion(enemy);
+        this.enemyKilled.dispatch(enemy);
     }
 
     private explosion(enemy: Phaser.Sprite) {
         this.explosions.display(enemy.x, enemy.y);
+    }
+
+    private reviveEnemy() {
+        console.log(this.length, this.countDead());
+        const enemy = this.getFirstDead(true);
+        const level = this.game.rnd.integerInRange(1, 16);
+        enemy.changeLevel(level);
+        enemy.revive();
     }
 }

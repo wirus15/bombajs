@@ -1,5 +1,6 @@
 import * as Phaser from 'phaser';
 import GameState from "./game_state";
+import Enemy from "./enemy";
 
 export default class Collisions {
     private state: GameState;
@@ -13,23 +14,23 @@ export default class Collisions {
 
         arcade.overlap(
             this.state.player.weapon.bullets,
-            this.state.enemies.group,
+            this.state.enemies,
             this.onEnemyHit.bind(this)
         );
 
         arcade.overlap(
             this.state.player.sprite,
-            this.state.enemies.group,
+            this.state.enemies,
             this.onPlayerHit.bind(this)
         );
     }
 
-    private onEnemyHit(bullet: Phaser.Sprite, enemy: Phaser.Sprite) {
+    private onEnemyHit(bullet: Phaser.Sprite, enemy: Enemy) {
         bullet.kill();
-        enemy.data.object.hit(this.state.player.weapon.power);
+        enemy.hit(this.state.player.weapon.power);
     }
 
-    private onPlayerHit(player: Phaser.Sprite, enemy: Phaser.Sprite) {
+    private onPlayerHit(player: Phaser.Sprite, enemy: Enemy) {
         enemy.kill();
         player.data.object.hit(enemy.health);
     }

@@ -36,7 +36,6 @@ export default class GameState extends Phaser.State {
         this.time.advancedTiming = true;
 
         this.player.onKilled.add(this.onPlayerKilled, this);
-        this.enemies.init(10);
         this.enemies.enemyKilled.add(this.onEnemyKilled, this);
         this.backgroundMusic.play();
     }
