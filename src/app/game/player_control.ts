@@ -21,13 +21,11 @@ export default class PlayerControl {
             this.velocity.x = this.player.speed;
         }
 
-        if (!this.player.reviving) {
-            if (this.cursors.up.isDown && this.player.top > 0) {
-                this.velocity.y = -this.player.speed;
-            }
-            else if (this.cursors.down.isDown && this.player.bottom < this.game.height) {
-                this.velocity.y = this.player.speed;
-            }
+        if (this.cursors.up.isDown && this.player.top > 0) {
+            this.velocity.y = -this.player.speed;
+        }
+        else if (this.cursors.down.isDown && this.player.bottom < this.game.height) {
+            this.velocity.y = this.player.speed;
         }
 
         if (this.fireButton.isDown && this.player.alive) {

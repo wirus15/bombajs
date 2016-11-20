@@ -9,6 +9,8 @@ import Enemy from "./enemy";
 import Collisions from "./collisions";
 
 export default class GameState extends Phaser.State {
+    private static MAX_LEVEL = 16;
+
     public player: Player;
     public enemies: EnemyContainer;
     public gui: GUI;
@@ -19,6 +21,7 @@ export default class GameState extends Phaser.State {
     private background: Background;
     private backgroundMusic: BackgroundMusic;
     private collisions: Collisions;
+    private enemiesDestroyed = 0;
 
     preload() {
         Assets.load(this.game);
@@ -58,6 +61,12 @@ export default class GameState extends Phaser.State {
 
     private onEnemyKilled(enemy: Enemy) {
         this.points += enemy.maxHealth;
-        this.level = Math.min(1 + Math.floor(this.points / 1000), 16);
+        this.enemiesDestroyed++;
+        this.calculateLevel();
+    }
+
+    private calculateLevel() {
+        const newLevel = 1 + Math.floor(this.enemiesDestroyed / 100);
+        this.level = Math.min(newLevel, GameState.MAX_LEVEL);
     }
 }
