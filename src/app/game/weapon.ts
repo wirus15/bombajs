@@ -1,36 +1,23 @@
 import * as Phaser from 'phaser';
 import Player from './player';
 import Assets from './assets';
-import GameAware from "./game_aware";
+import Bullet from "./bullet";
+import GameState from "./game_state";
 
-export default class Weapon extends GameAware {
-    private readonly weapon: Phaser.Weapon;
-    private readonly player: Player;
-    private readonly sound: Phaser.Sound;
-    private weaponPower = 20;
+export default class Weapon extends Phaser.Weapon {
+    private sound: Phaser.Sound;
 
-    constructor(game: Phaser.Game, player: Player) {
-        super(game);
-        this.player = player;
-        this.sound = this.game.add.audio(Assets.fire_0);
-        this.weapon = this.game.add.weapon(30, Assets.missle_player_0);
-        this.weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-        this.weapon.bulletAngleOffset = 90;
-        this.weapon.bulletSpeed = 800;
-        this.weapon.fireRate = 100;
-        this.weapon.trackSprite(this.player.sprite, 44, 0);
-        this.weapon.onFire.add(() => this.sound.play());
-    }
-
-    fire() {
-        this.weapon.fire();
-    }
-
-    get bullets() {
-        return this.weapon.bullets;
-    }
-
-    get power() {
-        return this.weaponPower;
+    constructor(state: GameState, player: Player) {
+        super(state.game, state.game.plugins);
+        this.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.bulletAngleOffset = 90;
+        this.bulletSpeed = 800;
+        this.fireRate = 100;
+        this.sound = state.add.audio(Assets.fire_0);
+        this.trackSprite(player, 44, 0);
+        this.onFire.add(() => this.sound.play());
+        this.createBullets(0);
+        this.bulletClass = Bullet;
+        this.createBullets(30, Assets.missle_player_0);
     }
 }

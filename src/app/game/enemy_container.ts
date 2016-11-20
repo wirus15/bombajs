@@ -1,13 +1,14 @@
 import * as Phaser from 'phaser';
 import ExplosionContainer from "./explosion_container";
 import Enemy from "./enemy";
+import GameState from "./game_state";
 
 export default class EnemyContainer extends Phaser.Group {
     public readonly enemyKilled: Phaser.Signal;
     private readonly explosions: ExplosionContainer;
 
-    constructor(game: Phaser.Game) {
-        super(game, undefined, 'enemies', false, true);
+    constructor(private state: GameState) {
+        super(state.game, undefined, 'enemies', false, true);
         this.classType = Enemy;
         this.explosions = new ExplosionContainer(this.game);
         this.enemyKilled = new Phaser.Signal();
@@ -18,7 +19,7 @@ export default class EnemyContainer extends Phaser.Group {
 
     create(x: number, y: number, key?: string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video, frame?: string|number, exists?: boolean, index?: number): any {
         const enemy = super.create(x, y, key, frame, exists, index);
-        enemy.events.onKilled.add(this.onEnemyKilled, this);
+        enemy.onShotDown.add(this.onEnemyKilled, this);
 
         return enemy;
     }
@@ -37,9 +38,8 @@ export default class EnemyContainer extends Phaser.Group {
     }
 
     private reviveEnemy() {
-        console.log(this.length, this.countDead());
         const enemy = this.getFirstDead(true);
-        const level = this.game.rnd.integerInRange(1, 16);
+        const level = this.game.rnd.integerInRange(1, this.state.level);
         enemy.changeLevel(level);
         enemy.revive();
     }

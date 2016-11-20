@@ -15,6 +15,7 @@ export default class GameState extends Phaser.State {
     public points = 0;
     public lives = 3;
     public gameOver = false;
+    public level = 1;
     private background: Background;
     private backgroundMusic: BackgroundMusic;
     private collisions: Collisions;
@@ -24,10 +25,10 @@ export default class GameState extends Phaser.State {
     }
 
     create() {
-        this.player = new Player(this.game);
-        this.enemies = new EnemyContainer(this.game);
-        this.background = new Background(this.game);
-        this.backgroundMusic = new BackgroundMusic(this.game);
+        this.player = new Player(this);
+        this.enemies = new EnemyContainer(this);
+        this.background = new Background(this);
+        this.backgroundMusic = new BackgroundMusic(this);
         this.gui = new GUI(this);
         this.collisions = new Collisions(this);
 
@@ -35,7 +36,7 @@ export default class GameState extends Phaser.State {
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.time.advancedTiming = true;
 
-        this.player.onKilled.add(this.onPlayerKilled, this);
+        this.player.events.onKilled.add(this.onPlayerKilled, this);
         this.enemies.enemyKilled.add(this.onEnemyKilled, this);
         this.backgroundMusic.play();
     }
@@ -56,6 +57,7 @@ export default class GameState extends Phaser.State {
     }
 
     private onEnemyKilled(enemy: Enemy) {
-        this.points += enemy.health;
+        this.points += enemy.maxHealth;
+        this.level = Math.min(1 + Math.floor(this.points / 1000), 16);
     }
 }

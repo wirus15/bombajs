@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import Assets from './assets';
 
 export default class Enemy extends Phaser.Sprite {
+    public readonly onShotDown: Phaser.Signal;
     private static readonly MAX_HEALTH = 20;
     private static sprites = [
         Assets.ship_normal_01,
@@ -34,7 +35,7 @@ export default class Enemy extends Phaser.Sprite {
         this.anchor.y = 0.5;
         this.events.onOutOfBounds.add(this.outOfBounds, this);
         this.events.onRevived.add(this.resetPosition, this);
-
+        this.onShotDown = new Phaser.Signal();
         this.resetPosition();
     }
 
@@ -54,6 +55,9 @@ export default class Enemy extends Phaser.Sprite {
 
     hit(damage: number) {
         this.damage(damage);
+        if (this.alive === false) {
+            this.onShotDown.dispatch(this);
+        }
     }
 
     private static sprite(level: number) {
