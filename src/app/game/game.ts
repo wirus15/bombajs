@@ -1,13 +1,13 @@
 import * as Phaser from 'phaser';
 import GameState from "./game_state";
+import {injectable} from "inversify";
 
+@injectable()
 export default class Game {
-    private game: Phaser.Game;
-    private gameState: Phaser.State;
-
-    constructor() {
-        this.gameState = new GameState();
-        this.game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameCanvas');
+    constructor(
+        private game: Phaser.Game,
+        private gameState: GameState
+    ) {
         this.game.state.add('main', this.gameState, true);
     }
 }

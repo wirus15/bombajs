@@ -1,5 +1,6 @@
 import {Component} from "@angular/core";
 import Game from "./game";
+import Container from '../../inversify.config';
 
 @Component({
     selector: 'b-game',
@@ -9,6 +10,6 @@ export class GameComponent {
     private game: Game;
 
     constructor() {
-        this.game = new Game();
+        this.game = Container.get(Game);
     }
 }
