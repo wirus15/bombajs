@@ -1,53 +1,72 @@
 import * as Phaser from 'phaser';
 import Assets from './assets';
-import GameObject from './game_object';
 
-export default class Enemy extends GameObject {
+export default class Enemy extends Phaser.Sprite {
+    public readonly onShotDown: Phaser.Signal;
     private static readonly MAX_HEALTH = 20;
+    private static sprites = [
+        Assets.ship_normal_01,
+        Assets.ship_normal_02,
+        Assets.ship_normal_03,
+        Assets.ship_normal_04,
+        Assets.ship_normal_05,
+        Assets.ship_normal_06,
+        Assets.ship_normal_07,
+        Assets.ship_normal_08,
+        Assets.ship_normal_09,
+        Assets.ship_normal_10,
+        Assets.ship_normal_11,
+        Assets.ship_normal_12,
+        Assets.ship_normal_13,
+        Assets.ship_normal_14,
+        Assets.ship_normal_15,
+        Assets.ship_normal_16,
+    ];
+    private level: number = 1;
 
     constructor(game: Phaser.Game) {
-        super(game, game.add.sprite(
-            Math.random() * game.width,
-            -Math.random() * game.height,
-            Assets.ship_normal_01
-        ));
-
-        this.enablePhysics();
-        this.velocity.y = 100 + Math.random() * 200;
-        this.velocity.x = 50 - Math.random() * 100;
+        super(game, 0, 0, Enemy.sprite(1));
+        this.exists = false;
+        this.maxHealth = Enemy.MAX_HEALTH;
+        this.health = this.maxHealth;
+        this.game.physics.arcade.enable(this);
+        this.checkWorldBounds = true;
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
-
-        this.sprite.maxHealth = Enemy.MAX_HEALTH;
-        this.sprite.health = this.sprite.maxHealth;
-        this.sprite.checkWorldBounds = true;
-        this.sprite.events.onOutOfBounds.add(this.outOfBounds, this);
+        this.events.onOutOfBounds.add(this.outOfBounds, this);
+        this.events.onRevived.add(this.resetPosition, this);
+        this.onShotDown = new Phaser.Signal();
+        this.resetPosition();
     }
 
-    reset() {
-        this.sprite.reset(Math.random() * this.game.width, -this.height, Enemy.MAX_HEALTH);
-        setTimeout(() => {
-            this.velocity.y = 150 + Math.random() * 150;
-            this.velocity.x = 50 - Math.random() * 100;
-            this.sprite.revive();
-        }, Math.random() * 3000);
+    resetPosition() {
+        this.x = Math.random() * this.game.width;
+        this.y = -Math.random() * this.game.height;
+        this.body.velocity.x = 50 - Math.random() * 100;
+        this.body.velocity.y = 100 + Math.random() * 200;
+    }
+
+    changeLevel(level: number) {
+        this.level = level;
+        this.loadTexture(Enemy.sprite(level));
+        this.maxHealth = Enemy.MAX_HEALTH * level;
+        this.health = this.maxHealth;
     }
 
     hit(damage: number) {
-        this.sprite.damage(damage);
+        this.damage(damage);
+        if (this.alive === false) {
+            this.onShotDown.dispatch(this);
+        }
     }
 
-    get health() {
-        return this.sprite.health;
-    }
-
-    get onKilled() {
-        return this.sprite.events.onKilled;
+    private static sprite(level: number) {
+        return Enemy.sprites[Math.min(level-1, 15)];
     }
 
     private outOfBounds() {
         if (this.top > 0) {
-            this.reset();
+            this.kill();
         }
     }
 }

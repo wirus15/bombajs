@@ -13,25 +13,29 @@ decorate(injectable(), Phaser.State);
 
 @injectable()
 export default class GameState extends Phaser.State {
+    private static MAX_LEVEL = 16;
+
     public player: Player;
     public enemies: EnemyContainer;
     public gui: GUI;
     public points = 0;
     public lives = 3;
     public gameOver = false;
+    public level = 1;
     private background: Background;
     private backgroundMusic: BackgroundMusic;
     private collisions: Collisions;
+    private enemiesDestroyed = 0;
 
     preload() {
         Assets.load(this.game);
     }
 
     create() {
-        this.player = new Player(this.game);
-        this.enemies = new EnemyContainer(this.game);
-        this.background = new Background(this.game);
-        this.backgroundMusic = new BackgroundMusic(this.game);
+        this.player = new Player(this);
+        this.enemies = new EnemyContainer(this);
+        this.background = new Background(this);
+        this.backgroundMusic = new BackgroundMusic(this);
         this.gui = new GUI(this);
         this.collisions = new Collisions(this);
 
@@ -39,8 +43,7 @@ export default class GameState extends Phaser.State {
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.time.advancedTiming = true;
 
-        this.player.onKilled.add(this.onPlayerKilled, this);
-        this.enemies.init(10);
+        this.player.events.onKilled.add(this.onPlayerKilled, this);
         this.enemies.enemyKilled.add(this.onEnemyKilled, this);
         this.backgroundMusic.play();
     }
@@ -61,6 +64,13 @@ export default class GameState extends Phaser.State {
     }
 
     private onEnemyKilled(enemy: Enemy) {
-        this.points += enemy.health;
+        this.points += enemy.maxHealth;
+        this.enemiesDestroyed++;
+        this.calculateLevel();
+    }
+
+    private calculateLevel() {
+        const newLevel = 1 + Math.floor(this.enemiesDestroyed / 100);
+        this.level = Math.min(newLevel, GameState.MAX_LEVEL);
     }
 }

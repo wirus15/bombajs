@@ -8,6 +8,7 @@ export default class GUI {
     private textPoints: Phaser.Text;
     private textLives: Phaser.Text;
     private textGameOver: Phaser.Text;
+    private textLevel: Phaser.Text;
 
     constructor(state: GameState) {
         const style = {font: "16px Arial", fill: "#fff", boundsAlignH: "left", boundsAlignV: "top"};
@@ -18,6 +19,7 @@ export default class GUI {
         this.textHp = this.game.add.text(this.game.width - 150, 20, '', style);
         this.textPoints = this.game.add.text(this.game.width - 150, 40, '', style);
         this.textLives = this.game.add.text(this.game.width - 150, 60, '', style);
+        this.textLevel = this.game.add.text(this.game.width - 150, 80, '', style);
         this.textGameOver = this.game.add.text(0, 0, 'GAME OVER', gameOverStyle);
         this.textGameOver.setTextBounds(0, 0, this.game.width, this.game.height);
     }
@@ -27,6 +29,7 @@ export default class GUI {
         this.textHp.text = `HP: ${this.state.player.health}`;
         this.textLives.text = `LIVES: ${this.state.lives}`;
         this.textPoints.text = `POINTS: ${this.state.points}`;
+        this.textLevel.text = `LEVEL: ${this.state.level}`;
         this.textGameOver.visible = this.state.gameOver;
     }
 
