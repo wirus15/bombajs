@@ -17,7 +17,7 @@ module.exports = {
     },
 
     resolve: {
-        extensions: ['', '.js', '.ts'],
+        extensions: ['.js', '.ts'],
         alias: {
             'phaser': phaser,
             'pixi': pixi,
@@ -26,41 +26,44 @@ module.exports = {
     },
 
     module: {
-        loaders: [
+        rules: [
             {
                 test: /pixi\.js/,
-                loader: 'expose?PIXI'
+                loader: 'expose-loader?PIXI'
             },
             {
                 test: /phaser-split\.js$/,
-                loader: 'expose?Phaser'
+                loader: 'expose-loader?Phaser'
             },
             {
                 test: /p2\.js/,
-                loader: 'expose?p2'
+                loader: 'expose-loader?p2'
             },
             {
                 test: /\.ts$/,
                 exclude: 'node_modules',
-                loaders: ['awesome-typescript-loader', 'angular2-template-loader']
+                use: ['awesome-typescript-loader', 'angular2-template-loader']
             },
             {
                 test: /\.html$/,
-                loader: 'html'
+                loader: 'html-loader'
             },
             {
                 test: /\.(png|jpe?g|gif|svg|woff|woff2|ttf|eot|ico)$/,
-                loader: 'file?name=assets/[name].[hash].[ext]'
+                loader: 'file-loader?name=assets/[name].[hash].[ext]'
             },
             {
                 test: /\.css$/,
                 exclude: helpers.root('src', 'app'),
-                loader: ExtractTextPlugin.extract('style', 'css?sourceMap')
+                use: ExtractTextPlugin.extract({
+                    fallback: "style-loader",
+                    use: "css-loader"
+                })
             },
             {
                 test: /\.css$/,
                 include: helpers.root('src', 'app'),
-                loader: 'raw'
+                loader: 'raw-loader'
             }
         ]
     },
