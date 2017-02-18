@@ -7,7 +7,11 @@ import GUI from "./gui";
 import Assets from "./assets";
 import Enemy from "./enemy";
 import Collisions from "./collisions";
+import {injectable, decorate} from "inversify";
 
+decorate(injectable(), Phaser.State);
+
+@injectable()
 export default class GameState extends Phaser.State {
     public player: Player;
     public enemies: EnemyContainer;
