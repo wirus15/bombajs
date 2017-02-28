@@ -1,9 +1,7 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
-import { enableProdMode } from '@angular/core';
-import { AppModule } from './app/app.module';
+import Container from "./inversify.config";
+import Game from "./app/game/game";
+import "./../public/css/styles.css";
 
-if (process.env.ENV === 'production') {
-    enableProdMode();
-}
+const game = Container.get(Game);
 
-platformBrowserDynamic().bootstrapModule(AppModule);
+game.start();

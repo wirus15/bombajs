@@ -1,46 +1,39 @@
 import * as Phaser from 'phaser';
-import Player from "./player";
+import PlayerShip from "./player_ship";
+import {injectable} from "inversify";
 
+@injectable()
 export default class PlayerControl {
     private cursors: Phaser.CursorKeys;
     private fireButton: Phaser.Key;
 
-    constructor(private player: Player) {
+    constructor(private game: Phaser.Game) {}
+
+    create() {
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
 
-    update() {
-        this.velocity.x = 0;
-        this.velocity.y = 0;
-
-        if (this.cursors.left.isDown && this.player.left > 0) {
-            this.velocity.x = -this.player.speed;
+    handleKeys(ship: PlayerShip) {
+        if (this.cursors.left.isDown) {
+            ship.move.left();
         }
-        else if (this.cursors.right.isDown && this.player.right < this.game.width) {
-            this.velocity.x = this.player.speed;
+        else if (this.cursors.right.isDown) {
+            ship.move.right();
         }
 
-        if (this.cursors.up.isDown && this.player.top > 0) {
-            this.velocity.y = -this.player.speed;
+        if (this.cursors.up.isDown) {
+            ship.move.up();
         }
-        else if (this.cursors.down.isDown && this.player.bottom < this.game.height) {
-            this.velocity.y = this.player.speed;
-        }
-
-        if (this.fireButton.isDown && this.player.alive) {
-            this.player.weapon.fire();
+        else if (this.cursors.down.isDown) {
+            ship.move.down();
         }
 
-        this.player.alpha = !this.player.armor ? 1 :
-            .2 + .6 * Math.abs(Math.sin(new Date().getTime() / 50));
-    }
+        // if (this.fireButton.isDown && this.player.alive) {
+        //     this.player.weapon.fire();
+        // }
 
-    get velocity() {
-        return this.player.body.velocity;
-    }
-
-    get game() {
-        return this.player.game;
+        // this.player.alpha = !this.player.armor ? 1 :
+        //     .2 + .6 * Math.abs(Math.sin(new Date().getTime() / 50));
     }
 }
