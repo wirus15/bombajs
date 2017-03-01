@@ -10,24 +10,27 @@ export default class PlayerMovement {
     }
 
     up() {
-        this.velocity.y = -this.speed;
-        this.checkBounds();
+        if (this.ship.y > 0) {
+            this.velocity.y = -this.speed;
+        }
     }
 
     down() {
-        this.velocity.y = this.speed;
-        this.checkBounds();
+        if (this.ship.y < this.game.height - this.ship.height) {
+            this.velocity.y = this.speed;
+        }
     }
 
     left() {
-        this.velocity.x = -this.speed;
-        this.checkBounds();
-
+        if (this.ship.x > 0) {
+            this.velocity.x = -this.speed;
+        }
     }
 
     right() {
-        this.velocity.x = this.speed;
-        this.checkBounds();
+        if (this.ship.x < this.game.width - this.ship.width) {
+            this.velocity.x = this.speed;
+        }
     }
 
     slowDown() {
@@ -38,20 +41,24 @@ export default class PlayerMovement {
     }
 
     private checkBounds() {
-        if (this.velocity.x < 0 && this.ship.x < 0) {
+        if (this.ship.x < 0) {
             this.velocity.x = 0;
+            this.ship.x = 0;
         }
 
-        if (this.velocity.x > 0 && this.ship.x > this.game.width - this.ship.width) {
+        if (this.ship.x > this.game.width - this.ship.width) {
             this.velocity.x = 0;
+            this.ship.x = this.game.width - this.ship.width;
         }
 
-        if (this.velocity.y < 0 && this.ship.y < 0) {
+        if (this.ship.y < 0) {
             this.velocity.y = 0;
+            this.ship.y = 0;
         }
 
-        if (this.velocity.y > 0 && this.ship.y > this.game.height - this.ship.height) {
+        if (this.ship.y > this.game.height - this.ship.height) {
             this.velocity.y = 0;
+            this.ship.y = this.game.height - this.ship.height;
         }
     }
 }
