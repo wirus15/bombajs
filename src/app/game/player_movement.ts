@@ -4,9 +4,13 @@ import PlayerShip from "./player_ship";
 export default class PlayerMovement {
     private velocity;
     private speed = 300;
+    private maxX: number;
+    private maxY: number;
 
     constructor(private ship: PlayerShip, private game: Phaser.Game) {
         this.velocity = ship.body.velocity;
+        this.maxX = game.width - ship.width;
+        this.maxY = game.height - ship.height;
     }
 
     up() {
@@ -16,7 +20,7 @@ export default class PlayerMovement {
     }
 
     down() {
-        if (this.ship.y < this.game.height - this.ship.height) {
+        if (this.ship.y < this.maxY) {
             this.velocity.y = this.speed;
         }
     }
@@ -28,7 +32,7 @@ export default class PlayerMovement {
     }
 
     right() {
-        if (this.ship.x < this.game.width - this.ship.width) {
+        if (this.ship.x < this.maxX) {
             this.velocity.x = this.speed;
         }
     }
@@ -46,9 +50,9 @@ export default class PlayerMovement {
             this.ship.x = 0;
         }
 
-        if (this.ship.x > this.game.width - this.ship.width) {
+        if (this.ship.x > this.maxX) {
             this.velocity.x = 0;
-            this.ship.x = this.game.width - this.ship.width;
+            this.ship.x = this.maxX;
         }
 
         if (this.ship.y < 0) {
@@ -56,9 +60,9 @@ export default class PlayerMovement {
             this.ship.y = 0;
         }
 
-        if (this.ship.y > this.game.height - this.ship.height) {
+        if (this.ship.y > this.maxY) {
             this.velocity.y = 0;
-            this.ship.y = this.game.height - this.ship.height;
+            this.ship.y = this.maxY;
         }
     }
 }
