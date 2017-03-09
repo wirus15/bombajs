@@ -22,7 +22,11 @@ export default class PlayerShip extends Phaser.Sprite {
         this.top = this.game.height - this.height + 50;
         this.game.physics.arcade.enable(this);
         this.game.world.add(this);
-        this.move = new PlayerMovement(this, game);
+        this.move = new PlayerMovement(this);
+    }
+
+    create() {
+
     }
 
         // state.world.add(this);

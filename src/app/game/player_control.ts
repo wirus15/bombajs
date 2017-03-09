@@ -1,6 +1,7 @@
 import * as Phaser from 'phaser';
 import PlayerShip from "./player_ship";
 import {injectable} from "inversify";
+import Weapon from "./weapon";
 
 @injectable()
 export default class PlayerControl {
@@ -14,7 +15,7 @@ export default class PlayerControl {
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
 
-    handleKeys(ship: PlayerShip) {
+    handleMovementKeys(ship: PlayerShip) {
         if (this.cursors.left.isDown) {
             ship.move.left();
         }
@@ -28,11 +29,12 @@ export default class PlayerControl {
         else if (this.cursors.down.isDown) {
             ship.move.down();
         }
+    }
 
-        // if (this.fireButton.isDown && this.player.alive) {
-        //     this.player.weapon.fire();
-        // }
-
+    handleFireKey(weapon: Weapon) {
+        if (this.fireButton.isDown) {
+            weapon.fire();
+        }
         // this.player.alpha = !this.player.armor ? 1 :
         //     .2 + .6 * Math.abs(Math.sin(new Date().getTime() / 50));
     }

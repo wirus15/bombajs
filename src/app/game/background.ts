@@ -29,7 +29,6 @@ export default class Background {
     }
 
     private createTileSprite(bitmap: Phaser.BitmapData, speedFactor: number) {
-        console.log(this.game.width, this.game.height);
         const background = this.game.add.tileSprite(
             0, 0,
             this.game.width,

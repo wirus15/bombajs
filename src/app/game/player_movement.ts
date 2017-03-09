@@ -2,15 +2,17 @@ import * as Phaser from 'phaser';
 import PlayerShip from "./player_ship";
 
 export default class PlayerMovement {
-    private velocity;
+    private game: Phaser.Game;
+    private velocity: Phaser.Point;
     private speed = 300;
     private maxX: number;
     private maxY: number;
 
-    constructor(private ship: PlayerShip, private game: Phaser.Game) {
+    constructor(private ship: PlayerShip) {
+        this.game = ship.game;
         this.velocity = ship.body.velocity;
-        this.maxX = game.width - ship.width;
-        this.maxY = game.height - ship.height;
+        this.maxX = this.game.width - ship.width;
+        this.maxY = this.game.height - ship.height;
     }
 
     up() {
