@@ -2,10 +2,8 @@ import * as Phaser from 'phaser';
 import Assets from './assets';
 import Bullet from "./bullet";
 import PlayerShip from "./player_ship";
-import {injectable} from "inversify";
 import {WeaponType, PrimaryWeapon} from './weapon_types';
 
-@injectable()
 export default class Weapon extends Phaser.Weapon {
     private sound: Phaser.Sound;
 
