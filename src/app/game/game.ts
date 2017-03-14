@@ -1,9 +1,9 @@
 import * as Phaser from 'phaser';
 import GameState from "./game_state";
-import {injectable} from "inversify";
+import {ConstructorInject} from 'huject';
 import BootState from "./boot_state";
 
-@injectable()
+@ConstructorInject
 export default class Game {
     constructor(
         private game: Phaser.Game,

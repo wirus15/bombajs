@@ -1,7 +1,7 @@
 import * as Phaser from 'phaser';
-import {injectable} from 'inversify';
+import {ConstructorInject} from 'huject';
 
-@injectable()
+@ConstructorInject
 export default class Background {
     private static readonly STAR_COLOR = '#ffffff';
 

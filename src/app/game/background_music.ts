@@ -1,8 +1,8 @@
 import * as Phaser from 'phaser';
 import Assets from './assets';
-import {injectable} from 'inversify';
+import {ConstructorInject} from 'huject';
 
-@injectable()
+@ConstructorInject
 export default class BackgroundMusic {
     private music: Phaser.Sound;
 

@@ -13,8 +13,8 @@ export default class PlayerShip extends Phaser.Sprite {
         this.health = this.maxHealth;
         this.left = (this.game.width - this.width) / 2;
         this.top = this.game.height - this.height + 50;
-        this.game.physics.arcade.enable(this);
         this.game.world.add(this);
+        this.game.physics.arcade.enable(this);
     }
 }
 

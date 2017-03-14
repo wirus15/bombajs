@@ -1,9 +1,9 @@
 import * as Phaser from 'phaser';
 import PlayerShip from "./player_ship";
-import {injectable} from "inversify";
+import {ConstructorInject} from 'huject';
 import Weapon from "./weapon";
 
-@injectable()
+@ConstructorInject
 export default class PlayerControl {
     private cursors: Phaser.CursorKeys;
     private fireButton: Phaser.Key;

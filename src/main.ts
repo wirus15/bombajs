@@ -1,7 +1,7 @@
-import Container from "./inversify.config";
+import Container from "./huject";
 import Game from "./app/game/game";
 import "./../public/css/styles.css";
 
-const game = Container.get(Game);
+const game = Container.resolve(Game);
 
 game.start();

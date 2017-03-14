@@ -1,5 +1,5 @@
 import * as Phaser from 'phaser';
-import {injectable, decorate} from "inversify";
+import {ConstructorInject} from 'huject';
 // import EnemyContainer from "./enemy_container";
 import Background from "./background";
 import BackgroundMusic from "./background_music";
@@ -9,7 +9,7 @@ import Assets from "./assets";
 // import Collisions from "./collisions";
 import Player from "./player";
 
-@injectable()
+@ConstructorInject
 export default class GameState extends Phaser.State {
     // public enemies: EnemyContainer;
     // public gui: GUI;

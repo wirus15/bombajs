@@ -1,12 +1,12 @@
-import {injectable} from "inversify";
 import * as Phaser from 'phaser';
+import {ConstructorInject} from 'huject';
 import PlayerShip from "./player_ship";
 import Level from "./level";
 import Points from "./points";
 import PlayerControl from "./player_control";
 import Weapon from "./weapon";
 
-@injectable()
+@ConstructorInject
 export default class Player {
     private ship: PlayerShip;
     private weapon: Weapon;

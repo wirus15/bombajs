@@ -1,7 +1,7 @@
-import {injectable} from "inversify";
 import * as Phaser from 'phaser';
+import {ConstructorInject} from 'huject';
 
-@injectable()
+@ConstructorInject
 export default class GameEvents {
     constructor() {
 
