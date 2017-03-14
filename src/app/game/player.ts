@@ -8,10 +8,10 @@ import Weapon from "./weapon";
 
 @ConstructorInject
 export default class Player {
+    public readonly level: Level;
     private ship: PlayerShip;
     private weapon: Weapon;
     private points: Points;
-    private level: Level;
     private lives = 0;
 
     constructor(

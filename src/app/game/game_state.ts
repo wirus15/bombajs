@@ -8,6 +8,7 @@ import Assets from "./assets";
 // import Enemy from "./enemy";
 // import Collisions from "./collisions";
 import Player from "./player";
+import EnemyContainer from "./enemy_container";
 
 @ConstructorInject
 export default class GameState extends Phaser.State {
@@ -20,7 +21,8 @@ export default class GameState extends Phaser.State {
     constructor(
         private background: Background,
         private backgroundMusic: BackgroundMusic,
-        private player: Player
+        private player: Player,
+        private enemyContainer: EnemyContainer
     ) {
         super();
     }
@@ -30,6 +32,7 @@ export default class GameState extends Phaser.State {
         this.backgroundMusic.create();
         this.backgroundMusic.play();
         this.player.create();
+        this.enemyContainer.start();
 
         // this.enemies = new EnemyContainer(this);
         // this.gui = new GUI(this);
