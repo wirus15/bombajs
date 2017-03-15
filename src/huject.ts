@@ -9,6 +9,7 @@ import GameEvents from "./app/game/game_events";
 import PlayerControl from "./app/game/player_control";
 import Weapon from "./app/game/weapon";
 import EnemyContainer from "./app/game/enemy_container";
+import EnemyFactory from "./app/game/enemy_factory";
 
 let container = new Container();
 
@@ -23,5 +24,6 @@ container.register(GameEvents).as(FactoryMethod.SINGLETON);
 container.register(PlayerControl).as(FactoryMethod.SINGLETON);
 container.register(Weapon).as(FactoryMethod.SINGLETON);
 container.register(EnemyContainer).as(FactoryMethod.SINGLETON);
+container.register(EnemyFactory).as(FactoryMethod.SINGLETON);
 
 export default container;
