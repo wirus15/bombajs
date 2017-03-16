@@ -9,6 +9,9 @@ import PlayerControl from "./app/game/player_control";
 import Weapon from "./app/game/weapon";
 import EnemyContainer from "./app/game/enemy_container";
 import EnemyFactory from "./app/game/enemy_factory";
+import Collisions from "./app/game/collisions";
+import ShipCollisionHandler from "./app/game/ship_collision_handler";
+import EnemyHitHandler from "./app/game/enemy_hit_handler";
 
 let container = new Container();
 
@@ -23,5 +26,8 @@ container.register(PlayerControl).as(FactoryMethod.SINGLETON);
 container.register(Weapon).as(FactoryMethod.SINGLETON);
 container.register(EnemyContainer).as(FactoryMethod.SINGLETON);
 container.register(EnemyFactory).as(FactoryMethod.SINGLETON);
+container.register(Collisions).as(FactoryMethod.SINGLETON);
+container.register(ShipCollisionHandler).as(FactoryMethod.SINGLETON);
+container.register(EnemyHitHandler).as(FactoryMethod.SINGLETON);
 
 export default container;

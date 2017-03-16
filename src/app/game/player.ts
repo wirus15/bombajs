@@ -8,30 +8,42 @@ import Weapon from "./weapon";
 
 @ConstructorInject
 export default class Player {
-    public readonly level: Level;
-    private ship: PlayerShip;
-    private weapon: Weapon;
-    private points: Points;
-    private lives = 0;
+    private _level: Level;
+    private _ship: PlayerShip;
+    private _weapon: Weapon;
+    private _points: Points;
+    private _lives = 0;
 
     constructor(
         private game: Phaser.Game,
         private controls: PlayerControl
     ) {
-        this.level = new Level();
-        this.points = new Points();
+        this._level = new Level();
+        this._points = new Points();
     }
 
-    public create() {
-        this.ship = new PlayerShip(this.game);
-        this.weapon = new Weapon(this.ship);
+    create() {
+        this._ship = new PlayerShip(this.game);
+        this._weapon = new Weapon(this.ship);
 
         this.controls.create();
     }
 
-    public update() {
+    update() {
         this.ship.move.slowDown();
         this.controls.handleMovementKeys(this.ship);
         this.controls.handleFireKey(this.weapon);
+    }
+
+    get level() {
+        return this._level;
+    }
+
+    get ship() {
+        return this._ship;
+    }
+
+    get weapon() {
+        return this._weapon;
     }
 }
