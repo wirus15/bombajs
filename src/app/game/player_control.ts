@@ -31,11 +31,9 @@ export default class PlayerControl {
         }
     }
 
-    handleFireKey(weapon: Weapon) {
-        if (this.fireButton.isDown) {
+    handleFireKey(ship: PlayerShip, weapon: Weapon) {
+        if (ship.alive && this.fireButton.isDown) {
             weapon.fire();
         }
-        // this.player.alpha = !this.player.armor ? 1 :
-        //     .2 + .6 * Math.abs(Math.sin(new Date().getTime() / 50));
     }
 }

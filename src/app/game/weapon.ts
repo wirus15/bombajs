@@ -17,7 +17,7 @@ export default class Weapon extends Phaser.Weapon {
         this.bulletClass = Bullet;
 
         this.sound = this.game.add.audio(Assets.fire_0);
-        this.trackSprite(ship, ship.width / 2, 0);
+        this.trackSprite(ship, 0, ship.height / -2);
         this.onFire.add(() => this.sound.play());
         this.switchWeapon(PrimaryWeapon);
     }

@@ -12,6 +12,7 @@ import EnemyFactory from "./app/game/enemy_factory";
 import Collisions from "./app/game/collisions";
 import ShipCollisionHandler from "./app/game/ship_collision_handler";
 import EnemyHitHandler from "./app/game/enemy_hit_handler";
+import Explosions from "./app/game/explosions";
 
 let container = new Container();
 
@@ -29,5 +30,6 @@ container.register(EnemyFactory).as(FactoryMethod.SINGLETON);
 container.register(Collisions).as(FactoryMethod.SINGLETON);
 container.register(ShipCollisionHandler).as(FactoryMethod.SINGLETON);
 container.register(EnemyHitHandler).as(FactoryMethod.SINGLETON);
+container.register(Explosions).as(FactoryMethod.SINGLETON);
 
 export default container;

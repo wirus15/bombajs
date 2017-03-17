@@ -21,8 +21,8 @@ export default class Collisions {
 
         this.enemies.forEach((enemyGroup: EnemyGroup) => {
             physics.overlap(
-                this.player.weapon.bullets,
                 enemyGroup,
+                this.player.weapon.bullets,
                 this.enemyHitHandler.handle.bind(this.enemyHitHandler)
             );
 

@@ -9,8 +9,8 @@ export default class PlayerMovement {
 
     constructor(private ship: PlayerShip) {
         this.game = ship.game;
-        this.maxX = this.game.width - ship.width;
-        this.maxY = this.game.height - ship.height;
+        this.maxX = this.game.width - ship.width / 2;
+        this.maxY = this.game.height - ship.height / 2;
     }
 
     up() {
@@ -49,9 +49,9 @@ export default class PlayerMovement {
     }
 
     private checkBounds() {
-        if (this.ship.x < 0) {
+        if (this.ship.x < this.ship.width / 2) {
             this.velocity.x = 0;
-            this.ship.x = 0;
+            this.ship.x = this.ship.width / 2;
         }
 
         if (this.ship.x > this.maxX) {
@@ -59,9 +59,9 @@ export default class PlayerMovement {
             this.ship.x = this.maxX;
         }
 
-        if (this.ship.y < 0) {
+        if (this.ship.y < this.ship.height / 2) {
             this.velocity.y = 0;
-            this.ship.y = 0;
+            this.ship.y = this.ship.height / 2;
         }
 
         if (this.ship.y > this.maxY) {

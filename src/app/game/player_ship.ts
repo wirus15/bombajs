@@ -11,6 +11,8 @@ export default class PlayerShip extends Phaser.Sprite {
         this.maxHealth = PlayerShip.MAX_HEALTH;
         this.move = new PlayerMovement(this);
         this.health = this.maxHealth;
+        this.anchor.x = 0.5;
+        this.anchor.y = 0.5;
         this.left = (this.game.width - this.width) / 2;
         this.top = this.game.height - this.height + 50;
         this.game.world.add(this);

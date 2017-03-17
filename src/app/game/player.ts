@@ -32,7 +32,7 @@ export default class Player {
     update() {
         this.ship.move.slowDown();
         this.controls.handleMovementKeys(this.ship);
-        this.controls.handleFireKey(this.weapon);
+        this.controls.handleFireKey(this.ship, this.weapon);
     }
 
     get level() {
