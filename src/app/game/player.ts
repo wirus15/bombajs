@@ -50,4 +50,8 @@ export default class Player {
     get points() {
         return this._points;
     }
+
+    get lives() {
+        return this._lives;
+    }
 }
