@@ -16,6 +16,10 @@ export default class PlayerControl {
     }
 
     handleMovementKeys(ship: PlayerShip) {
+        if (!ship.alive) {
+            return;
+        }
+
         if (this.cursors.left.isDown) {
             ship.move.left();
         }
