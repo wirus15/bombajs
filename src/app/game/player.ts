@@ -46,4 +46,8 @@ export default class Player {
     get weapon() {
         return this._weapon;
     }
+
+    get points() {
+        return this._points;
+    }
 }

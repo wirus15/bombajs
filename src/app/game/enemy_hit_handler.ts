@@ -14,6 +14,7 @@ export default class EnemyHitHandler implements CollisionHandler {
 
         if (enemy.alive === false) {
             this.explosions.display(enemy);
+            this.player.points.add(enemy.maxHealth);
         }
     }
 }
