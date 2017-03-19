@@ -6,7 +6,7 @@ import Shield from "./shield";
 export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
     public readonly move: PlayerMovement;
-    private shield: Phaser.Sprite;
+    private shield: Shield;
     private _shieldEnabled = false;
 
     constructor(game: Phaser.Game) {
@@ -28,13 +28,13 @@ export default class PlayerShip extends Phaser.Sprite {
 
     enableShield(duration: number) {
         this._shieldEnabled = true;
-        this.shield.visible = true;
+        this.shield.show();
         this.game.time.events.add(duration, this.disableShield, this);
     }
 
     disableShield() {
         this._shieldEnabled = false;
-        this.shield.visible = false;
+        this.shield.hide();
     }
 
     get shieldEnabled() {
