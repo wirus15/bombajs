@@ -20,18 +20,21 @@ export default class PlayerControl {
             return;
         }
 
+        const velocity = ship.body.velocity;
+        const maxVelocity = ship.body.maxVelocity;
+
         if (this.cursors.left.isDown) {
-            ship.move.left();
+            velocity.x = -maxVelocity.x;
         }
         else if (this.cursors.right.isDown) {
-            ship.move.right();
+            velocity.x = maxVelocity.x;
         }
 
-        if (this.cursors.up.isDown) {
-            ship.move.up();
+        if (this.cursors.up.isDown && !ship.isFlyingIn) {
+            velocity.y = -maxVelocity.y;
         }
-        else if (this.cursors.down.isDown) {
-            ship.move.down();
+        else if (this.cursors.down.isDown && !ship.isFlyingIn) {
+            velocity.y = maxVelocity.y;
         }
     }
 

@@ -24,13 +24,13 @@ export default class Player {
 
     create() {
         this._ship = new PlayerShip(this.game);
+        this._ship.flyIn();
         this._weapon = new Weapon(this.ship);
 
         this.controls.create();
     }
 
     update() {
-        this.ship.move.slowDown();
         this.controls.handleMovementKeys(this.ship);
         this.controls.handleFireKey(this.ship, this.weapon);
     }
