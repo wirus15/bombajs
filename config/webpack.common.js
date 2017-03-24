@@ -41,7 +41,7 @@ module.exports = {
             },
             {
                 test: /\.ts$/,
-                exclude: 'node_modules',
+                exclude: helpers.root('node_modules'),
                 use: ['awesome-typescript-loader', 'angular2-template-loader']
             },
             {
