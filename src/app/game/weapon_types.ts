@@ -8,8 +8,8 @@ export interface WeaponType {
 }
 
 export const PrimaryWeapon: WeaponType = {
-    damage: 50,
+    damage: 20,
     bulletSpeed: 800,
-    fireRate: 100,
+    fireRate: 150,
     bulletSprite: Assets.missle_player_0,
 };

@@ -5,6 +5,7 @@ import Level from "./level";
 import Points from "./points";
 import PlayerControl from "./player_control";
 import Weapon from "./weapon";
+import {NoMoreLivesError} from "./errors";
 
 @ConstructorInject
 export default class Player {
@@ -12,7 +13,7 @@ export default class Player {
     private _ship: PlayerShip;
     private _weapon: Weapon;
     private _points: Points;
-    private _lives = 0;
+    private _lives = 3;
 
     constructor(
         private game: Phaser.Game,
@@ -24,15 +25,24 @@ export default class Player {
 
     create() {
         this._ship = new PlayerShip(this.game);
-        this._ship.flyIn();
         this._weapon = new Weapon(this.ship);
 
         this.controls.create();
+        this.useNextShip();
     }
 
     update() {
         this.controls.handleMovementKeys(this.ship);
         this.controls.handleFireKey(this.ship, this.weapon);
+    }
+
+    useNextShip() {
+        if (this._lives <= 0) {
+            throw new NoMoreLivesError();
+        }
+
+        this._lives--;
+        this._ship.flyIn();
     }
 
     get level() {

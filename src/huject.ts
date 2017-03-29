@@ -14,6 +14,7 @@ import ShipCollisionHandler from "./app/game/ship_collision_handler";
 import EnemyHitHandler from "./app/game/enemy_hit_handler";
 import Explosions from "./app/game/explosions";
 import GUI from "./app/game/gui";
+import GameEvents from "./app/game/game_events";
 
 let container = new Container();
 
@@ -33,5 +34,6 @@ container.register(ShipCollisionHandler).as(FactoryMethod.SINGLETON);
 container.register(EnemyHitHandler).as(FactoryMethod.SINGLETON);
 container.register(Explosions).as(FactoryMethod.SINGLETON);
 container.register(GUI).as(FactoryMethod.SINGLETON);
+container.register(GameEvents).as(FactoryMethod.SINGLETON);
 
 export default container;

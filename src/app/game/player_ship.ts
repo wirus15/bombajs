@@ -6,7 +6,7 @@ export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
     private shield: Shield;
     private _shieldEnabled = false;
-    private flyInAnimation: Phaser.Tween;
+    private _isFlyingIn = false;
 
     constructor(game: Phaser.Game) {
         super(game, 0, 0, Assets.ship_player);
@@ -19,11 +19,6 @@ export default class PlayerShip extends Phaser.Sprite {
         this.anchor.y = 0.5;
         this.body.drag.x = this.body.drag.y = 500;
         this.body.maxVelocity.x = this.body.maxVelocity.y = 300;
-
-        this.flyInAnimation = game.add.tween(this)
-            .to({y: game.height - this.height}, 2000, Phaser.Easing.Cubic.Out, false, 1000);
-        this.flyInAnimation.onStart.add(() => this.body.collideWorldBounds = false);
-        this.flyInAnimation.onComplete.add(() => this.body.collideWorldBounds = true);
 
         this.shield = new Shield(game);
         this.addChild(this.shield);
@@ -41,8 +36,18 @@ export default class PlayerShip extends Phaser.Sprite {
     }
 
     flyIn() {
-        this.reset(this.game.width / 2, this.game.height + this.height, this.maxHealth);
-        this.flyInAnimation.start();
+        this.reset(this.game.width / 2, this.game.height - this.height, this.maxHealth);
+        this._isFlyingIn = true;
+        this.body.collideWorldBounds = false;
+
+        const animation = this.game.add.tween(this)
+            .from({y: this.game.height + this.height}, 1000, Phaser.Easing.Cubic.Out, true, 1000);
+
+        animation.onComplete.add(() => {
+            this._isFlyingIn = false;
+            this.body.collideWorldBounds = true;
+        });
+
         this.enableShield(5000);
     }
 
@@ -51,7 +56,7 @@ export default class PlayerShip extends Phaser.Sprite {
     }
 
     get isFlyingIn() {
-        return this.flyInAnimation.isRunning;
+        return this._isFlyingIn;
     }
 }
 
