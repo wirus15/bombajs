@@ -17,7 +17,7 @@ export default class EnemyContainer extends Phaser.Group {
     }
 
     start() {
-        this.game.stage.addChild(this);
+        this.game.add.existing(this);
         this.addGroup(this.player.level);
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
     }
