@@ -30,7 +30,7 @@ export default class ShipCollisionHandler implements CollisionHandler {
 
         if (enemyShip.alive === false) {
             this.explosions.display(enemyShip);
-            this.player.points.add(enemyShip.maxHealth);
+            this.player.addPoints(enemyShip.maxHealth);
         }
     }
 }

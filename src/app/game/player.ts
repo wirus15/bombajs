@@ -6,6 +6,7 @@ import Points from "./points";
 import PlayerControl from "./player_control";
 import Weapon from "./weapon";
 import {NoMoreLivesError} from "./errors";
+import LevelCalculator from "./level_calculator";
 
 @ConstructorInject
 export default class Player {
@@ -45,6 +46,11 @@ export default class Player {
         this._ship.flyIn();
     }
 
+    addPoints(points: number) {
+        this._points.add(points);
+        this.checkLevel();
+    }
+
     get level() {
         return this._level;
     }
@@ -63,5 +69,12 @@ export default class Player {
 
     get lives() {
         return this._lives;
+    }
+
+    private checkLevel() {
+        const shouldHaveLevel = LevelCalculator.calculateLevel(this._points);
+        while (this._level.get() < shouldHaveLevel) {
+            this._level.next();
+        }
     }
 }
