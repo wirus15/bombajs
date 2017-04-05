@@ -1,76 +1,40 @@
 import * as Phaser from 'phaser';
-import Player from "./player";
-import EnemyContainer from "./enemy_container";
+import {ConstructorInject} from 'huject';
 import Background from "./background";
 import BackgroundMusic from "./background_music";
-import GUI from "./gui";
-import Assets from "./assets";
-import Enemy from "./enemy";
+import Player from "./player";
+import EnemyContainer from "./enemy_container";
 import Collisions from "./collisions";
-import {injectable, decorate} from "inversify";
+import Explosions from "./explosions";
+import GUI from "./gui";
 
-decorate(injectable(), Phaser.State);
-
-@injectable()
+@ConstructorInject
 export default class GameState extends Phaser.State {
-    private static MAX_LEVEL = 16;
-
-    public player: Player;
-    public enemies: EnemyContainer;
-    public gui: GUI;
-    public points = 0;
-    public lives = 3;
-    public gameOver = false;
-    public level = 1;
-    private background: Background;
-    private backgroundMusic: BackgroundMusic;
-    private collisions: Collisions;
-    private enemiesDestroyed = 0;
-
-    preload() {
-        Assets.load(this.game);
+    constructor(
+        private background: Background,
+        private backgroundMusic: BackgroundMusic,
+        private player: Player,
+        private enemyContainer: EnemyContainer,
+        private collisions: Collisions,
+        private explosions: Explosions,
+        private gui: GUI
+    ) {
+        super();
     }
 
     create() {
-        this.player = new Player(this);
-        this.enemies = new EnemyContainer(this);
-        this.background = new Background(this);
-        this.backgroundMusic = new BackgroundMusic(this);
-        this.gui = new GUI(this);
-        this.collisions = new Collisions(this);
-
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.time.advancedTiming = true;
-
-        this.player.events.onKilled.add(this.onPlayerKilled, this);
-        this.enemies.enemyKilled.add(this.onEnemyKilled, this);
+        this.background.create();
+        this.backgroundMusic.create();
         this.backgroundMusic.play();
+        this.player.create();
+        this.enemyContainer.start();
+        this.explosions.init();
+        this.gui.create();
     }
 
     update() {
-        this.collisions.check();
         this.player.update();
+        this.collisions.check();
         this.gui.update();
-    }
-
-    private onPlayerKilled() {
-        if (this.lives > 0) {
-            this.player.revive();
-            this.lives--;
-        } else {
-            this.gameOver = true;
-        }
-    }
-
-    private onEnemyKilled(enemy: Enemy) {
-        this.points += enemy.maxHealth;
-        this.enemiesDestroyed++;
-        this.calculateLevel();
-    }
-
-    private calculateLevel() {
-        const newLevel = 1 + Math.floor(this.enemiesDestroyed / 100);
-        this.level = Math.min(newLevel, GameState.MAX_LEVEL);
     }
 }

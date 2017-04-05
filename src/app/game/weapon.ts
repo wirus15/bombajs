@@ -1,23 +1,35 @@
 import * as Phaser from 'phaser';
-import Player from './player';
 import Assets from './assets';
 import Bullet from "./bullet";
-import GameState from "./game_state";
+import PlayerShip from "./player_ship";
+import {WeaponType, PrimaryWeapon} from './weapon_types';
 
 export default class Weapon extends Phaser.Weapon {
     private sound: Phaser.Sound;
+    private _damage: number;
 
-    constructor(state: GameState, player: Player) {
-        super(state.game, state.game.plugins);
+    constructor(private ship: PlayerShip) {
+        super(ship.game, ship.game.plugins);
+
+        this.createBullets(0);
         this.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
         this.bulletAngleOffset = 90;
-        this.bulletSpeed = 800;
-        this.fireRate = 100;
-        this.sound = state.add.audio(Assets.fire_0);
-        this.trackSprite(player, 44, 0);
-        this.onFire.add(() => this.sound.play());
-        this.createBullets(0);
         this.bulletClass = Bullet;
-        this.createBullets(30, Assets.missle_player_0);
+
+        this.sound = this.game.add.audio(Assets.fire_0);
+        this.trackSprite(ship, 0, ship.height / -2);
+        this.onFire.add(() => this.sound.play());
+        this.switchWeapon(PrimaryWeapon);
+    }
+
+    switchWeapon(type: WeaponType) {
+        this._damage = type.damage;
+        this.bulletSpeed = type.bulletSpeed;
+        this.fireRate = type.fireRate;
+        this.createBullets(30, type.bulletSprite);
+    }
+
+    get damage() {
+        return this._damage;
     }
 }

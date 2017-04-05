@@ -1,8 +1,10 @@
 import * as Phaser from 'phaser';
-import GameState from "./game_state";
+import {ConstructorInject} from 'huject';
+import Player from "./player";
+import GameEvents from "./game_events";
 
+@ConstructorInject
 export default class GUI {
-    private state: GameState;
     private textFps: Phaser.Text;
     private textHp: Phaser.Text;
     private textPoints: Phaser.Text;
@@ -10,11 +12,18 @@ export default class GUI {
     private textGameOver: Phaser.Text;
     private textLevel: Phaser.Text;
 
-    constructor(state: GameState) {
+    constructor(
+        private game: Phaser.Game,
+        private player: Player,
+        private gameEvents: GameEvents
+    ) {
+        this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
+    }
+
+    create() {
         const style = {font: "16px Arial", fill: "#fff", boundsAlignH: "left", boundsAlignV: "top"};
         const gameOverStyle = {font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle"};
 
-        this.state = state;
         this.textFps = this.game.add.text(0, 20, '', style);
         this.textHp = this.game.add.text(this.game.width - 150, 20, '', style);
         this.textPoints = this.game.add.text(this.game.width - 150, 40, '', style);
@@ -22,18 +31,14 @@ export default class GUI {
         this.textLevel = this.game.add.text(this.game.width - 150, 80, '', style);
         this.textGameOver = this.game.add.text(0, 0, 'GAME OVER', gameOverStyle);
         this.textGameOver.setTextBounds(0, 0, this.game.width, this.game.height);
+        this.textGameOver.visible = false;
     }
 
     update() {
         this.textFps.text = `FPS: ${this.game.time.fps}`;
-        this.textHp.text = `HP: ${this.state.player.health}`;
-        this.textLives.text = `LIVES: ${this.state.lives}`;
-        this.textPoints.text = `POINTS: ${this.state.points}`;
-        this.textLevel.text = `LEVEL: ${this.state.level}`;
-        this.textGameOver.visible = this.state.gameOver;
-    }
-
-    private get game() {
-        return this.state.game;
+        this.textHp.text = `HP: ${this.player.ship.health}`;
+        this.textLives.text = `LIVES: ${this.player.lives}`;
+        this.textPoints.text = `POINTS: ${this.player.points.get()}`;
+        this.textLevel.text = `LEVEL: ${this.player.level.get()}`;
     }
 }

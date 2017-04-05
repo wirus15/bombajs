@@ -1,46 +1,46 @@
 import * as Phaser from 'phaser';
-import Player from "./player";
+import PlayerShip from "./player_ship";
+import {ConstructorInject} from 'huject';
+import Weapon from "./weapon";
 
+@ConstructorInject
 export default class PlayerControl {
     private cursors: Phaser.CursorKeys;
     private fireButton: Phaser.Key;
 
-    constructor(private player: Player) {
+    constructor(private game: Phaser.Game) {}
+
+    create() {
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }
 
-    update() {
-        this.velocity.x = 0;
-        this.velocity.y = 0;
-
-        if (this.cursors.left.isDown && this.player.left > 0) {
-            this.velocity.x = -this.player.speed;
-        }
-        else if (this.cursors.right.isDown && this.player.right < this.game.width) {
-            this.velocity.x = this.player.speed;
+    handleMovementKeys(ship: PlayerShip) {
+        if (!ship.alive) {
+            return;
         }
 
-        if (this.cursors.up.isDown && this.player.top > 0) {
-            this.velocity.y = -this.player.speed;
+        const velocity = ship.body.velocity;
+        const maxVelocity = ship.body.maxVelocity;
+
+        if (this.cursors.left.isDown) {
+            velocity.x = -maxVelocity.x;
         }
-        else if (this.cursors.down.isDown && this.player.bottom < this.game.height) {
-            this.velocity.y = this.player.speed;
+        else if (this.cursors.right.isDown) {
+            velocity.x = maxVelocity.x;
         }
 
-        if (this.fireButton.isDown && this.player.alive) {
-            this.player.weapon.fire();
+        if (this.cursors.up.isDown && !ship.isFlyingIn) {
+            velocity.y = -maxVelocity.y;
         }
-
-        this.player.alpha = !this.player.armor ? 1 :
-            .2 + .6 * Math.abs(Math.sin(new Date().getTime() / 50));
+        else if (this.cursors.down.isDown && !ship.isFlyingIn) {
+            velocity.y = maxVelocity.y;
+        }
     }
 
-    get velocity() {
-        return this.player.body.velocity;
-    }
-
-    get game() {
-        return this.player.game;
+    handleFireKey(ship: PlayerShip, weapon: Weapon) {
+        if (ship.alive && this.fireButton.isDown) {
+            weapon.fire();
+        }
     }
 }

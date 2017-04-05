@@ -1,38 +1,36 @@
 import * as Phaser from 'phaser';
-import GameState from "./game_state";
-import Enemy from "./enemy";
+import {ConstructorInject} from 'huject';
 import Player from "./player";
-import Bullet from "./bullet";
+import ShipCollisionHandler from "./ship_collision_handler";
+import EnemyContainer from "./enemy_container";
+import EnemyHitHandler from "./enemy_hit_handler";
+import EnemyGroup from "./enemy_group";
 
+@ConstructorInject
 export default class Collisions {
-    private physics: Phaser.Physics.Arcade;
-
-    constructor(private state: GameState) {
-        this.state = state;
-        this.physics = state.physics.arcade;
-    }
+    constructor(
+        private game: Phaser.Game,
+        private player: Player,
+        private enemies: EnemyContainer,
+        private shipCollisionHandler: ShipCollisionHandler,
+        private enemyHitHandler: EnemyHitHandler
+    ) {}
 
     check() {
-        this.physics.overlap(
-            this.state.player.weapon.bullets,
-            this.state.enemies,
-            this.onEnemyHit.bind(this)
-        );
+        const physics = this.game.physics.arcade;
 
-        this.physics.overlap(
-            this.state.player,
-            this.state.enemies,
-            this.onPlayerHit.bind(this)
-        );
-    }
+        this.enemies.forEach((enemyGroup: EnemyGroup) => {
+            physics.overlap(
+                enemyGroup,
+                this.player.weapon.bullets,
+                this.enemyHitHandler.handle.bind(this.enemyHitHandler)
+            );
 
-    private onEnemyHit(bullet: Bullet, enemy: Enemy) {
-        bullet.kill();
-        enemy.hit(bullet.power);
-    }
-
-    private onPlayerHit(player: Player, enemy: Enemy) {
-        player.hit(enemy.health);
-        enemy.hit(10000);
+            physics.overlap(
+                this.player.ship,
+                enemyGroup,
+                this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
+            );
+        }, this);
     }
 }

@@ -1,46 +1,33 @@
 import * as Phaser from 'phaser';
-import ExplosionContainer from "./explosion_container";
-import Enemy from "./enemy";
-import GameState from "./game_state";
+import {ConstructorInject} from 'huject';
+import Player from "./player";
+import EnemyGroup from "./enemy_group";
+import Level from "./level";
+import EnemyFactory from "./enemy_factory";
 
+@ConstructorInject
 export default class EnemyContainer extends Phaser.Group {
-    public readonly enemyKilled: Phaser.Signal;
-    private readonly explosions: ExplosionContainer;
-
-    constructor(private state: GameState) {
-        super(state.game, undefined, 'enemies', false, true);
-        this.classType = Enemy;
-        this.explosions = new ExplosionContainer(this.game);
-        this.enemyKilled = new Phaser.Signal();
-        this.enableBody = true;
-        this.physicsBodyType = Phaser.Physics.ARCADE;
-        this.start();
-    }
-
-    create(x: number, y: number, key?: string|Phaser.RenderTexture|Phaser.BitmapData|Phaser.Video, frame?: string|number, exists?: boolean, index?: number): any {
-        const enemy = super.create(x, y, key, frame, exists, index);
-        enemy.onShotDown.add(this.onEnemyKilled, this);
-
-        return enemy;
+    constructor(
+        game: Phaser.Game,
+        private enemyFactory: EnemyFactory,
+        private player: Player
+    ) {
+        super(game, undefined, 'enemies', false);
+        player.level.onChange.add(this.addGroup.bind(this));
     }
 
     start() {
-        this.game.time.events.loop(Phaser.Timer.HALF, this.reviveEnemy, this);
+        this.game.add.existing(this);
+        this.addGroup(this.player.level);
+        this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
     }
 
-    private onEnemyKilled(enemy: Enemy) {
-        this.explosion(enemy);
-        this.enemyKilled.dispatch(enemy);
+    launchEnemy() {
+        this.getRandom().launchEnemy();
     }
 
-    private explosion(enemy: Phaser.Sprite) {
-        this.explosions.display(enemy.x, enemy.y);
-    }
-
-    private reviveEnemy() {
-        const enemy = this.getFirstDead(true);
-        const level = this.game.rnd.integerInRange(1, this.state.level);
-        enemy.changeLevel(level);
-        enemy.revive();
+    private addGroup(level: Level) {
+        const group = new EnemyGroup(this.game, this.enemyFactory, level);
+        this.add(group);
     }
 }

@@ -1,20 +1,21 @@
 import * as Phaser from 'phaser';
-import GameState from "./game_state";
+import {ConstructorInject} from 'huject';
 
+@ConstructorInject
 export default class Background {
     private static readonly STAR_COLOR = '#ffffff';
-    private backgrounds = [];
 
-    constructor(private state: GameState) {
+    constructor(private game: Phaser.Game) {}
+
+    public create() {
         for (let i = 0; i < 3; i++) {
             const bitmap = this.createBitmap(600, 600, 20);
-            const background = this.createTileSprite(bitmap, i);
-            this.backgrounds.push(background);
+            this.createTileSprite(bitmap, i);
         }
     }
 
     private createBitmap(width: number, height: number, stars: number): Phaser.BitmapData {
-        const bitmap = this.state.make.bitmapData(width, height);
+        const bitmap = this.game.make.bitmapData(width, height);
         for (let i = 0; i < stars; i++) {
             bitmap.circle(
                 Math.random() * width,
@@ -28,10 +29,10 @@ export default class Background {
     }
 
     private createTileSprite(bitmap: Phaser.BitmapData, speedFactor: number) {
-        const background = this.state.add.tileSprite(
+        const background = this.game.add.tileSprite(
             0, 0,
-            this.state.game.width,
-            this.state.game.height,
+            this.game.width,
+            this.game.height,
             bitmap
         );
 

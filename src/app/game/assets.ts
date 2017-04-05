@@ -23,6 +23,7 @@ export default class Assets {
     static readonly background_music_0 = 'background_music_0';
     static readonly explosion_sound = 'explosion';
     static readonly fire_0 = 'fire_0';
+    static readonly shield = 'shield';
 
     static load(game: Phaser.Game) {
         game.load.image(this.ship_player, 'public/images/ship_player.png');
@@ -47,5 +48,6 @@ export default class Assets {
         game.load.audio(this.background_music_0, 'public/audio/background_music_0.wav');
         game.load.audio(this.explosion_sound, 'public/audio/explosion.wav');
         game.load.audio(this.fire_0, 'public/audio/fire_0.wav');
+        game.load.image(this.shield, 'public/images/shield.png');
     }
 }
