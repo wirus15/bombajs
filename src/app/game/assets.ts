@@ -24,6 +24,15 @@ export default class Assets {
     static readonly explosion_sound = 'explosion';
     static readonly fire_0 = 'fire_0';
     static readonly shield = 'shield';
+    static readonly ship_boss_01 = 'ship_boss_01';
+    static readonly ship_boss_02 = 'ship_boss_02';
+    static readonly ship_boss_03 = 'ship_boss_03';
+    static readonly ship_boss_04 = 'ship_boss_04';
+    static readonly ship_boss_05 = 'ship_boss_05';
+    static readonly ship_boss_06 = 'ship_boss_06';
+    static readonly ship_boss_07 = 'ship_boss_07';
+    static readonly ship_boss_08 = 'ship_boss_08';
+    static readonly ship_boss_09 = 'ship_boss_09';
 
     static load(game: Phaser.Game) {
         game.load.image(this.ship_player, 'public/images/ship_player.png');
@@ -49,5 +58,14 @@ export default class Assets {
         game.load.audio(this.explosion_sound, 'public/audio/explosion.wav');
         game.load.audio(this.fire_0, 'public/audio/fire_0.wav');
         game.load.image(this.shield, 'public/images/shield.png');
+        game.load.image(this.ship_boss_01, 'public/images/ship_boss_01.png');
+        game.load.image(this.ship_boss_02, 'public/images/ship_boss_02.png');
+        game.load.image(this.ship_boss_03, 'public/images/ship_boss_03.png');
+        game.load.image(this.ship_boss_04, 'public/images/ship_boss_04.png');
+        game.load.image(this.ship_boss_05, 'public/images/ship_boss_05.png');
+        game.load.image(this.ship_boss_06, 'public/images/ship_boss_06.png');
+        game.load.image(this.ship_boss_07, 'public/images/ship_boss_07.png');
+        game.load.image(this.ship_boss_08, 'public/images/ship_boss_08.png');
+        game.load.image(this.ship_boss_09, 'public/images/ship_boss_09.png');
     }
 }

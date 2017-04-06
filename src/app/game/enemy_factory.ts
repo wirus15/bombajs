@@ -2,9 +2,10 @@ import Level from "./level";
 import Enemy from "./enemy";
 import Assets from "./assets";
 import {ConstructorInject} from "huject";
+import EnemyFactoryInterface from "./enemy_factory_interface";
 
 @ConstructorInject
-export default class EnemyFactory {
+export default class EnemyFactory implements EnemyFactoryInterface {
     private static sprites = [
         Assets.ship_normal_01,
         Assets.ship_normal_02,

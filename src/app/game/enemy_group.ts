@@ -1,8 +1,9 @@
 import * as Phaser from 'phaser';
 import Level from "./level";
 import EnemyFactory from "./enemy_factory";
+import EnemyLauncher from "./enemy_launcher";
 
-export default class EnemyGroup extends Phaser.Group {
+export default class EnemyGroup extends Phaser.Group implements EnemyLauncher {
     constructor(
         game: Phaser.Game,
         enemyFactory: EnemyFactory,
