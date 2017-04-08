@@ -21,6 +21,7 @@ export default class Assets {
     static readonly ship_normal_16 = 'ship_normal_16';
     static readonly explosion = 'explosion';
     static readonly background_music_0 = 'background_music_0';
+    static readonly background_music_1 = 'background_music_1';
     static readonly explosion_sound = 'explosion';
     static readonly fire_0 = 'fire_0';
     static readonly shield = 'shield';
@@ -55,6 +56,7 @@ export default class Assets {
         game.load.image(this.ship_normal_16, 'public/images/ship_normal_16.png');
         game.load.spritesheet(this.explosion, 'public/images/explosion.png', 71, 100);
         game.load.audio(this.background_music_0, 'public/audio/background_music_0.wav');
+        game.load.audio(this.background_music_1, 'public/audio/background_music_1.wav');
         game.load.audio(this.explosion_sound, 'public/audio/explosion.wav');
         game.load.audio(this.fire_0, 'public/audio/fire_0.wav');
         game.load.image(this.shield, 'public/images/shield.png');

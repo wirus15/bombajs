@@ -2,6 +2,7 @@ import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import GameEvents from "./game_events";
+import BossGroup from "./boss_group";
 
 @ConstructorInject
 export default class GUI {
@@ -11,13 +12,17 @@ export default class GUI {
     private textLives: Phaser.Text;
     private textGameOver: Phaser.Text;
     private textLevel: Phaser.Text;
+    private textBossHealth: Phaser.Text;
 
     constructor(
         private game: Phaser.Game,
         private player: Player,
-        private gameEvents: GameEvents
+        private gameEvents: GameEvents,
+        private bossGroup: BossGroup
     ) {
         this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
+        this.gameEvents.onBossAppear.add(() => this.textBossHealth.visible = true);
+        this.gameEvents.onBossKilled.add(() => this.textBossHealth.visible = false);
     }
 
     create() {
@@ -29,6 +34,8 @@ export default class GUI {
         this.textPoints = this.game.add.text(this.game.width - 150, 40, '', style);
         this.textLives = this.game.add.text(this.game.width - 150, 60, '', style);
         this.textLevel = this.game.add.text(this.game.width - 150, 80, '', style);
+        this.textBossHealth = this.game.add.text(this.game.width - 150, 100, '', style);
+        this.textBossHealth.visible = false;
         this.textGameOver = this.game.add.text(0, 0, 'GAME OVER', gameOverStyle);
         this.textGameOver.setTextBounds(0, 0, this.game.width, this.game.height);
         this.textGameOver.visible = false;
@@ -40,5 +47,10 @@ export default class GUI {
         this.textLives.text = `LIVES: ${this.player.lives}`;
         this.textPoints.text = `POINTS: ${this.player.points.get()}`;
         this.textLevel.text = `LEVEL: ${this.player.level.get()}`;
+
+        const currentBoss = this.bossGroup.currentBoss;
+        if (currentBoss) {
+            this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
+        }
     }
 }
