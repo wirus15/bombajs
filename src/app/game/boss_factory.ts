@@ -30,7 +30,7 @@ export default class BossFactory implements EnemyFactoryInterface {
     }
 
     private resolveHealth(level: Level) {
-        return 400 * level.get();
+        return 1000 * level.get();
     }
 
     private resolveDamage(level: Level) {
