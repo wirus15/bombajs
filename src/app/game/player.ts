@@ -10,6 +10,7 @@ import LevelCalculator from "./level_calculator";
 
 @ConstructorInject
 export default class Player {
+    private static readonly MAX_LEVEL = 16;
     private _level: Level;
     private _ship: PlayerShip;
     private _weapon: Weapon;
@@ -20,7 +21,7 @@ export default class Player {
         private game: Phaser.Game,
         private controls: PlayerControl
     ) {
-        this._level = new Level();
+        this._level = new Level(Player.MAX_LEVEL);
         this._points = new Points();
     }
 

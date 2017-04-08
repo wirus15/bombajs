@@ -15,6 +15,8 @@ import EnemyHitHandler from "./app/game/enemy_hit_handler";
 import Explosions from "./app/game/explosions";
 import GUI from "./app/game/gui";
 import GameEvents from "./app/game/game_events";
+import BossGroup from "./app/game/boss_group";
+import BossFactory from "./app/game/boss_factory";
 
 let container = new Container();
 
@@ -35,5 +37,7 @@ container.register(EnemyHitHandler).as(FactoryMethod.SINGLETON);
 container.register(Explosions).as(FactoryMethod.SINGLETON);
 container.register(GUI).as(FactoryMethod.SINGLETON);
 container.register(GameEvents).as(FactoryMethod.SINGLETON);
+container.register(BossGroup).as(FactoryMethod.SINGLETON);
+container.register(BossFactory).as(FactoryMethod.SINGLETON);
 
 export default container;

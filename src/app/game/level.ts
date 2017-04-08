@@ -1,10 +1,8 @@
 export default class Level {
-    public static readonly MAX = 16;
-
     public readonly onChange: Phaser.Signal;
     private level = 1;
 
-    constructor() {
+    constructor(private max: number) {
         this.onChange = new Phaser.Signal();
     }
 
@@ -13,7 +11,7 @@ export default class Level {
     }
 
     public next() {
-        if (this.level < Level.MAX) {
+        if (this.level < this.max) {
             this.changeTo(this.level + 1);
         }
     }
