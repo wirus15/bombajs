@@ -1,6 +1,13 @@
 export default class Assets {
     static readonly ship_player = 'ship_player';
     static readonly missle_player_0 = 'missle_player_0';
+    static readonly missle_player_1 = 'missle_player_1';
+    static readonly missle_player_2 = 'missle_player_2';
+    static readonly missle_player_3 = 'missle_player_3';
+    static readonly missle_enemy_0 = 'missle_enemy_0';
+    static readonly missle_enemy_1 = 'missle_enemy_1';
+    static readonly missle_enemy_2 = 'missle_enemy_2';
+    static readonly missle_enemy_3 = 'missle_enemy_3';
     static readonly ship_normal_01 = 'ship_normal_01';
     static readonly ship_normal_02 = 'ship_normal_02';
     static readonly ship_normal_03 = 'ship_normal_03';
@@ -36,6 +43,13 @@ export default class Assets {
     static load(game: Phaser.Game) {
         game.load.image(this.ship_player, 'public/images/ship_player.png');
         game.load.image(this.missle_player_0, 'public/images/missle_player_0.png');
+        game.load.image(this.missle_player_1, 'public/images/missle_player_1.png');
+        game.load.image(this.missle_player_2, 'public/images/missle_player_2.png');
+        game.load.image(this.missle_player_3, 'public/images/missle_player_3.png');
+        game.load.image(this.missle_enemy_0, 'public/images/missle_enemy_0.png');
+        game.load.image(this.missle_enemy_1, 'public/images/missle_enemy_1.png');
+        game.load.image(this.missle_enemy_2, 'public/images/missle_enemy_2.png');
+        game.load.image(this.missle_enemy_3, 'public/images/missle_enemy_3.png');
         game.load.image(this.ship_normal_01, 'public/images/ship_normal_01.png');
         game.load.image(this.ship_normal_02, 'public/images/ship_normal_02.png');
         game.load.image(this.ship_normal_03, 'public/images/ship_normal_03.png');

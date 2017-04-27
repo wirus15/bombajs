@@ -18,7 +18,7 @@ export default class LevelCalculator {
         // 15: 2250,
         // 16: 2500
         1: 0,
-        2: 500,
+        2: 10,
         3: 2000,
         4: 4000,
         5: 7000,
