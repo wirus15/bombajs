@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import GameState from "./game_state";
 import {ConstructorInject} from 'huject';
 import BootState from "./boot_state";
@@ -14,7 +13,7 @@ export default class Game {
         this.game.state.add('game', this.gameState);
     }
 
-    public start() {
+    start() {
         this.game.state.start('boot');
     }
 }

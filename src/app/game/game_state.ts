@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 import Background from "./background";
 import BackgroundMusic from "./background_music";

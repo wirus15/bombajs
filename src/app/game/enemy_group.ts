@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import Level from "./level";
 import EnemyFactory from "./enemy_factory";
 import EnemyLauncher from "./enemy_launcher";

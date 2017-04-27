@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 import PlayerShip from "./player_ship";
 import Level from "./level";
@@ -11,23 +10,23 @@ import LevelCalculator from "./level_calculator";
 @ConstructorInject
 export default class Player {
     private static readonly MAX_LEVEL = 16;
-    private _level: Level;
-    private _ship: PlayerShip;
-    private _weapon: Weapon;
-    private _points: Points;
-    private _lives = 3;
+    private level: Level;
+    private ship: PlayerShip;
+    private weapon: Weapon;
+    private points: Points;
+    private lives = 3;
 
     constructor(
         private game: Phaser.Game,
         private controls: PlayerControl
     ) {
-        this._level = new Level(Player.MAX_LEVEL);
-        this._points = new Points();
+        this.level = new Level(Player.MAX_LEVEL);
+        this.points = new Points();
     }
 
     create() {
-        this._ship = new PlayerShip(this.game);
-        this._weapon = new Weapon(this.ship);
+        this.ship = new PlayerShip(this.game);
+        this.weapon = new Weapon(this.ship);
 
         this.controls.create();
         this.useNextShip();
@@ -39,43 +38,47 @@ export default class Player {
     }
 
     useNextShip() {
-        if (this._lives <= 0) {
+        if (this.lives <= 0) {
             throw new NoMoreLivesError();
         }
 
-        this._lives--;
-        this._ship.flyIn();
+        this.lives--;
+        this.ship.flyIn();
     }
 
     addPoints(points: number) {
-        this._points.add(points);
+        this.points.add(points);
         this.checkLevel();
     }
 
-    get level() {
-        return this._level;
+    getLevel(): Level {
+        return this.level;
     }
 
-    get ship() {
-        return this._ship;
+    onLevelChange(listener, context): Phaser.SignalBinding {
+        return this.level.onChange.add(listener, context);
     }
 
-    get weapon() {
-        return this._weapon;
+    getShip(): PlayerShip {
+        return this.ship;
     }
 
-    get points() {
-        return this._points;
+    getWeapon(): Weapon {
+        return this.weapon;
     }
 
-    get lives() {
-        return this._lives;
+    getPoints(): Points {
+        return this.points;
+    }
+
+    getLives(): number {
+        return this.lives;
     }
 
     private checkLevel() {
-        const shouldHaveLevel = LevelCalculator.calculateLevel(this._points);
-        while (this._level.get() < shouldHaveLevel) {
-            this._level.next();
+        const shouldHaveLevel = LevelCalculator.calculateLevel(this.points);
+        while (this.level.get() < shouldHaveLevel) {
+            this.level.next();
         }
     }
 }

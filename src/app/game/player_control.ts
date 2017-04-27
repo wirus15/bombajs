@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import PlayerShip from "./player_ship";
 import {ConstructorInject} from 'huject';
 import Weapon from "./weapon";
@@ -30,10 +29,10 @@ export default class PlayerControl {
             velocity.x = maxVelocity.x;
         }
 
-        if (this.cursors.up.isDown && !ship.isFlyingIn) {
+        if (this.cursors.up.isDown && !ship.isFlyingIn()) {
             velocity.y = -maxVelocity.y;
         }
-        else if (this.cursors.down.isDown && !ship.isFlyingIn) {
+        else if (this.cursors.down.isDown && !ship.isFlyingIn()) {
             velocity.y = maxVelocity.y;
         }
     }

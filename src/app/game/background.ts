@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 
 @ConstructorInject
@@ -7,7 +6,7 @@ export default class Background {
 
     constructor(private game: Phaser.Game) {}
 
-    public create() {
+    create() {
         for (let i = 0; i < 3; i++) {
             const bitmap = this.createBitmap(600, 600, 20);
             this.createTileSprite(bitmap, i);
@@ -28,7 +27,7 @@ export default class Background {
         return bitmap;
     }
 
-    private createTileSprite(bitmap: Phaser.BitmapData, speedFactor: number) {
+    private createTileSprite(bitmap: Phaser.BitmapData, speedFactor: number): Phaser.TileSprite {
         const background = this.game.add.tileSprite(
             0, 0,
             this.game.width,

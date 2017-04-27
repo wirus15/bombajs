@@ -27,7 +27,7 @@ export default class EnemyFactory implements EnemyFactoryInterface {
 
     constructor(private game: Phaser.Game) {}
 
-    create(level: Level) {
+    create(level: Level): Enemy {
         return new Enemy(
             this.game,
             this.resolveHealth(level),
@@ -36,15 +36,15 @@ export default class EnemyFactory implements EnemyFactoryInterface {
         );
     }
 
-    private resolveHealth(level: Level) {
+    private resolveHealth(level: Level): number {
         return 20 * level.get();
     }
 
-    private resolveDamage(level: Level) {
+    private resolveDamage(level: Level): number {
         return 20 * level.get();
     }
 
-    private resolveSprite(level: Level) {
+    private resolveSprite(level: Level): string {
         return EnemyFactory.sprites[level.get() - 1];
     }
 }

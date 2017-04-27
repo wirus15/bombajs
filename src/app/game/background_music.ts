@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import Assets from './assets';
 import {ConstructorInject} from 'huject';
 import GameEvents from "./game_events";
@@ -16,12 +15,12 @@ export default class BackgroundMusic {
         this.gameEvents.onBossKilled.add(this.switchToNormalMusic, this);
     }
 
-    public create() {
+    create() {
         this.normalMusic = this.game.add.audio(Assets.background_music_0, 1, true);
         this.bossMusic = this.game.add.audio(Assets.background_music_1, 1, true);
     }
 
-    public play() {
+    play() {
         this.normalMusic.play();
     }
 

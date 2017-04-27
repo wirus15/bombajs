@@ -1,12 +1,11 @@
-import * as Phaser from 'phaser';
 import Assets from "./assets";
 
 export default class BootState extends Phaser.State {
-    public preload() {
+    preload() {
         Assets.load(this.game);
     }
 
-    public create() {
+    create() {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.time.advancedTiming = true;

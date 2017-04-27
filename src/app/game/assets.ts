@@ -1,5 +1,3 @@
-import * as Phaser from 'phaser';
-
 export default class Assets {
     static readonly ship_player = 'ship_player';
     static readonly missle_player_0 = 'missle_player_0';

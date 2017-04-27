@@ -20,7 +20,7 @@ export default class BossFactory implements EnemyFactoryInterface {
 
     constructor(private game: Phaser.Game) {}
 
-    create(level: Level) {
+    create(level: Level): BossShip {
         return new BossShip(
             this.game,
             this.resolveHealth(level),
@@ -29,15 +29,15 @@ export default class BossFactory implements EnemyFactoryInterface {
         );
     }
 
-    private resolveHealth(level: Level) {
+    private resolveHealth(level: Level): number {
         return 1000 * level.get();
     }
 
-    private resolveDamage(level: Level) {
+    private resolveDamage(level: Level): number {
         return 20 * level.get();
     }
 
-    private resolveSprite(level: Level) {
+    private resolveSprite(level: Level): string {
         return BossFactory.sprites[level.get() - 1];
     }
 }

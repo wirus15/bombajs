@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import EnemyGroup from "./enemy_group";
@@ -18,12 +17,12 @@ export default class EnemyContainer extends Phaser.Group {
         private player: Player
     ) {
         super(game, undefined, 'enemies', false);
-        player.level.onChange.add(this.addGroup.bind(this));
+        player.onLevelChange(this.addGroup, this);
     }
 
     start() {
         this.game.add.existing(this);
-        this.addGroup(this.player.level);
+        this.addGroup(this.player.getLevel());
         this.add(this.bossGroup);
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
     }

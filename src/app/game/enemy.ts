@@ -1,10 +1,8 @@
-import * as Phaser from 'phaser';
-
 export default class Enemy extends Phaser.Sprite {
     constructor(
-        public readonly game: Phaser.Game,
-        public readonly maxHealth: number,
-        public readonly damageAmount: number,
+        readonly game: Phaser.Game,
+        readonly maxHealth: number,
+        readonly damageAmount: number,
         sprite: string
     ) {
         super(game, 0, 0, sprite);

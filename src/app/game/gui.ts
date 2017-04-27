@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import GameEvents from "./game_events";
@@ -43,12 +42,12 @@ export default class GUI {
 
     update() {
         this.textFps.text = `FPS: ${this.game.time.fps}`;
-        this.textHp.text = `HP: ${this.player.ship.health}`;
-        this.textLives.text = `LIVES: ${this.player.lives}`;
-        this.textPoints.text = `POINTS: ${this.player.points.get()}`;
-        this.textLevel.text = `LEVEL: ${this.player.level.get()}`;
+        this.textHp.text = `HP: ${this.player.getShip().getHealth()}`;
+        this.textLives.text = `LIVES: ${this.player.getLives()}`;
+        this.textPoints.text = `POINTS: ${this.player.getPoints()}`;
+        this.textLevel.text = `LEVEL: ${this.player.getLevel()}`;
 
-        const currentBoss = this.bossGroup.currentBoss;
+        const currentBoss = this.bossGroup.getCurrentBoss();
         if (currentBoss) {
             this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
         }
