@@ -17,16 +17,17 @@ export default class Collisions {
 
     check() {
         const physics = this.game.physics.arcade;
+        const playerShip = this.player.getShip();
 
         this.enemies.forEach((enemyGroup: EnemyGroup) => {
             physics.overlap(
                 enemyGroup,
-                this.player.getWeapon().bullets,
+                playerShip.getWeapon().bullets,
                 this.enemyHitHandler.handle.bind(this.enemyHitHandler)
             );
 
             physics.overlap(
-                this.player.getShip(),
+                playerShip,
                 enemyGroup,
                 this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
             );

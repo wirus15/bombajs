@@ -9,7 +9,7 @@ export default class EnemyHitHandler implements CollisionHandler {
     constructor(private player: Player, private explosions: Explosions) {}
 
     handle(enemy: Phaser.Sprite, bullet: Phaser.Sprite | Bullet) {
-        enemy.damage(this.player.getWeapon().getDamage());
+        enemy.damage(this.player.getShip().getWeaponDamage());
         bullet.kill();
 
         if (enemy.alive === false) {

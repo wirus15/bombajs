@@ -1,8 +1,10 @@
 import Assets from './assets';
 import Shield from "./shield";
+import Weapon from "./weapon";
 
 export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
+    private weapon: Weapon;
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
     private shieldEnabled = false;
@@ -25,6 +27,7 @@ export default class PlayerShip extends Phaser.Sprite {
         });
 
         this.shield = new Shield(game);
+        this.weapon = new Weapon(this);
         this.addChild(this.shield);
     }
 
@@ -56,6 +59,14 @@ export default class PlayerShip extends Phaser.Sprite {
 
     getHealth() {
         return this.health > 0 ? this.health : 0;
+    }
+
+    getWeapon(): Weapon {
+        return this.weapon;
+    }
+
+    getWeaponDamage(): number {
+        return this.weapon.getDamage();
     }
 }
 

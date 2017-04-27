@@ -3,7 +3,6 @@ import PlayerShip from "./player_ship";
 import Level from "./level";
 import Points from "./points";
 import PlayerControl from "./player_control";
-import Weapon from "./weapon";
 import {NoMoreLivesError} from "./errors";
 import LevelCalculator from "./level_calculator";
 
@@ -12,7 +11,6 @@ export default class Player {
     private static readonly MAX_LEVEL = 16;
     private level: Level;
     private ship: PlayerShip;
-    private weapon: Weapon;
     private points: Points;
     private lives = 3;
 
@@ -26,15 +24,13 @@ export default class Player {
 
     create() {
         this.ship = new PlayerShip(this.game);
-        this.weapon = new Weapon(this.ship);
-
         this.controls.create();
         this.useNextShip();
     }
 
     update() {
         this.controls.handleMovementKeys(this.ship);
-        this.controls.handleFireKey(this.ship, this.weapon);
+        this.controls.handleFireKey(this.ship, this.ship.getWeapon());
     }
 
     useNextShip() {
@@ -61,10 +57,6 @@ export default class Player {
 
     getShip(): PlayerShip {
         return this.ship;
-    }
-
-    getWeapon(): Weapon {
-        return this.weapon;
     }
 
     getPoints(): Points {
