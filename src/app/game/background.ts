@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 
 @ConstructorInject
@@ -28,7 +27,7 @@ export default class Background {
         return bitmap;
     }
 
-    private createTileSprite(bitmap: Phaser.BitmapData, speedFactor: number) {
+    private createTileSprite(bitmap: Phaser.BitmapData, speedFactor: number): Phaser.TileSprite {
         const background = this.game.add.tileSprite(
             0, 0,
             this.game.width,

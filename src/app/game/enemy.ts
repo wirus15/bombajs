@@ -1,5 +1,3 @@
-import * as Phaser from 'phaser';
-
 export default class Enemy extends Phaser.Sprite {
     constructor(
         public readonly game: Phaser.Game,

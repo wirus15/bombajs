@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import ShipCollisionHandler from "./ship_collision_handler";
@@ -22,12 +21,12 @@ export default class Collisions {
         this.enemies.forEach((enemyGroup: EnemyGroup) => {
             physics.overlap(
                 enemyGroup,
-                this.player.weapon.bullets,
+                this.player.getWeapon().bullets,
                 this.enemyHitHandler.handle.bind(this.enemyHitHandler)
             );
 
             physics.overlap(
-                this.player.ship,
+                this.player.getShip(),
                 enemyGroup,
                 this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
             );

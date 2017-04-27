@@ -1,15 +1,19 @@
 export default class Points {
     private value = 0;
 
-    public get() {
+    get(): number {
         return this.value;
     }
 
-    public add(points: number) {
+    add(points: number) {
         this.value += points;
     }
 
-    public reset() {
+    reset() {
         this.value = 0;
+    }
+
+    toString(): string {
+        return this.value.toString();
     }
 }

@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import GameState from "./game_state";
 import {ConstructorInject} from 'huject';
 import BootState from "./boot_state";

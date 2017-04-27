@@ -10,7 +10,7 @@ import GameEvents from "./game_events";
 export default class BossGroup extends Phaser.Group implements EnemyLauncher {
     private static readonly MAX_LEVEL = 9;
     private bossLevel: Level;
-    private _currentBoss: Enemy;
+    private currentBoss: Enemy;
 
     constructor(
         game: Phaser.Game,
@@ -22,37 +22,37 @@ export default class BossGroup extends Phaser.Group implements EnemyLauncher {
         this.enableBody = true;
         this.physicsBodyType = Phaser.Physics.ARCADE;
         this.bossLevel = new Level(BossGroup.MAX_LEVEL);
-        this.player.level.onChange.add(this.onLevelChange, this);
+        this.player.onLevelChange(this.onLevelChange, this);
     }
 
     launchEnemy() {
-        this._currentBoss = this.bossFactory.create(this.bossLevel);
-        this.add(this._currentBoss);
+        this.currentBoss = this.bossFactory.create(this.bossLevel);
+        this.add(this.currentBoss);
 
-        this._currentBoss.events.onKilled.addOnce(() => {
-            this._currentBoss = null;
+        this.currentBoss.events.onKilled.addOnce(() => {
+            this.currentBoss = null;
         });
 
-        this._currentBoss.reset(
+        this.currentBoss.reset(
             this.game.width / 2,
-            -this._currentBoss.height,
-            this._currentBoss.maxHealth
+            this.currentBoss.height * -1,
+            this.currentBoss.maxHealth
         );
 
-        this.gameEvents.onBossAppear.dispatch(this._currentBoss);
-        this._currentBoss.events.onKilled.addOnce(() => {
-            this.gameEvents.onBossKilled.dispatch(this._currentBoss);
+        this.gameEvents.onBossAppear.dispatch(this.currentBoss);
+        this.currentBoss.events.onKilled.addOnce(() => {
+            this.gameEvents.onBossKilled.dispatch(this.currentBoss);
             this.bossLevel.next();
         });
     }
 
-    get currentBoss() {
-        return this._currentBoss;
+    getCurrentBoss() {
+        return this.currentBoss;
     }
 
     private onLevelChange(level: Level) {
         const isOdd = (value) => Boolean(value % 2);
-        if (level.get() > 1 && isOdd(level.get()) && !this._currentBoss) {
+        if (level.get() > 1 && isOdd(level.get()) && !this.currentBoss) {
             this.launchEnemy();
         }
     }

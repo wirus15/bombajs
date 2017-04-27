@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import Assets from "./assets";
 
 export default class BootState extends Phaser.State {

@@ -35,7 +35,7 @@ export default class LevelCalculator {
         16: 106000
     };
 
-    static calculateLevel(points: Points) {
+    static calculateLevel(points: Points): number {
         let level = 1;
 
         while (LevelCalculator.points.hasOwnProperty(level) && LevelCalculator.points[level] < points.get()) {

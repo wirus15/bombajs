@@ -17,7 +17,6 @@ export default class Shield extends Phaser.Sprite {
         this.fadeIn = game.add.tween(this);
         this.fadeOut = game.add.tween(this);
 
-
         this.fadeIn.to({alpha: 1}, 500, "Linear");
         this.fadeIn.onStart.add(() => this.visible = true);
         this.fadeIn.chain(this.animation);

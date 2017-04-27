@@ -14,14 +14,14 @@ export default class ShipCollisionHandler implements CollisionHandler {
     ) {}
 
     handle(playerShip: PlayerShip, enemyShip: Phaser.Sprite) {
-        if (playerShip.shieldEnabled === false) {
+        if (!playerShip.isShieldEnabled()) {
             playerShip.damage(enemyShip.health);
         }
         enemyShip.damage(playerShip.health);
 
         if (playerShip.alive === false) {
             this.explosions.display(playerShip);
-            if (this.player.lives > 0) {
+            if (this.player.getLives() > 0) {
                 this.player.useNextShip();
             } else {
                 this.gameEvents.onGameOver.dispatch();

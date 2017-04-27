@@ -1,4 +1,3 @@
-import * as Phaser from 'phaser';
 import Assets from './assets';
 import Shield from "./shield";
 
@@ -6,7 +5,7 @@ export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
-    private _shieldEnabled = false;
+    private shieldEnabled = false;
 
     constructor(game: Phaser.Game) {
         super(game, 0, 0, Assets.ship_player);
@@ -30,13 +29,13 @@ export default class PlayerShip extends Phaser.Sprite {
     }
 
     enableShield(duration: number) {
-        this._shieldEnabled = true;
+        this.shieldEnabled = true;
         this.shield.show();
         this.game.time.events.add(duration, this.disableShield, this);
     }
 
     disableShield() {
-        this._shieldEnabled = false;
+        this.shieldEnabled = false;
         this.shield.hide();
     }
 
@@ -47,12 +46,16 @@ export default class PlayerShip extends Phaser.Sprite {
         this.enableShield(5000);
     }
 
-    get shieldEnabled() {
-        return this._shieldEnabled;
+    isShieldEnabled() {
+        return this.shieldEnabled;
     }
 
-    get isFlyingIn() {
+    isFlyingIn() {
         return this.flyInAnimation.isRunning;
+    }
+
+    getHealth() {
+        return this.health > 0 ? this.health : 0;
     }
 }
 
