@@ -6,7 +6,7 @@ export default class Background {
 
     constructor(private game: Phaser.Game) {}
 
-    public create() {
+    create() {
         for (let i = 0; i < 3; i++) {
             const bitmap = this.createBitmap(600, 600, 20);
             this.createTileSprite(bitmap, i);

@@ -13,7 +13,7 @@ export default class Game {
         this.game.state.add('game', this.gameState);
     }
 
-    public start() {
+    start() {
         this.game.state.start('boot');
     }
 }

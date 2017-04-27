@@ -1,5 +1,5 @@
 export default class Level {
-    public readonly onChange: Phaser.Signal;
+    readonly onChange: Phaser.Signal;
     private level = 1;
 
     constructor(private max: number) {

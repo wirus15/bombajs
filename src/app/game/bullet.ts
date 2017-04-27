@@ -1,3 +1,3 @@
 export default class Bullet extends Phaser.Bullet {
-    public power = 20;
+    power = 20;
 }
