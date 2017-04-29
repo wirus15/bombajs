@@ -6,6 +6,7 @@ import EnemyContainer from "./enemy_container";
 import Collisions from "./collisions";
 import Explosions from "./explosions";
 import GUI from "./gui";
+import Listeners from "./listeners";
 
 @ConstructorInject
 export default class GameState extends Phaser.State {
@@ -16,7 +17,8 @@ export default class GameState extends Phaser.State {
         private enemyContainer: EnemyContainer,
         private collisions: Collisions,
         private explosions: Explosions,
-        private gui: GUI
+        private gui: GUI,
+        private listeners: Listeners
     ) {
         super();
     }

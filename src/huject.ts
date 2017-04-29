@@ -18,6 +18,8 @@ import GameEvents from "./app/game/game_events";
 import BossGroup from "./app/game/boss_group";
 import BossFactory from "./app/game/boss_factory";
 import PlayerHitHandler from "./app/game/player_hit_handler";
+import Listeners from "./app/game/listeners";
+import PlayerKilledListener from "./app/game/playerKilledListener";
 
 let container = new Container();
 
@@ -41,5 +43,7 @@ container.register(GameEvents).as(FactoryMethod.SINGLETON);
 container.register(BossGroup).as(FactoryMethod.SINGLETON);
 container.register(BossFactory).as(FactoryMethod.SINGLETON);
 container.register(PlayerHitHandler).as(FactoryMethod.SINGLETON);
+container.register(Listeners).as(FactoryMethod.SINGLETON);
+container.register(PlayerKilledListener).as(FactoryMethod.SINGLETON);
 
 export default container;
