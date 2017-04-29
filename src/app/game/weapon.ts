@@ -1,7 +1,8 @@
 import Assets from './assets';
 import Bullet from "./bullet";
 import PlayerShip from "./player_ship";
-import {WeaponType, PrimaryWeapon} from './weapon_types';
+import WeaponType from './weapon_type';
+import {PrimaryWeapon} from './player_weapon_types';
 
 export default class Weapon extends Phaser.Weapon {
     private sound: Phaser.Sound;
@@ -26,6 +27,7 @@ export default class Weapon extends Phaser.Weapon {
         this.bulletSpeed = type.bulletSpeed;
         this.fireRate = type.fireRate;
         this.createBullets(30, type.bulletSprite);
+        this.bullets.setAll('damageAmount', type.damage);
     }
 
     getDamage() {
