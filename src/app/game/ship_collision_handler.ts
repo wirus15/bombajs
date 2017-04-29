@@ -20,12 +20,7 @@ export default class ShipCollisionHandler implements CollisionHandler {
         enemyShip.damage(playerShip.health);
 
         if (playerShip.alive === false) {
-            this.explosions.display(playerShip);
-            if (this.player.getLives() > 0) {
-                this.player.useNextShip();
-            } else {
-                this.gameEvents.onGameOver.dispatch();
-            }
+            this.gameEvents.onPlayerKilled.dispatch(playerShip);
         }
 
         if (enemyShip.alive === false) {

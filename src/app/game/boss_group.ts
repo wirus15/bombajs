@@ -3,14 +3,14 @@ import BossFactory from "./boss_factory";
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import Level from "./level";
-import Enemy from "./enemy";
 import GameEvents from "./game_events";
+import BossShip from "./boss_ship";
 
 @ConstructorInject
 export default class BossGroup extends Phaser.Group implements EnemyLauncher {
     private static readonly MAX_LEVEL = 9;
     private bossLevel: Level;
-    private currentBoss: Enemy;
+    private currentBoss: BossShip;
 
     constructor(
         game: Phaser.Game,
@@ -23,6 +23,14 @@ export default class BossGroup extends Phaser.Group implements EnemyLauncher {
         this.physicsBodyType = Phaser.Physics.ARCADE;
         this.bossLevel = new Level(BossGroup.MAX_LEVEL);
         this.player.onLevelChange(this.onLevelChange, this);
+    }
+
+    start() {
+        this.game.time.events.loop(100, () => {
+            if (this.currentBoss) {
+                this.currentBoss.fireWeapon(this.player.getShip());
+            }
+        });
     }
 
     launchEnemy() {
@@ -46,7 +54,7 @@ export default class BossGroup extends Phaser.Group implements EnemyLauncher {
         });
     }
 
-    getCurrentBoss() {
+    getCurrentBoss(): BossShip {
         return this.currentBoss;
     }
 
