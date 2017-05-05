@@ -1,38 +1,46 @@
 import Enemy from "./enemy";
 import BossAnimation from "./boss_animation";
-import BossWeapon from "./boss_weapon";
+import EnemyWeapon from "./enemy_weapon";
 import PlayerShip from "./player_ship";
-import WeaponType from "./weapon_type";
 
 export default class BossShip extends Enemy {
+    public static readonly MAX_LEVEL = 9;
     private animation: BossAnimation;
-    private weapon: BossWeapon;
+    private weapon: EnemyWeapon;
 
     constructor(
         game: Phaser.Game,
         maxHealth: number,
         damageAmount: number,
-        sprite: string,
-        weaponType: WeaponType
+        sprite: string
     ) {
         super(game, maxHealth, damageAmount, sprite);
         this.animation = new BossAnimation(this, game);
-        this.weapon = new BossWeapon(this);
-        this.weapon.switchWeapon(weaponType);
     }
 
     reset(x: number, y: number, health?: number): Phaser.Sprite {
         const result = super.reset(x, y, health);
         this.animation.start();
+        this.game.physics.enable(this);
 
         return result;
     }
 
-    fireWeapon(target: PlayerShip) {
-        this.weapon.fireAtSprite(target);
+    changeWeapon(weapon: EnemyWeapon) {
+        this.weapon = weapon;
+        this.weapon.autofire = true;
+        this.weapon.trackSprite(this);
+
+        this.weapon.onFireLimit.add(() => {
+            this.game.time.events.add(2000, () => {
+                this.weapon.resetShots();
+            });
+        });
     }
 
-    getWeapon(): BossWeapon {
-        return this.weapon;
+    fireWeapon(target: PlayerShip) {
+        if (target.alive) {
+            this.weapon.fireAtSprite(target);
+        }
     }
 }

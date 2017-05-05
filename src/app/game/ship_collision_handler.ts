@@ -14,10 +14,11 @@ export default class ShipCollisionHandler implements CollisionHandler {
     ) {}
 
     handle(playerShip: PlayerShip, enemyShip: Phaser.Sprite) {
-        if (!playerShip.isShieldEnabled()) {
-            playerShip.damage(enemyShip.health);
-        }
-        enemyShip.damage(playerShip.health);
+        const enemyHealth = enemyShip.health;
+        const playerHealth = playerShip.health;
+
+        playerShip.damage(enemyHealth);
+        enemyShip.damage(playerHealth);
 
         if (playerShip.alive === false) {
             this.gameEvents.onPlayerKilled.dispatch(playerShip);

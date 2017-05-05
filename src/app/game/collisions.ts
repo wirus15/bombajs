@@ -3,9 +3,10 @@ import Player from "./player";
 import ShipCollisionHandler from "./ship_collision_handler";
 import EnemyContainer from "./enemy_container";
 import EnemyHitHandler from "./enemy_hit_handler";
-import EnemyGroup from "./enemy_group";
 import PlayerHitHandler from "./player_hit_handler";
-import BossGroup from "./boss_group";
+import WeaponManager from "./weapon_manager";
+import Enemy from "./enemy";
+import Bullet from "./bullet";
 
 @ConstructorInject
 export default class Collisions {
@@ -13,36 +14,46 @@ export default class Collisions {
         private game: Phaser.Game,
         private player: Player,
         private enemies: EnemyContainer,
-        private bossGroup: BossGroup,
         private shipCollisionHandler: ShipCollisionHandler,
         private enemyHitHandler: EnemyHitHandler,
-        private playerHitHandler: PlayerHitHandler
+        private playerHitHandler: PlayerHitHandler,
+        private weaponManager: WeaponManager
     ) {}
 
     check() {
         const physics = this.game.physics.arcade;
-        const playerShip = this.player.getShip();
-        const currentBoss = this.bossGroup.getCurrentBoss();
 
-        this.enemies.forEach((enemyGroup: EnemyGroup) => {
+        physics.overlap(
+            this.enemies.getEnemies(),
+            this.weaponManager.getPlayerBullets(),
+            (bullet: Bullet, enemy: Enemy) => {
+                this.enemyHitHandler.handle(enemy, bullet);
+            }
+        );
+
+        physics.overlap(
+            this.player.getShip(),
+            this.enemies.getEnemies(),
+            this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
+        );
+
+        physics.overlap(
+            this.player.getShip(),
+            this.weaponManager.getEnemyBullets(),
+            this.playerHitHandler.handle.bind(this.playerHitHandler)
+        );
+
+        if (this.enemies.getCurrentBoss()) {
             physics.overlap(
-                enemyGroup,
-                playerShip.getWeapon().bullets,
+                this.enemies.getCurrentBoss(),
+                this.weaponManager.getPlayerBullets(),
                 this.enemyHitHandler.handle.bind(this.enemyHitHandler)
             );
 
             physics.overlap(
-                playerShip,
-                enemyGroup,
+                this.player.getShip(),
+                this.enemies.getCurrentBoss(),
                 this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
-            );
-        }, this);
-
-        if (currentBoss) {
-            physics.overlap(
-                playerShip,
-                currentBoss.getWeapon().bullets,
-                this.playerHitHandler.handle.bind(this.playerHitHandler)
             );
         }
     }

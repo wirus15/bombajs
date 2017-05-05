@@ -1,7 +1,7 @@
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import GameEvents from "./game_events";
-import BossGroup from "./boss_group";
+import EnemyContainer from "./enemy_container";
 
 @ConstructorInject
 export default class GUI {
@@ -17,7 +17,7 @@ export default class GUI {
         private game: Phaser.Game,
         private player: Player,
         private gameEvents: GameEvents,
-        private bossGroup: BossGroup
+        private enemies: EnemyContainer
     ) {
         this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
         this.gameEvents.onBossAppear.add(() => this.textBossHealth.visible = true);
@@ -47,7 +47,7 @@ export default class GUI {
         this.textPoints.text = `POINTS: ${this.player.getPoints()}`;
         this.textLevel.text = `LEVEL: ${this.player.getLevel()}`;
 
-        const currentBoss = this.bossGroup.getCurrentBoss();
+        const currentBoss = this.enemies.getCurrentBoss();
         if (currentBoss) {
             this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
         }

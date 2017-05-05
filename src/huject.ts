@@ -15,11 +15,11 @@ import EnemyHitHandler from "./app/game/enemy_hit_handler";
 import Explosions from "./app/game/explosions";
 import GUI from "./app/game/gui";
 import GameEvents from "./app/game/game_events";
-import BossGroup from "./app/game/boss_group";
 import BossFactory from "./app/game/boss_factory";
 import PlayerHitHandler from "./app/game/player_hit_handler";
 import Listeners from "./app/game/listeners";
-import PlayerKilledListener from "./app/game/playerKilledListener";
+import PlayerKilledListener from "./app/game/player_killed_listener";
+import WeaponManager from "./app/game/weapon_manager";
 
 let container = new Container();
 
@@ -40,10 +40,10 @@ container.register(EnemyHitHandler).as(FactoryMethod.SINGLETON);
 container.register(Explosions).as(FactoryMethod.SINGLETON);
 container.register(GUI).as(FactoryMethod.SINGLETON);
 container.register(GameEvents).as(FactoryMethod.SINGLETON);
-container.register(BossGroup).as(FactoryMethod.SINGLETON);
 container.register(BossFactory).as(FactoryMethod.SINGLETON);
 container.register(PlayerHitHandler).as(FactoryMethod.SINGLETON);
 container.register(Listeners).as(FactoryMethod.SINGLETON);
 container.register(PlayerKilledListener).as(FactoryMethod.SINGLETON);
+container.register(WeaponManager).as(FactoryMethod.SINGLETON);
 
 export default container;

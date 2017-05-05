@@ -20,6 +20,7 @@ export default class PlayerShip extends Phaser.Sprite {
         this.anchor.y = 0.5;
         this.body.drag.x = this.body.drag.y = 800;
         this.body.maxVelocity.x = this.body.maxVelocity.y = 300;
+
         this.flyInAnimation = this.game.add.tween(this);
         this.flyInAnimation.to({y: this.game.height - this.height}, 1000, Phaser.Easing.Cubic.Out, false, 1000);
         this.flyInAnimation.onComplete.add(() => {
@@ -27,8 +28,15 @@ export default class PlayerShip extends Phaser.Sprite {
         });
 
         this.shield = new Shield(game);
-        this.weapon = new Weapon(this);
         this.addChild(this.shield);
+    }
+
+    damage(amount: number): Phaser.Sprite {
+        if (!this.shieldEnabled) {
+            super.damage(amount);
+        }
+
+        return this;
     }
 
     enableShield(duration: number) {
@@ -65,8 +73,9 @@ export default class PlayerShip extends Phaser.Sprite {
         return this.weapon;
     }
 
-    getWeaponDamage(): number {
-        return this.weapon.getDamage();
+    changeWeapon(weapon: Weapon) {
+        this.weapon = weapon;
+        this.weapon.trackSprite(this);
     }
 }
 

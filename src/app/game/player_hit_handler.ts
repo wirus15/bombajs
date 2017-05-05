@@ -11,9 +11,7 @@ export default class PlayerHitHandler implements CollisionHandler {
     handle(playerShip: PlayerShip, bullet: Bullet) {
         bullet.kill();
 
-        if (!playerShip.isShieldEnabled()) {
-            playerShip.damage(bullet.damageAmount);
-        }
+        playerShip.damage(bullet.damageAmount);
 
         if (playerShip.alive === false) {
             this.gameEvents.onPlayerKilled.dispatch(playerShip);

@@ -1,41 +1,117 @@
 import {ConstructorInject} from 'huject';
 import Player from "./player";
-import EnemyGroup from "./enemy_group";
 import Level from "./level";
 import EnemyFactory from "./enemy_factory";
-import BossGroup from "./boss_group";
-import {sample} from 'lodash';
+import BossShip from "./boss_ship";
+import Enemy from "./enemy";
+import BossFactory from "./boss_factory";
+import GameEvents from "./game_events";
+import WeaponManager from "./weapon_manager";
+import * as WeaponTypes from "./weapon_types";
+import {pull, sample} from "lodash";
 
 @ConstructorInject
 export default class EnemyContainer extends Phaser.Group {
-    private enemyGroups: Array<EnemyGroup> = [];
+    private enemies: Phaser.Group;
+    private currentBoss: BossShip = null;
+    private bossLevel: Level;
 
     constructor(
         game: Phaser.Game,
         private enemyFactory: EnemyFactory,
-        private bossGroup: BossGroup,
-        private player: Player
+        private bossFactory: BossFactory,
+        private player: Player,
+        private gameEvents: GameEvents,
+        private weaponManager: WeaponManager
     ) {
         super(game, undefined, 'enemies', false);
         player.onLevelChange(this.addGroup, this);
+        player.onLevelChange(this.launchBoss, this);
+        this.bossLevel = new Level(BossShip.MAX_LEVEL);
     }
 
     start() {
         this.game.add.existing(this);
+        this.enemies = this.add(this.game.add.physicsGroup());
         this.addGroup(this.player.getLevel());
-        this.add(this.bossGroup);
-        this.bossGroup.start();
+
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
+        this.fireFromRandomEnemy();
     }
 
-    launchEnemy() {
-        const group = sample(this.enemyGroups);
-        group.launchEnemy();
+    update() {
+        if (this.currentBoss) {
+            this.currentBoss.fireWeapon(this.player.getShip());
+        }
+    }
+
+    launchEnemy(): Enemy {
+        const isDead = (enemy: Enemy) => !enemy.exists;
+        const deadEnemies = this.enemies.children.filter(isDead);
+
+        if (deadEnemies.length === 0) {
+            return null;
+        }
+
+        const enemy = sample(deadEnemies);
+        const x = this.game.rnd.integerInRange(0, this.game.width);
+        enemy.reset(x, -enemy.height, enemy.maxHealth);
+        enemy.body.velocity.x = this.game.rnd.integerInRange(-50, 50);
+        enemy.body.velocity.y = this.game.rnd.integerInRange(100, 300);
+
+        return enemy;
+    }
+
+    launchBoss(): BossShip {
+        const playerLevel = this.player.getLevel().get();
+        const isOdd = (value) => Boolean(value % 2);
+
+        if (playerLevel > 1 && isOdd(playerLevel) && !this.currentBoss) {
+            const weapon = this.weaponManager.getBossWeapon();
+            this.currentBoss = this.bossFactory.create(this.bossLevel);
+            this.currentBoss.changeWeapon(weapon);
+            this.currentBoss.reset(
+                this.game.width / 2,
+                this.currentBoss.height * -1,
+                this.currentBoss.maxHealth
+            );
+            this.gameEvents.onBossAppear.dispatch(this.currentBoss);
+            this.currentBoss.events.onKilled.addOnce(() => {
+                this.gameEvents.onBossKilled.dispatch(this.currentBoss);
+                this.currentBoss = null;
+                this.bossLevel.next();
+            });
+
+            this.add(this.currentBoss);
+        }
+
+        return this.currentBoss;
+    }
+
+    getEnemies(): Phaser.Group {
+        return this.enemies;
+    }
+
+    getCurrentBoss(): BossShip|null {
+        return this.currentBoss;
     }
 
     private addGroup(level: Level) {
-        const group = new EnemyGroup(this.game, this.enemyFactory, level);
-        this.enemyGroups.push(group);
-        this.add(group);
+        for (let i = 0; i < 20; i++) {
+            this.enemies.add(this.enemyFactory.create(level));
+        }
+    }
+
+    private fireFromRandomEnemy() {
+        this.game.time.events.add(this.game.rnd.integerInRange(1000, 5000), () => {
+            const enemy = this.enemies.getFirstExists(true);
+            const weapon = this.weaponManager.getEnemyWeapon();
+            if (enemy) {
+                weapon.fireFrom.x = enemy.centerX;
+                weapon.fireFrom.y = enemy.centerY;
+                weapon.fire();
+            }
+            this.fireFromRandomEnemy()
+        });
     }
 }

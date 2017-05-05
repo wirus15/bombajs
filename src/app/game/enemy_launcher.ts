@@ -1,5 +1,7 @@
+import Enemy from "./enemy";
+
 interface EnemyLauncher {
-    launchEnemy();
+    launchEnemy(): Enemy;
 }
 
 export default EnemyLauncher;
