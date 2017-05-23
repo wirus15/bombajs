@@ -4,7 +4,6 @@ import ShipCollisionHandler from "./ship_collision_handler";
 import EnemyContainer from "./enemy_container";
 import EnemyHitHandler from "./enemy_hit_handler";
 import PlayerHitHandler from "./player_hit_handler";
-import WeaponManager from "./weapon_manager";
 import Enemy from "./enemy";
 import Bullet from "./bullet";
 

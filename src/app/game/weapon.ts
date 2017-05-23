@@ -1,6 +1,6 @@
 import Assets from './assets';
 import Bullet from "./bullet";
-import WeaponType from "./weapon_type";
+import {WeaponType} from "./weapon_types";
 
 abstract class Weapon extends Phaser.Weapon {
     private sound: Phaser.Sound;

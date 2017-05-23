@@ -24,7 +24,6 @@ export default class Player {
 
         this.ship.create();
         this.controls.create();
-        this.ship.getWeapon().changeType()
 
         this.useNextShip();
     }

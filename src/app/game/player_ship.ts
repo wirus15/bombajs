@@ -3,12 +3,12 @@ import Assets from './assets';
 import Shield from "./shield";
 import Weapon from "./weapon";
 import PlayerWeapon from "./player_weapon";
-import * as WeaponTypes from "./weapon_types";
+import * as WeaponType from "./weapon_types";
 
 @ConstructorInject
 export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
-    private weapon: Weapon;
+    private weapon: PlayerWeapon;
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
     private shieldEnabled = false;
@@ -36,7 +36,7 @@ export default class PlayerShip extends Phaser.Sprite {
 
         this.shield = new Shield(this.game);
         this.weapon = new PlayerWeapon(this.game);
-        this.weapon.changeType(WeaponTypes.PlayerWeaponTypes.get(WeaponTypes.PlayerPrimaryWeapon));
+        this.weapon.changeType(WeaponType.EnemyPrimaryWeapon);
         this.weapon.trackSprite(this, 0, -50);
         this.addChild(this.shield);
     }
@@ -67,11 +67,11 @@ export default class PlayerShip extends Phaser.Sprite {
         this.enableShield(5000);
     }
 
-    isFlyingIn() {
+    isFlyingIn(): boolean {
         return this.flyInAnimation.isRunning;
     }
 
-    getHealth() {
+    getHealth(): number {
         return this.health > 0 ? this.health : 0;
     }
 
