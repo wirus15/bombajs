@@ -19,14 +19,14 @@ import BossFactory from "./app/game/boss_factory";
 import PlayerHitHandler from "./app/game/player_hit_handler";
 import Listeners from "./app/game/listeners";
 import PlayerKilledListener from "./app/game/player_killed_listener";
-import WeaponManager from "./app/game/weapon_manager";
+import PlayerShip from "./app/game/player_ship";
 
-let container = new Container();
+const container = new Container();
 
+container.register(Phaser.Game, [800, 600, Phaser.AUTO, 'gameCanvas']).as(FactoryMethod.SINGLETON);
 container.register(Game).as(FactoryMethod.SINGLETON);
 container.register(BootState).as(FactoryMethod.SINGLETON);
 container.register(GameState).as(FactoryMethod.SINGLETON);
-container.register(Phaser.Game, [800, 600, Phaser.AUTO, 'gameCanvas']).as(FactoryMethod.SINGLETON);
 container.register(Background).as(FactoryMethod.SINGLETON);
 container.register(BackgroundMusic).as(FactoryMethod.SINGLETON);
 container.register(Player).as(FactoryMethod.SINGLETON);
@@ -44,6 +44,6 @@ container.register(BossFactory).as(FactoryMethod.SINGLETON);
 container.register(PlayerHitHandler).as(FactoryMethod.SINGLETON);
 container.register(Listeners).as(FactoryMethod.SINGLETON);
 container.register(PlayerKilledListener).as(FactoryMethod.SINGLETON);
-container.register(WeaponManager).as(FactoryMethod.SINGLETON);
+container.register(PlayerShip).as(FactoryMethod.SINGLETON);
 
 export default container;

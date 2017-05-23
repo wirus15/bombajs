@@ -17,19 +17,19 @@ export default class Collisions {
         private shipCollisionHandler: ShipCollisionHandler,
         private enemyHitHandler: EnemyHitHandler,
         private playerHitHandler: PlayerHitHandler,
-        private weaponManager: WeaponManager
+        // private weaponManager: WeaponManager
     ) {}
 
-    check() {
+    update() {
         const physics = this.game.physics.arcade;
 
-        physics.overlap(
-            this.enemies.getEnemies(),
-            this.weaponManager.getPlayerBullets(),
-            (bullet: Bullet, enemy: Enemy) => {
-                this.enemyHitHandler.handle(enemy, bullet);
-            }
-        );
+        // physics.overlap(
+        //     this.enemies.getEnemies(),
+        //     // this.weaponManager.getPlayerBullets(),
+        //     (bullet: Bullet, enemy: Enemy) => {
+        //         this.enemyHitHandler.handle(enemy, bullet);
+        //     }
+        // );
 
         physics.overlap(
             this.player.getShip(),
@@ -37,24 +37,24 @@ export default class Collisions {
             this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
         );
 
-        physics.overlap(
-            this.player.getShip(),
-            this.weaponManager.getEnemyBullets(),
-            this.playerHitHandler.handle.bind(this.playerHitHandler)
-        );
+        // physics.overlap(
+        //     this.player.getShip(),
+        //     this.weaponManager.getEnemyBullets(),
+        //     this.playerHitHandler.handle.bind(this.playerHitHandler)
+        // );
 
-        if (this.enemies.getCurrentBoss()) {
-            physics.overlap(
-                this.enemies.getCurrentBoss(),
-                this.weaponManager.getPlayerBullets(),
-                this.enemyHitHandler.handle.bind(this.enemyHitHandler)
-            );
-
-            physics.overlap(
-                this.player.getShip(),
-                this.enemies.getCurrentBoss(),
-                this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
-            );
-        }
+        // if (this.enemies.getCurrentBoss()) {
+        //     physics.overlap(
+        //         this.enemies.getCurrentBoss(),
+        //         this.weaponManager.getPlayerBullets(),
+        //         this.enemyHitHandler.handle.bind(this.enemyHitHandler)
+        //     );
+        //
+        //     physics.overlap(
+        //         this.player.getShip(),
+        //         this.enemies.getCurrentBoss(),
+        //         this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
+        //     );
+        // }
     }
 }

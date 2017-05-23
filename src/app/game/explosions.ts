@@ -2,19 +2,14 @@ import {ConstructorInject} from 'huject';
 import Assets from './assets';
 
 @ConstructorInject
-export default class Explosions extends Phaser.Group {
+export default class Explosions {
     private sound: Phaser.Sound;
+    private explosions: Phaser.Group;
 
-    constructor(game: Phaser.Game) {
-        super(game);
-    }
-
-    init() {
-        this.game.add.existing(this);
-        this.enableBody = true;
-        this.physicsBodyType = Phaser.Physics.ARCADE;
-        this.createMultiple(30, Assets.explosion);
-        this.forEach((explosion: Phaser.Sprite) => {
+    constructor(private game: Phaser.Game) {
+        this.explosions = game.add.physicsGroup();
+        this.explosions.createMultiple(30, Assets.explosion);
+        this.explosions.forEach((explosion: Phaser.Sprite) => {
             explosion.anchor.x = 0.5;
             explosion.anchor.y = 0.5;
             explosion.animations.add(Assets.explosion);
@@ -23,7 +18,7 @@ export default class Explosions extends Phaser.Group {
     }
 
     display(exploded: Phaser.Sprite) {
-        let explosion = this.getFirstExists(false);
+        let explosion = this.explosions.getFirstExists(false);
         explosion.reset(exploded.x, exploded.y);
         explosion.play(Assets.explosion, 20, false, true);
         explosion.body.velocity.x = exploded.body.velocity.x;

@@ -7,7 +7,7 @@ import Collisions from "./collisions";
 import Explosions from "./explosions";
 import GUI from "./gui";
 import Listeners from "./listeners";
-import WeaponManager from "./weapon_manager";
+import Container from "../../huject";
 
 @ConstructorInject
 export default class GameState extends Phaser.State {
@@ -15,12 +15,11 @@ export default class GameState extends Phaser.State {
         private background: Background,
         private backgroundMusic: BackgroundMusic,
         private player: Player,
-        private enemyContainer: EnemyContainer,
-        private collisions: Collisions,
-        private explosions: Explosions,
-        private gui: GUI,
-        private listeners: Listeners,
-        private weaponManager: WeaponManager
+        // private enemyContainer: EnemyContainer,
+        // private collisions: Collisions,
+        // private explosions: Explosions,
+        // private gui: GUI,
+        // private listeners: Listeners
     ) {
         super();
     }
@@ -28,18 +27,13 @@ export default class GameState extends Phaser.State {
     create() {
         this.background.create();
         this.backgroundMusic.create();
-        this.backgroundMusic.play();
-        this.weaponManager.create();
         this.player.create();
-        this.enemyContainer.start();
-        this.explosions.init();
-        this.gui.create();
     }
 
     update() {
         this.player.update();
-        this.enemyContainer.update();
-        this.collisions.check();
-        this.gui.update();
+        // this.enemyContainer.update();
+        // this.collisions.update();
+        // this.gui.update();
     }
 }

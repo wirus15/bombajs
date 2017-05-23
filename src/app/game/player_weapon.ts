@@ -1,9 +1,8 @@
-import WeaponType from './weapon_type';
 import Weapon from "./weapon";
 
 export default class PlayerWeapon extends Weapon {
-    constructor(game: Phaser.Game, type: WeaponType) {
-        super(game, type);
+    constructor(game: Phaser.Game) {
+        super(game);
         this.bulletAngleOffset = 90;
     }
 }

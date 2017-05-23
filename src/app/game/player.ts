@@ -5,32 +5,27 @@ import Points from "./points";
 import PlayerControl from "./player_control";
 import {NoMoreLivesError} from "./errors";
 import LevelCalculator from "./level_calculator";
-import WeaponManager from "./weapon_manager";
-import {PlayerPrimaryWeapon} from "./weapon_types";
 
 @ConstructorInject
 export default class Player {
     private static readonly MAX_LEVEL = 16;
     private level: Level;
-    private ship: PlayerShip;
     private points: Points;
     private lives = 3;
 
     constructor(
-        private game: Phaser.Game,
-        private controls: PlayerControl,
-        private weaponManager: WeaponManager
-    ) {
-        this.level = new Level(Player.MAX_LEVEL);
-        this.points = new Points();
-    }
+        private ship: PlayerShip,
+        private controls: PlayerControl
+    ) {}
 
     create() {
-        const primaryWeapon = this.weaponManager.getPlayerWeapon(PlayerPrimaryWeapon);
+        this.level = new Level(Player.MAX_LEVEL);
+        this.points = new Points();
 
-        this.ship = new PlayerShip(this.game);
-        this.ship.changeWeapon(primaryWeapon);
+        this.ship.create();
         this.controls.create();
+        this.ship.getWeapon().changeType()
+
         this.useNextShip();
     }
 

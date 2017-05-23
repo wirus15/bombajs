@@ -12,16 +12,10 @@ export default class WeaponManager {
     private enemyWeapons: Map<symbol, Weapon>;
     private bossWeapons: Map<symbol, Weapon>;
 
-    constructor(private game: Phaser.Game) {}
-
-    create() {
+    constructor(private game: Phaser.Game) {
         this.playerWeapons = this.createPlayerWeapons();
         this.enemyWeapons = this.createEnemyWeapons(WeaponTypes.EnemyWeaponTypes);
         this.bossWeapons = this.createEnemyWeapons(WeaponTypes.BossWeaponTypes);
-    }
-
-    getPlayerWeapon(type: symbol): Weapon {
-        return this.playerWeapons.get(type);
     }
 
     getEnemyWeapon(type?: symbol): Weapon {
@@ -52,7 +46,8 @@ export default class WeaponManager {
         const weapons = new Map<symbol, Weapon>();
 
         WeaponTypes.PlayerWeaponTypes.forEach((type: WeaponType, name: symbol) => {
-            const weapon = new PlayerWeapon(this.game, type);
+            const weapon = new PlayerWeapon(this.game);
+            weapon.changeType(type);
             weapons.set(name, weapon);
         });
 
@@ -63,7 +58,8 @@ export default class WeaponManager {
         const weapons = new Map<symbol, Weapon>();
 
         types.forEach((type: WeaponType, name: symbol) => {
-            const weapon = new EnemyWeapon(this.game, type);
+            const weapon = new EnemyWeapon(this.game);
+            weapon.changeType(type);
             weapons.set(name, weapon);
         });
 

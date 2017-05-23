@@ -22,9 +22,7 @@ export default class GUI {
         this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
         this.gameEvents.onBossAppear.add(() => this.textBossHealth.visible = true);
         this.gameEvents.onBossKilled.add(() => this.textBossHealth.visible = false);
-    }
 
-    create() {
         const style = {font: "16px Arial", fill: "#fff", boundsAlignH: "left", boundsAlignV: "top"};
         const gameOverStyle = {font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle"};
 

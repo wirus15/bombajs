@@ -6,35 +6,31 @@ import BossShip from "./boss_ship";
 import Enemy from "./enemy";
 import BossFactory from "./boss_factory";
 import GameEvents from "./game_events";
-import WeaponManager from "./weapon_manager";
-import * as WeaponTypes from "./weapon_types";
+import EnemyWeapon from "./enemy_weapon";
 import {pull, sample} from "lodash";
 
 @ConstructorInject
-export default class EnemyContainer extends Phaser.Group {
+export default class EnemyContainer {
     private enemies: Phaser.Group;
     private currentBoss: BossShip = null;
+    private enemyWeapon: EnemyWeapon;
     private bossLevel: Level;
 
     constructor(
-        game: Phaser.Game,
+        private game: Phaser.Game,
         private enemyFactory: EnemyFactory,
         private bossFactory: BossFactory,
         private player: Player,
-        private gameEvents: GameEvents,
-        private weaponManager: WeaponManager
+        private gameEvents: GameEvents
     ) {
-        super(game, undefined, 'enemies', false);
+        this.enemies = game.add.physicsGroup();
+        this.enemies.ignoreDestroy = true;
+        this.bossLevel = new Level(BossShip.MAX_LEVEL);
+
         player.onLevelChange(this.addGroup, this);
         player.onLevelChange(this.launchBoss, this);
-        this.bossLevel = new Level(BossShip.MAX_LEVEL);
-    }
 
-    start() {
-        this.game.add.existing(this);
-        this.enemies = this.add(this.game.add.physicsGroup());
         this.addGroup(this.player.getLevel());
-
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
         this.fireFromRandomEnemy();
     }
@@ -67,9 +63,9 @@ export default class EnemyContainer extends Phaser.Group {
         const isOdd = (value) => Boolean(value % 2);
 
         if (playerLevel > 1 && isOdd(playerLevel) && !this.currentBoss) {
-            const weapon = this.weaponManager.getBossWeapon();
+            // const weapon = this.weaponManager.getBossWeapon();
             this.currentBoss = this.bossFactory.create(this.bossLevel);
-            this.currentBoss.changeWeapon(weapon);
+            // this.currentBoss.changeWeapon(weapon);
             this.currentBoss.reset(
                 this.game.width / 2,
                 this.currentBoss.height * -1,
@@ -82,7 +78,7 @@ export default class EnemyContainer extends Phaser.Group {
                 this.bossLevel.next();
             });
 
-            this.add(this.currentBoss);
+            this.enemies.add(this.currentBoss);
         }
 
         return this.currentBoss;
@@ -103,15 +99,15 @@ export default class EnemyContainer extends Phaser.Group {
     }
 
     private fireFromRandomEnemy() {
-        this.game.time.events.add(this.game.rnd.integerInRange(1000, 5000), () => {
-            const enemy = this.enemies.getFirstExists(true);
-            const weapon = this.weaponManager.getEnemyWeapon();
-            if (enemy) {
-                weapon.fireFrom.x = enemy.centerX;
-                weapon.fireFrom.y = enemy.centerY;
-                weapon.fire();
-            }
-            this.fireFromRandomEnemy()
-        });
+        // this.game.time.events.add(this.game.rnd.integerInRange(1000, 5000), () => {
+        //     const enemy = this.enemies.getFirstExists(true);
+        //     // const weapon = this.weaponManager.getEnemyWeapon();
+        //     if (enemy) {
+        //         weapon.fireFrom.x = enemy.centerX;
+        //         weapon.fireFrom.y = enemy.centerY;
+        //         weapon.fire();
+        //     }
+        //     this.fireFromRandomEnemy()
+        // });
     }
 }
