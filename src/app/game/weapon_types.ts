@@ -17,21 +17,21 @@ export const PlayerPrimaryWeapon: WeaponType = {
 export const PlayerSecondaryWeapon: WeaponType = {
     damage: 40,
     bulletSpeed: 700,
-    fireRate: 120,
+    fireRate: 180,
     bulletSprite: Assets.missle_player_1,
 };
 
 export const PlayerTertiaryWeapon: WeaponType = {
     damage: 80,
     bulletSpeed: 600,
-    fireRate: 90,
+    fireRate: 210,
     bulletSprite: Assets.missle_player_2,
 };
 
 export const PlayerQuaternaryWeapon: WeaponType = {
-    damage: 120,
-    bulletSpeed: 500,
-    fireRate: 60,
+    damage: 150,
+    bulletSpeed: 400,
+    fireRate: 300,
     bulletSprite: Assets.missle_player_3,
 };
 

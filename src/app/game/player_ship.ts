@@ -36,7 +36,7 @@ export default class PlayerShip extends Phaser.Sprite {
 
         this.shield = new Shield(this.game);
         this.weapon = new PlayerWeapon(this.game);
-        this.weapon.changeType(WeaponType.EnemyPrimaryWeapon);
+        this.weapon.changeType(WeaponType.PlayerQuaternaryWeapon);
         this.weapon.trackSprite(this, 0, -50);
         this.addChild(this.shield);
     }

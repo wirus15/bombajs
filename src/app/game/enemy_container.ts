@@ -27,12 +27,10 @@ export default class EnemyContainer {
         this.enemies.ignoreDestroy = true;
         this.bossLevel = new Level(BossShip.MAX_LEVEL);
 
-        player.onLevelChange(this.addGroup, this);
         player.onLevelChange(this.launchBoss, this);
 
-        this.addGroup(this.player.getLevel());
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
-        this.fireFromRandomEnemy();
+        this.game.time.events.add(Phaser.Timer.SECOND, this.beginEnemyFire, this);
     }
 
     update() {
@@ -97,6 +95,11 @@ export default class EnemyContainer {
             this.enemies.add(this.enemyFactory.create(level));
         }
     }
+
+    private beginEnemyFire() {
+
+    }
+
 
     private fireFromRandomEnemy() {
         // this.game.time.events.add(this.game.rnd.integerInRange(1000, 5000), () => {
