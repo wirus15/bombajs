@@ -81,7 +81,7 @@ export default class Player {
 
     private onPlayerKilled() {
         this.explosions.display(this.ship);
-        
+
         if (this.lives > 0) {
             this.useNextShip();
         } else {
