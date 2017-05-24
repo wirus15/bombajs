@@ -5,6 +5,8 @@ import Points from "./points";
 import PlayerControl from "./player_control";
 import {NoMoreLivesError} from "./errors";
 import LevelCalculator from "./level_calculator";
+import GameEvents from "./game_events";
+import Explosions from "./explosions";
 
 @ConstructorInject
 export default class Player {
@@ -15,7 +17,9 @@ export default class Player {
 
     constructor(
         private ship: PlayerShip,
-        private controls: PlayerControl
+        private controls: PlayerControl,
+        private gameEvents: GameEvents,
+        private explosions: Explosions
     ) {}
 
     create() {
@@ -23,6 +27,7 @@ export default class Player {
         this.points = new Points();
 
         this.ship.create();
+        this.ship.events.onKilled.add(this.onPlayerKilled, this);
         this.controls.create();
 
         this.useNextShip();
@@ -71,6 +76,16 @@ export default class Player {
         const shouldHaveLevel = LevelCalculator.calculateLevel(this.points);
         while (this.level.get() < shouldHaveLevel) {
             this.level.next();
+        }
+    }
+
+    private onPlayerKilled() {
+        this.explosions.display(this.ship);
+        
+        if (this.lives > 0) {
+            this.useNextShip();
+        } else {
+            this.gameEvents.onGameOver.dispatch();
         }
     }
 }

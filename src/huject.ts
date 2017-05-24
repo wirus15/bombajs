@@ -17,8 +17,6 @@ import GUI from "./app/game/gui";
 import GameEvents from "./app/game/game_events";
 import BossLauncher from "./app/game/boss_launcher";
 import PlayerHitHandler from "./app/game/player_hit_handler";
-import Listeners from "./app/game/listeners";
-import PlayerKilledListener from "./app/game/player_killed_listener";
 import PlayerShip from "./app/game/player_ship";
 
 const container = new Container();
@@ -42,8 +40,6 @@ container.register(GUI).as(FactoryMethod.SINGLETON);
 container.register(GameEvents).as(FactoryMethod.SINGLETON);
 container.register(BossLauncher).as(FactoryMethod.SINGLETON);
 container.register(PlayerHitHandler).as(FactoryMethod.SINGLETON);
-container.register(Listeners).as(FactoryMethod.SINGLETON);
-container.register(PlayerKilledListener).as(FactoryMethod.SINGLETON);
 container.register(PlayerShip).as(FactoryMethod.SINGLETON);
 
 export default container;

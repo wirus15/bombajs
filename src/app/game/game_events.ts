@@ -1,3 +1,4 @@
+import * as Phaser from "phaser";
 import {ConstructorInject} from 'huject';
 
 @ConstructorInject
