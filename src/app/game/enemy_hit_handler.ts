@@ -6,7 +6,10 @@ import Explosions from "./explosions";
 
 @ConstructorInject
 export default class EnemyHitHandler implements CollisionHandler {
-    constructor(private player: Player, private explosions: Explosions) {}
+    constructor(
+        private player: Player,
+        private explosions: Explosions
+    ) {}
 
     handle(enemy: Phaser.Sprite, bullet: Bullet) {
         enemy.damage(bullet.damageAmount);

@@ -45,7 +45,7 @@ export default class GUI {
         this.textPoints.text = `POINTS: ${this.player.getPoints()}`;
         this.textLevel.text = `LEVEL: ${this.player.getLevel()}`;
 
-        const currentBoss = this.enemies.getCurrentBoss();
+        const currentBoss = this.enemies.getBoss();
         if (currentBoss) {
             this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
         }

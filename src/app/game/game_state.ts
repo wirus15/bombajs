@@ -15,8 +15,9 @@ export default class GameState extends Phaser.State {
         private background: Background,
         private backgroundMusic: BackgroundMusic,
         private player: Player,
-        // private enemyContainer: EnemyContainer,
-        // private collisions: Collisions,
+        private enemies: EnemyContainer,
+        private collisions: Collisions,
+        private explosions: Explosions
         // private explosions: Explosions,
         // private gui: GUI,
         // private listeners: Listeners
@@ -28,12 +29,14 @@ export default class GameState extends Phaser.State {
         this.background.create();
         this.backgroundMusic.create();
         this.player.create();
+        this.enemies.create();
+        this.explosions.create();
     }
 
     update() {
         this.player.update();
-        // this.enemyContainer.update();
-        // this.collisions.update();
+        this.enemies.update();
+        this.collisions.update();
         // this.gui.update();
     }
 }
