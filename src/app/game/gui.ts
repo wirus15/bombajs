@@ -18,7 +18,9 @@ export default class GUI {
         private player: Player,
         private gameEvents: GameEvents,
         private enemies: EnemyContainer
-    ) {
+    ) {}
+
+    create() {
         this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
         this.gameEvents.onBossAppear.add(() => this.textBossHealth.visible = true);
         this.gameEvents.onBossKilled.add(() => this.textBossHealth.visible = false);
@@ -46,8 +48,7 @@ export default class GUI {
         this.textLevel.text = `LEVEL: ${this.player.getLevel()}`;
 
         const currentBoss = this.enemies.getBoss();
-        if (currentBoss) {
-            this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
-        }
+        this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
+        this.textBossHealth.visible = currentBoss.exists;
     }
 }

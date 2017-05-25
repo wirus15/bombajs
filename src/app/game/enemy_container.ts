@@ -7,6 +7,7 @@ import EnemyWeapon from "./enemy_weapon";
 import {pull, sample} from "lodash";
 import EnemyLauncher from "./enemy_launcher";
 import BossLauncher from "./boss_launcher";
+import * as WeaponTypes from "./weapon_types";
 
 @ConstructorInject
 export default class EnemyContainer {
@@ -27,12 +28,13 @@ export default class EnemyContainer {
         this.enemies.classType = Enemy;
         this.enemies.ignoreDestroy = true;
         this.boss = new BossShip(this.game);
+        this.enemyWeapon = new EnemyWeapon(this.game);
 
         this.player.onLevelChange(this.launchBoss, this);
         this.boss.events.onKilled.addOnce(() => this.gameEvents.onBossKilled.dispatch(this.boss));
 
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
-        this.game.time.events.add(Phaser.Timer.SECOND, this.beginEnemyFire, this);
+        this.game.time.events.add(Phaser.Timer.SECOND, this.fireFromRandomEnemy, this);
     }
 
     update() {
@@ -57,21 +59,36 @@ export default class EnemyContainer {
         return this.boss;
     }
 
-    private beginEnemyFire() {
-
+    getEnemyWeapon(): EnemyWeapon {
+        return this.enemyWeapon;
     }
 
-
     private fireFromRandomEnemy() {
-        // this.game.time.events.add(this.game.rnd.integerInRange(1000, 5000), () => {
-        //     const enemy = this.enemies.getFirstExists(true);
-        //     // const weapon = this.weaponManager.getEnemyWeapon();
-        //     if (enemy) {
-        //         weapon.fireFrom.x = enemy.centerX;
-        //         weapon.fireFrom.y = enemy.centerY;
-        //         weapon.fire();
-        //     }
-        //     this.fireFromRandomEnemy()
-        // });
+        const enemy = this.pickRandomEnemy();
+        const type = this.game.rnd.pick([
+            WeaponTypes.EnemyPrimaryWeapon,
+            WeaponTypes.EnemySecondaryWeapon,
+            WeaponTypes.EnemyTertiaryWeapon,
+            WeaponTypes.EnemyQuaternaryWeapon,
+        ]);
+
+        if (enemy) {
+            this.enemyWeapon.changeType(type);
+            this.enemyWeapon.fireFrom.x = enemy.centerX;
+            this.enemyWeapon.fireFrom.y = enemy.centerY;
+            this.enemyWeapon.fire();
+        }
+
+        this.game.time.events.add(
+            this.game.rnd.integerInRange(500, 2000),
+            this.fireFromRandomEnemy,
+            this
+        );
+    }
+
+    private pickRandomEnemy(): Enemy {
+        return Phaser.ArrayUtils.getRandomItem(
+            this.enemies.filter((enemy: Enemy) => enemy.exists).list
+        );
     }
 }

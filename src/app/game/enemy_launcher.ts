@@ -37,7 +37,8 @@ export default class EnemyLauncher {
 
         enemy.loadTexture(this.resolveSprite(level));
         enemy.setDamageAmount(this.resolveDamage(level));
-        enemy.reset(x, -enemy.height, this.resolveHealth(level));
+        enemy.maxHealth = this.resolveHealth(level);
+        enemy.reset(x, -enemy.height, enemy.maxHealth);
         enemy.body.setSize(enemy.width, enemy.height);
         enemy.body.velocity.x = this.game.rnd.integerInRange(-50, 50);
         enemy.body.velocity.y = this.game.rnd.integerInRange(100, 300);

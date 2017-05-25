@@ -20,11 +20,27 @@ export default class Explosions {
     }
 
     display(exploded: Phaser.Sprite) {
-        let explosion = this.explosions.getFirstExists(false);
+        const explosion = this.explosions.getFirstExists(false);
         explosion.reset(exploded.x, exploded.y);
         explosion.play(Assets.explosion, 20, false, true);
         explosion.body.velocity.x = exploded.body.velocity.x;
         explosion.body.velocity.y = exploded.body.velocity.y;
         this.sound.play();
+    }
+
+    displayMultiple(exploded: Phaser.Sprite, number: number = 5) {
+        const centerX = exploded.x;
+        const centerY = exploded.y;
+
+        for (let i = 0; i < number; i++) {
+            this.game.time.events.add(i * 100, () => {
+                const explosion = this.explosions.getFirstExists(false);
+                const x = centerX + this.game.rnd.integerInRange(-50, 50);
+                const y = centerY + this.game.rnd.integerInRange(-50, 50);
+                explosion.reset(x, y);
+                explosion.play(Assets.explosion, 20, false, true);
+                this.sound.play();
+            }, this);
+        }
     }
 }

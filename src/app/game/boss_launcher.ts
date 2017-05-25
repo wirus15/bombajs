@@ -31,9 +31,9 @@ export default class BossLauncher {
 
     launch(boss: BossShip): BossShip {
         const playerLevel = this.player.getLevel().get();
-        const isOdd = (value) => Boolean(value % 2);
+        const isOdd = Boolean(playerLevel % 2);
 
-        if (playerLevel < 1 || !isOdd(playerLevel) || boss.exists) {
+        if (playerLevel < 1 || !isOdd || boss.exists) {
             return;
         }
 
@@ -42,12 +42,10 @@ export default class BossLauncher {
         boss.loadTexture(this.resolveSprite(this.level));
         boss.maxHealth = this.resolveHealth(this.level);
         boss.setDamageAmount(this.resolveDamage(this.level));
-        boss.reset(
-            this.game.width / 2,
-            boss.height * -1,
-            boss.maxHealth
-        );
+        boss.y = -boss.height;
+        boss.reset(this.game.width / 2, boss.height * -1, boss.maxHealth);
         boss.body.setSize(boss.width, boss.height);
+        boss.startAnimation();
 
         this.gameEvents.onBossAppear.dispatch(boss);
 

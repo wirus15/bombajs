@@ -46,33 +46,29 @@ export default class Collisions {
                 this.enemyHitHandler.handle(enemy, bullet);
             }
         );
-        //
-        // physics.overlap(
-        //     this.enemies.getBoss(),
-        //     this.player.getShip().getWeapon().bullets,
-        //     (bullet: Bullet, enemy: Enemy) => {
-        //         this.enemyHitHandler.handle(enemy, bullet);
-        //     }
-        // );
 
-        // physics.overlap(
-        //     this.player.getShip(),
-        //     this.weaponManager.getEnemyBullets(),
-        //     this.playerHitHandler.handle.bind(this.playerHitHandler)
-        // );
+        physics.overlap(
+            this.enemies.getBoss(),
+            this.player.getShip().getWeapon().bullets,
+            (enemy: Enemy, bullet: Bullet) => {
+                this.enemyHitHandler.handle(enemy, bullet);
+            }
+        );
 
-        // if (this.enemies.getCurrentBoss()) {
-        //     physics.overlap(
-        //         this.enemies.getCurrentBoss(),
-        //         this.weaponManager.getPlayerBullets(),
-        //         this.enemyHitHandler.handle.bind(this.enemyHitHandler)
-        //     );
-        //
-        //     physics.overlap(
-        //         this.player.getShip(),
-        //         this.enemies.getCurrentBoss(),
-        //         this.shipCollisionHandler.handle.bind(this.shipCollisionHandler)
-        //     );
-        // }
+        physics.overlap(
+            this.player.getShip(),
+            this.enemies.getBoss().getWeapon().bullets,
+            (player: PlayerShip, bullet: Bullet) => {
+                this.playerHitHandler.handle(player, bullet);
+            }
+        );
+
+        physics.overlap(
+            this.player.getShip(),
+            this.enemies.getEnemyWeapon().bullets,
+            (player: PlayerShip, bullet: Bullet) => {
+                this.playerHitHandler.handle(player, bullet);
+            }
+        )
     }
 }

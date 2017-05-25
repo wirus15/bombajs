@@ -29,9 +29,17 @@ export default class BossShip extends Enemy {
         this.events.onRevived.add(() => this.animation.start());
     }
 
+    getWeapon(): EnemyWeapon {
+        return this.weapon;
+    }
+
     fireWeapon(target: PlayerShip) {
         if (target.alive && this.exists) {
             this.weapon.fireAtSprite(target);
         }
+    }
+
+    startAnimation() {
+        this.animation.start();
     }
 }

@@ -6,7 +6,6 @@ import EnemyContainer from "./enemy_container";
 import Collisions from "./collisions";
 import Explosions from "./explosions";
 import GUI from "./gui";
-import Container from "../../huject";
 
 @ConstructorInject
 export default class GameState extends Phaser.State {
@@ -16,9 +15,8 @@ export default class GameState extends Phaser.State {
         private player: Player,
         private enemies: EnemyContainer,
         private collisions: Collisions,
-        private explosions: Explosions
-        // private explosions: Explosions,
-        // private gui: GUI,
+        private explosions: Explosions,
+        private gui: GUI
     ) {
         super();
     }
@@ -29,12 +27,13 @@ export default class GameState extends Phaser.State {
         this.player.create();
         this.enemies.create();
         this.explosions.create();
+        this.gui.create();
     }
 
     update() {
         this.player.update();
         this.enemies.update();
         this.collisions.update();
-        // this.gui.update();
+        this.gui.update();
     }
 }
