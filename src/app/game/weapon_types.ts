@@ -1,105 +1,92 @@
 import Assets from "./assets";
-import WeaponType from "./weapon_type";
 
-export const PlayerPrimaryWeapon = Symbol();
-export const PlayerSecondaryWeapon = Symbol();
-export const PlayerTertiaryWeapon = Symbol();
-export const PlayerQuaternaryWeapon = Symbol();
+export interface WeaponType {
+    damage: number;
+    bulletSpeed: number;
+    fireRate: number;
+    bulletSprite: string;
+}
 
-export const EnemyPrimaryWeapon = Symbol();
-export const EnemySecondaryWeapon = Symbol();
-export const EnemyTertiaryWeapon = Symbol();
-export const EnemyQuaternaryWeapon = Symbol();
-
-export const BossPrimaryWeapon = Symbol();
-export const BossSecondaryWeapon = Symbol();
-export const BossTertiaryWeapon = Symbol();
-export const BossQuaternaryWeapon = Symbol();
-
-export const PlayerWeaponTypes: Map<symbol, WeaponType> = new Map<symbol, WeaponType>();
-export const EnemyWeaponTypes: Map<symbol, WeaponType> = new Map<symbol, WeaponType>();
-export const BossWeaponTypes: Map<symbol, WeaponType> = new Map<symbol, WeaponType>();
-
-PlayerWeaponTypes.set(PlayerPrimaryWeapon, {
+export const PlayerPrimaryWeapon: WeaponType = {
     damage: 20,
     bulletSpeed: 800,
     fireRate: 150,
     bulletSprite: Assets.missle_player_0,
-});
+};
 
-PlayerWeaponTypes.set(PlayerSecondaryWeapon, {
+export const PlayerSecondaryWeapon: WeaponType = {
     damage: 40,
     bulletSpeed: 700,
-    fireRate: 120,
+    fireRate: 180,
     bulletSprite: Assets.missle_player_1,
-});
+};
 
-PlayerWeaponTypes.set(PlayerTertiaryWeapon, {
+export const PlayerTertiaryWeapon: WeaponType = {
     damage: 80,
     bulletSpeed: 600,
-    fireRate: 90,
+    fireRate: 210,
     bulletSprite: Assets.missle_player_2,
-});
+};
 
-PlayerWeaponTypes.set(PlayerQuaternaryWeapon, {
-    damage: 120,
-    bulletSpeed: 500,
-    fireRate: 60,
+export const PlayerQuaternaryWeapon: WeaponType = {
+    damage: 150,
+    bulletSpeed: 400,
+    fireRate: 300,
     bulletSprite: Assets.missle_player_3,
-});
+};
 
-EnemyWeaponTypes.set(EnemyPrimaryWeapon, {
+export const EnemyPrimaryWeapon: WeaponType = {
     damage: 10,
     bulletSpeed: 400,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_0,
-});
+};
 
-EnemyWeaponTypes.set(EnemySecondaryWeapon, {
+export const EnemySecondaryWeapon: WeaponType = {
     damage: 20,
     bulletSpeed: 400,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_1,
-});
+};
 
-EnemyWeaponTypes.set(EnemyTertiaryWeapon, {
+export const EnemyTertiaryWeapon: WeaponType = {
     damage: 40,
     bulletSpeed: 400,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_2,
-});
+};
 
-EnemyWeaponTypes.set(EnemyQuaternaryWeapon, {
+export const EnemyQuaternaryWeapon: WeaponType = {
     damage: 70,
     bulletSpeed: 400,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_3,
-});
+};
 
-BossWeaponTypes.set(BossPrimaryWeapon, {
+export const BossPrimaryWeapon: WeaponType = {
     damage: 10,
     bulletSpeed: 200,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_0,
-});
+};
 
-BossWeaponTypes.set(BossSecondaryWeapon, {
+export const BossSecondaryWeapon: WeaponType = {
     damage: 20,
     bulletSpeed: 200,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_1,
-});
+};
 
-BossWeaponTypes.set(BossTertiaryWeapon, {
+export const BossTertiaryWeapon: WeaponType = {
     damage: 40,
     bulletSpeed: 200,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_2,
-});
+};
 
-BossWeaponTypes.set(BossQuaternaryWeapon, {
+export const BossQuaternaryWeapon: WeaponType = {
     damage: 70,
     bulletSpeed: 200,
     fireRate: 150,
     bulletSprite: Assets.missle_enemy_3,
-});
+};

@@ -1,19 +1,26 @@
+import {ConstructorInject} from "huject";
 import Assets from './assets';
 import Shield from "./shield";
 import Weapon from "./weapon";
+import PlayerWeapon from "./player_weapon";
+import * as WeaponType from "./weapon_types";
 
+@ConstructorInject
 export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
-    private weapon: Weapon;
+    private weapon: PlayerWeapon;
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
     private shieldEnabled = false;
 
     constructor(game: Phaser.Game) {
-        super(game, 0, 0, Assets.ship_player);
+        super(game, 0, 0);
+    }
+
+    create() {
+        this.loadTexture(Assets.ship_player);
         this.game.world.add(this);
         this.game.physics.arcade.enable(this);
-
         this.body.collideWorldBounds = false;
         this.maxHealth = PlayerShip.MAX_HEALTH;
         this.anchor.x = 0.5;
@@ -27,7 +34,10 @@ export default class PlayerShip extends Phaser.Sprite {
             this.body.collideWorldBounds = true;
         });
 
-        this.shield = new Shield(game);
+        this.shield = new Shield(this.game);
+        this.weapon = new PlayerWeapon(this.game);
+        this.weapon.changeType(WeaponType.PlayerQuaternaryWeapon);
+        this.weapon.trackSprite(this, 0, -50);
         this.addChild(this.shield);
     }
 
@@ -57,25 +67,16 @@ export default class PlayerShip extends Phaser.Sprite {
         this.enableShield(5000);
     }
 
-    isShieldEnabled() {
-        return this.shieldEnabled;
-    }
-
-    isFlyingIn() {
+    isFlyingIn(): boolean {
         return this.flyInAnimation.isRunning;
     }
 
-    getHealth() {
+    getHealth(): number {
         return this.health > 0 ? this.health : 0;
     }
 
     getWeapon(): Weapon {
         return this.weapon;
-    }
-
-    changeWeapon(weapon: Weapon) {
-        this.weapon = weapon;
-        this.weapon.trackSprite(this);
     }
 }
 
