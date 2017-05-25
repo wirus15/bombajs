@@ -1,6 +1,6 @@
-import GameState from "./game_state";
 import {ConstructorInject} from 'huject';
 import BootState from "./boot_state";
+import GameState from "./game_state";
 
 @ConstructorInject
 export default class Game {
@@ -8,12 +8,12 @@ export default class Game {
         private game: Phaser.Game,
         private bootState: BootState,
         private gameState: GameState
-    ) {
-        this.game.state.add('boot', this.bootState);
-        this.game.state.add('game', this.gameState);
-    }
+    ) {}
 
     start() {
+        this.game.state.add('boot', this.bootState);
+        this.game.state.add('game', this.gameState);
+
         this.game.state.start('boot');
     }
 }

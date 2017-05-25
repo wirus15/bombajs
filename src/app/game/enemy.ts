@@ -1,11 +1,8 @@
 export default class Enemy extends Phaser.Sprite {
-    constructor(
-        readonly game: Phaser.Game,
-        readonly maxHealth: number,
-        readonly damageAmount: number,
-        sprite: string
-    ) {
-        super(game, 0, 0, sprite);
+    private damageAmount: number = 20;
+
+    constructor(readonly game: Phaser.Game) {
+        super(game, 0, 0);
         this.exists = false;
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
@@ -15,5 +12,13 @@ export default class Enemy extends Phaser.Sprite {
                 this.kill();
             }
         });
+    }
+
+    getDamageAmount(): number {
+        return this.damageAmount;
+    }
+
+    setDamageAmount(value: number) {
+        this.damageAmount = value;
     }
 }

@@ -12,10 +12,12 @@ export default class Shield extends Phaser.Sprite {
         this.alpha = 0;
         this.scale.x = 0.7;
         this.scale.y = 0.7;
+    }
 
-        this.animation = game.add.tween(this);
-        this.fadeIn = game.add.tween(this);
-        this.fadeOut = game.add.tween(this);
+    show() {
+        this.animation = this.game.add.tween(this);
+        this.fadeIn = this.game.add.tween(this);
+        this.fadeOut = this.game.add.tween(this);
 
         this.fadeIn.to({alpha: 1}, 500, "Linear");
         this.fadeIn.onStart.add(() => this.visible = true);
@@ -26,9 +28,7 @@ export default class Shield extends Phaser.Sprite {
 
         this.animation.to({alpha: 0.6}, 200, "Linear", false, 0, -1, true);
         this.animation.chain(this.fadeOut);
-    }
 
-    show() {
         this.fadeIn.start();
     }
 

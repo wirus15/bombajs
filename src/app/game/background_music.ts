@@ -10,17 +10,15 @@ export default class BackgroundMusic {
     constructor(
         private game: Phaser.Game,
         private gameEvents: GameEvents
-    ) {
-        this.gameEvents.onBossAppear.add(this.switchToBossMusic, this);
-        this.gameEvents.onBossKilled.add(this.switchToNormalMusic, this);
-    }
+    ) {}
 
     create() {
         this.normalMusic = this.game.add.audio(Assets.background_music_0, 1, true);
         this.bossMusic = this.game.add.audio(Assets.background_music_1, 1, true);
-    }
 
-    play() {
+        this.gameEvents.onBossAppear.add(this.switchToBossMusic, this);
+        this.gameEvents.onBossKilled.add(this.switchToNormalMusic, this);
+
         this.normalMusic.play();
     }
 

@@ -1,7 +1,7 @@
 import {ConstructorInject} from 'huject';
 import Player from "./player";
 import GameEvents from "./game_events";
-import BossGroup from "./boss_group";
+import EnemyContainer from "./enemy_container";
 
 @ConstructorInject
 export default class GUI {
@@ -17,14 +17,14 @@ export default class GUI {
         private game: Phaser.Game,
         private player: Player,
         private gameEvents: GameEvents,
-        private bossGroup: BossGroup
-    ) {
+        private enemies: EnemyContainer
+    ) {}
+
+    create() {
         this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
         this.gameEvents.onBossAppear.add(() => this.textBossHealth.visible = true);
         this.gameEvents.onBossKilled.add(() => this.textBossHealth.visible = false);
-    }
 
-    create() {
         const style = {font: "16px Arial", fill: "#fff", boundsAlignH: "left", boundsAlignV: "top"};
         const gameOverStyle = {font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle"};
 
@@ -47,9 +47,8 @@ export default class GUI {
         this.textPoints.text = `POINTS: ${this.player.getPoints()}`;
         this.textLevel.text = `LEVEL: ${this.player.getLevel()}`;
 
-        const currentBoss = this.bossGroup.getCurrentBoss();
-        if (currentBoss) {
-            this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
-        }
+        const currentBoss = this.enemies.getBoss();
+        this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
+        this.textBossHealth.visible = currentBoss.exists;
     }
 }
