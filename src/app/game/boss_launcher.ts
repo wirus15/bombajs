@@ -4,6 +4,7 @@ import BossShip from "./boss_ship";
 import Assets from "./assets";
 import Level from "./level";
 import GameEvents from "./game_events";
+import * as WeaponTypes from "./weapon_types";
 
 @ConstructorInject
 export default class BossLauncher {
@@ -42,8 +43,13 @@ export default class BossLauncher {
         boss.loadTexture(this.resolveSprite(this.level));
         boss.maxHealth = this.resolveHealth(this.level);
         boss.setDamageAmount(this.resolveDamage(this.level));
-        boss.y = -boss.height;
-        boss.reset(this.game.width / 2, boss.height * -1, boss.maxHealth);
+        boss.getWeapon().changeType(this.game.rnd.pick([
+            WeaponTypes.BossPrimaryWeapon,
+            WeaponTypes.BossSecondaryWeapon,
+            WeaponTypes.BossTertiaryWeapon,
+            WeaponTypes.BossQuaternaryWeapon
+        ]));
+        boss.reset(this.game.width / 2, -boss.height, boss.maxHealth);
         boss.body.setSize(boss.width, boss.height);
         boss.startAnimation();
 
