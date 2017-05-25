@@ -31,16 +31,14 @@ export default class EnemyContainer {
         this.enemyWeapon = new EnemyWeapon(this.game);
 
         this.player.onLevelChange(this.launchBoss, this);
-        this.boss.events.onKilled.addOnce(() => this.gameEvents.onBossKilled.dispatch(this.boss));
+        this.boss.events.onKilled.add(() => this.gameEvents.onBossKilled.dispatch(this.boss));
 
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
         this.game.time.events.add(Phaser.Timer.SECOND, this.fireFromRandomEnemy, this);
     }
 
     update() {
-        if (this.boss) {
-            this.boss.fireWeapon(this.player.getShip());
-        }
+        this.boss.fireWeapon(this.player.getShip());
     }
 
     launchEnemy(): Enemy {

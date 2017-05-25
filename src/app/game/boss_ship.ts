@@ -26,7 +26,7 @@ export default class BossShip extends Enemy {
             });
         });
 
-        this.events.onRevived.add(() => this.animation.start());
+        this.events.onKilled.add(() => this.animation.stop());
     }
 
     getWeapon(): EnemyWeapon {
