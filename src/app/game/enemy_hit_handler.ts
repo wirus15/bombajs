@@ -5,12 +5,14 @@ import {ConstructorInject} from 'huject';
 import Explosions from "./explosions";
 import Enemy from "./enemy";
 import BossShip from "./boss_ship";
+import PickupDispenser from "./pickup_dispenser";
 
 @ConstructorInject
 export default class EnemyHitHandler implements CollisionHandler {
     constructor(
         private player: Player,
-        private explosions: Explosions
+        private explosions: Explosions,
+        private pickups: PickupDispenser
     ) {}
 
     handle(enemy: Enemy, bullet: Bullet) {
@@ -20,6 +22,7 @@ export default class EnemyHitHandler implements CollisionHandler {
         if (enemy.alive === false) {
             this.showExplosions(enemy);
             this.player.addPoints(enemy.maxHealth);
+            this.pickups.dispenseRoll(enemy);
         }
     }
 

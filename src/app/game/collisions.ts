@@ -8,6 +8,9 @@ import Enemy from "./enemy";
 import Bullet from "./bullet";
 import PlayerShip from "./player_ship";
 import BossShip from "./boss_ship";
+import PickupDispenser from "./pickup_dispenser";
+import Pickup from "./pickup";
+import PickupHandler from "./pickup_handler";
 
 @ConstructorInject
 export default class Collisions {
@@ -15,9 +18,11 @@ export default class Collisions {
         private game: Phaser.Game,
         private player: Player,
         private enemies: EnemyContainer,
+        private pickups: PickupDispenser,
         private shipCollisionHandler: ShipCollisionHandler,
         private enemyHitHandler: EnemyHitHandler,
-        private playerHitHandler: PlayerHitHandler
+        private playerHitHandler: PlayerHitHandler,
+        private pickupHandler: PickupHandler
     ) {}
 
     update() {
@@ -69,6 +74,14 @@ export default class Collisions {
             (player: PlayerShip, bullet: Bullet) => {
                 this.playerHitHandler.handle(player, bullet);
             }
-        )
+        );
+
+        physics.overlap(
+            this.player.getShip(),
+            this.pickups.getPickups(),
+            (player: PlayerShip, pickup: Pickup) => {
+                this.pickupHandler.handle(player, pickup);
+            }
+        );
     }
 }

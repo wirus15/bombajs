@@ -7,32 +7,40 @@ export interface WeaponType {
     bulletSprite: string;
 }
 
-export const PlayerPrimaryWeapon: WeaponType = {
+export interface PlayerWeaponType extends WeaponType {
+    pickupSprite: string;
+}
+
+export const PlayerPrimaryWeapon: PlayerWeaponType = {
     damage: 20,
     bulletSpeed: 800,
     fireRate: 150,
     bulletSprite: Assets.missle_player_0,
+    pickupSprite: Assets.pickup_weapon_0
 };
 
-export const PlayerSecondaryWeapon: WeaponType = {
+export const PlayerSecondaryWeapon: PlayerWeaponType = {
     damage: 40,
     bulletSpeed: 700,
     fireRate: 180,
     bulletSprite: Assets.missle_player_1,
+    pickupSprite: Assets.pickup_weapon_1
 };
 
-export const PlayerTertiaryWeapon: WeaponType = {
+export const PlayerTertiaryWeapon: PlayerWeaponType = {
     damage: 80,
     bulletSpeed: 600,
     fireRate: 210,
     bulletSprite: Assets.missle_player_2,
+    pickupSprite: Assets.pickup_weapon_2
 };
 
-export const PlayerQuaternaryWeapon: WeaponType = {
+export const PlayerQuaternaryWeapon: PlayerWeaponType = {
     damage: 150,
     bulletSpeed: 400,
     fireRate: 300,
     bulletSprite: Assets.missle_player_3,
+    pickupSprite: Assets.pickup_weapon_3
 };
 
 export const EnemyPrimaryWeapon: WeaponType = {

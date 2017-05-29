@@ -18,6 +18,8 @@ import GameEvents from "./app/game/game_events";
 import BossLauncher from "./app/game/boss_launcher";
 import PlayerHitHandler from "./app/game/player_hit_handler";
 import PlayerShip from "./app/game/player_ship";
+import PickupDispenser from "./app/game/pickup_dispenser";
+import PickupHandler from "./app/game/pickup_handler";
 
 const container = new Container();
 
@@ -41,5 +43,7 @@ container.register(GameEvents).as(FactoryMethod.SINGLETON);
 container.register(BossLauncher).as(FactoryMethod.SINGLETON);
 container.register(PlayerHitHandler).as(FactoryMethod.SINGLETON);
 container.register(PlayerShip).as(FactoryMethod.SINGLETON);
+container.register(PickupDispenser).as(FactoryMethod.SINGLETON);
+container.register(PickupHandler).as(FactoryMethod.SINGLETON);
 
 export default container;
