@@ -39,6 +39,10 @@ export default class Assets {
     static readonly ship_boss_07 = 'ship_boss_07';
     static readonly ship_boss_08 = 'ship_boss_08';
     static readonly ship_boss_09 = 'ship_boss_09';
+    static readonly pickup_weapon_0 = 'pickup_weapon_0';
+    static readonly pickup_weapon_1 = 'pickup_weapon_1';
+    static readonly pickup_weapon_2 = 'pickup_weapon_2';
+    static readonly pickup_weapon_3 = 'pickup_weapon_3';
 
     static load(game: Phaser.Game) {
         game.load.image(this.ship_player, 'public/images/ship_player.png');
@@ -81,5 +85,9 @@ export default class Assets {
         game.load.image(this.ship_boss_07, 'public/images/ship_boss_07.png');
         game.load.image(this.ship_boss_08, 'public/images/ship_boss_08.png');
         game.load.image(this.ship_boss_09, 'public/images/ship_boss_09.png');
+        game.load.image(this.pickup_weapon_0, 'public/images/pickup_weapon_0.png');
+        game.load.image(this.pickup_weapon_1, 'public/images/pickup_weapon_1.png');
+        game.load.image(this.pickup_weapon_2, 'public/images/pickup_weapon_2.png');
+        game.load.image(this.pickup_weapon_3, 'public/images/pickup_weapon_3.png');
     }
 }
