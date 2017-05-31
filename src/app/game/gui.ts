@@ -12,6 +12,8 @@ export default class GUI {
     private textGameOver: Phaser.Text;
     private textLevel: Phaser.Text;
     private textBossHealth: Phaser.Text;
+    private textDoubleDamage: Phaser.Text;
+    private textShield: Phaser.Text;
 
     constructor(
         private game: Phaser.Game,
@@ -38,6 +40,10 @@ export default class GUI {
         this.textGameOver = this.game.add.text(0, 0, 'GAME OVER', gameOverStyle);
         this.textGameOver.setTextBounds(0, 0, this.game.width, this.game.height);
         this.textGameOver.visible = false;
+        this.textDoubleDamage = this.game.add.text(this.game.width - 150, 120, '', style);
+        this.textDoubleDamage.visible = false;
+        this.textShield = this.game.add.text(this.game.width - 150, 140, '', style);
+        this.textShield.visible = false;
     }
 
     update() {
@@ -50,5 +56,13 @@ export default class GUI {
         const currentBoss = this.enemies.getBoss();
         this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
         this.textBossHealth.visible = currentBoss.exists;
+
+        const doubleDamageTimer = this.player.getShip().getWeapon().getDoubleDamageTimer();
+        this.textDoubleDamage.visible = doubleDamageTimer.getValue() > 0;
+        this.textDoubleDamage.text = `2X DAMAGE: ${doubleDamageTimer.getValue()}`;
+
+        const shieldTimer = this.player.getShip().getShield().getTimer();
+        this.textShield.visible = shieldTimer.getValue() > 0;
+        this.textShield.text = `SHIELD: ${shieldTimer.getValue()}`;
     }
 }

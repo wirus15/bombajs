@@ -1,7 +1,6 @@
 import {ConstructorInject} from "huject";
 import Assets from './assets';
 import Shield from "./shield";
-import Weapon from "./weapon";
 import PlayerWeapon from "./player_weapon";
 import * as WeaponType from "./weapon_types";
 
@@ -35,6 +34,8 @@ export default class PlayerShip extends Phaser.Sprite {
         });
 
         this.shield = new Shield(this.game);
+        this.shield.getTimer().onTimeout(() => this.shieldEnabled = false);
+
         this.weapon = new PlayerWeapon(this.game);
         this.weapon.changeType(WeaponType.PlayerPrimaryWeapon);
         this.weapon.trackSprite(this, 0, -50);
@@ -51,20 +52,14 @@ export default class PlayerShip extends Phaser.Sprite {
 
     enableShield(duration: number) {
         this.shieldEnabled = true;
-        this.shield.show();
-        this.game.time.events.add(duration, this.disableShield, this);
-    }
-
-    disableShield() {
-        this.shieldEnabled = false;
-        this.shield.hide();
+        this.shield.show(duration);
     }
 
     flyIn() {
         this.reset(this.game.width / 2, this.game.height + this.height, this.maxHealth);
         this.body.collideWorldBounds = false;
         this.flyInAnimation.start();
-        this.enableShield(5000);
+        this.enableShield(5);
     }
 
     isFlyingIn(): boolean {
@@ -75,8 +70,12 @@ export default class PlayerShip extends Phaser.Sprite {
         return this.health > 0 ? this.health : 0;
     }
 
-    getWeapon(): Weapon {
+    getWeapon(): PlayerWeapon {
         return this.weapon;
+    }
+
+    getShield(): Shield {
+        return this.shield;
     }
 }
 
