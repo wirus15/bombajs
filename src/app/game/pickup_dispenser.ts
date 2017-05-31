@@ -1,6 +1,9 @@
 import {ConstructorInject} from "huject";
 import WeaponPickup from "./weapon_pickup";
 import * as WeaponTypes from "./weapon_types";
+import RepairPickup from "./repair_pickup";
+import DoubleDamagePickup from "./double_damage_pickup";
+import ShieldPickup from "./shield_pickup";
 
 @ConstructorInject
 export default class PickupDispenser {
@@ -14,6 +17,9 @@ export default class PickupDispenser {
         this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerSecondaryWeapon));
         this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerTertiaryWeapon));
         this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerQuaternaryWeapon));
+        this.pickups.add(new RepairPickup(this.game));
+        this.pickups.add(new DoubleDamagePickup(this.game));
+        this.pickups.add(new ShieldPickup(this.game));
     }
 
     dispense(from: Phaser.Sprite) {
