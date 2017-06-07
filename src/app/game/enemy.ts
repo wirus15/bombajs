@@ -1,6 +1,4 @@
 export default class Enemy extends Phaser.Sprite {
-    private damageAmount: number = 20;
-
     constructor(readonly game: Phaser.Game) {
         super(game, 0, 0);
         this.exists = false;
@@ -12,13 +10,5 @@ export default class Enemy extends Phaser.Sprite {
                 this.kill();
             }
         });
-    }
-
-    getDamageAmount(): number {
-        return this.damageAmount;
-    }
-
-    setDamageAmount(value: number) {
-        this.damageAmount = value;
     }
 }

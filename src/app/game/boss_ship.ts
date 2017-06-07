@@ -8,7 +8,7 @@ import * as WeaponTypes from "./weapon_types";
 export default class BossShip extends Enemy {
     public static readonly MAX_LEVEL = 9;
     private animation: BossAnimation;
-    private weapon: EnemyWeapon;
+    private _weapon: EnemyWeapon;
 
     constructor(readonly game: Phaser.Game) {
         super(game);
@@ -16,26 +16,26 @@ export default class BossShip extends Enemy {
         this.game.physics.enable(this);
         this.animation = new BossAnimation(this, game);
 
-        this.weapon = new EnemyWeapon(game);
-        this.weapon.autofire = true;
-        this.weapon.trackedSprite = this;
-        this.weapon.changeType(WeaponTypes.BossPrimaryWeapon);
-        this.weapon.onFireLimit.add(() => {
+        this._weapon = new EnemyWeapon(game);
+        this._weapon.autofire = true;
+        this._weapon.trackedSprite = this;
+        this._weapon.changeType(WeaponTypes.BossPrimaryWeapon);
+        this._weapon.onFireLimit.add(() => {
             this.game.time.events.add(2000, () => {
-                this.weapon.resetShots();
+                this._weapon.resetShots();
             });
         });
 
         this.events.onKilled.add(() => this.animation.stop());
     }
 
-    getWeapon(): EnemyWeapon {
-        return this.weapon;
+    get weapon(): EnemyWeapon {
+        return this._weapon;
     }
 
     fireWeapon(target: PlayerShip) {
         if (target.alive && this.exists) {
-            this.weapon.fireAtSprite(target);
+            this._weapon.fireAtSprite(target);
         }
     }
 

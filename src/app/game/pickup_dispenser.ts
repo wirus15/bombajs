@@ -7,25 +7,25 @@ import ShieldPickup from "./shield_pickup";
 
 @ConstructorInject
 export default class PickupDispenser {
-    private pickups: Phaser.Group;
+    private _pickups: Phaser.Group;
 
     constructor(private game: Phaser.Game) {}
 
     create() {
-        this.pickups = this.game.add.physicsGroup();
-        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerPrimaryWeapon));
-        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerSecondaryWeapon));
-        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerTertiaryWeapon));
-        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerQuaternaryWeapon));
-        this.pickups.add(new RepairPickup(this.game));
-        this.pickups.add(new DoubleDamagePickup(this.game));
-        this.pickups.add(new ShieldPickup(this.game));
+        this._pickups = this.game.add.physicsGroup();
+        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerPrimaryWeapon));
+        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerSecondaryWeapon));
+        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerTertiaryWeapon));
+        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerQuaternaryWeapon));
+        this._pickups.add(new RepairPickup(this.game));
+        this._pickups.add(new DoubleDamagePickup(this.game));
+        this._pickups.add(new ShieldPickup(this.game));
     }
 
     dispense(from: Phaser.Sprite) {
         let pickup;
         do {
-            pickup = this.pickups.getRandom();
+            pickup = this._pickups.getRandom();
         } while (pickup.exists);
 
         pickup.reset(from.x, from.y);
@@ -43,7 +43,7 @@ export default class PickupDispenser {
         }
     }
 
-    getPickups(): Phaser.Group {
-        return this.pickups;
+    get pickups(): Phaser.Group {
+        return this._pickups;
     }
 }

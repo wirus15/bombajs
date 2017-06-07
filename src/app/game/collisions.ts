@@ -29,56 +29,56 @@ export default class Collisions {
         const physics = this.game.physics.arcade;
 
         physics.overlap(
-            this.player.getShip(),
-            this.enemies.getEnemies(),
+            this.player.ship,
+            this.enemies.enemies,
             (player: PlayerShip, enemy: Enemy) => {
                 this.shipCollisionHandler.handle(player, enemy);
             }
         );
 
         physics.overlap(
-            this.player.getShip(),
-            this.enemies.getBoss(),
+            this.player.ship,
+            this.enemies.boss,
             (player: PlayerShip, boss: BossShip) => {
                 this.shipCollisionHandler.handle(player, boss);
             }
         );
 
         physics.overlap(
-            this.enemies.getEnemies(),
-            this.player.getShip().getWeapon().bullets,
+            this.enemies.enemies,
+            this.player.ship.weapon.bullets,
             (enemy: Enemy, bullet: Bullet) => {
                 this.enemyHitHandler.handle(enemy, bullet);
             }
         );
 
         physics.overlap(
-            this.enemies.getBoss(),
-            this.player.getShip().getWeapon().bullets,
+            this.enemies.boss,
+            this.player.ship.weapon.bullets,
             (enemy: Enemy, bullet: Bullet) => {
                 this.enemyHitHandler.handle(enemy, bullet);
             }
         );
 
         physics.overlap(
-            this.player.getShip(),
-            this.enemies.getBoss().getWeapon().bullets,
+            this.player.ship,
+            this.enemies.boss.weapon.bullets,
             (player: PlayerShip, bullet: Bullet) => {
                 this.playerHitHandler.handle(player, bullet);
             }
         );
 
         physics.overlap(
-            this.player.getShip(),
-            this.enemies.getEnemyWeapon().bullets,
+            this.player.ship,
+            this.enemies.enemyWeapon.bullets,
             (player: PlayerShip, bullet: Bullet) => {
                 this.playerHitHandler.handle(player, bullet);
             }
         );
 
         physics.overlap(
-            this.player.getShip(),
-            this.pickups.getPickups(),
+            this.player.ship,
+            this.pickups.pickups,
             (player: PlayerShip, pickup: Pickup) => {
                 this.pickupHandler.handle(player, pickup);
             }

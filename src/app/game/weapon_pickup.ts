@@ -8,6 +8,6 @@ export default class WeaponPickup extends Pickup {
     }
 
     onPickup(player: Player) {
-        player.getShip().getWeapon().changeType(this.weaponType);
+        player.ship.weapon.changeType(this.weaponType);
     }
 }

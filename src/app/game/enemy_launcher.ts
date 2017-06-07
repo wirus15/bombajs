@@ -33,10 +33,9 @@ export default class EnemyLauncher {
     launch(enemies: Phaser.Group): Enemy {
         const enemy = enemies.getFirstExists(false, true);
         const x = this.game.rnd.integerInRange(0, this.game.width);
-        const level = this.game.rnd.integerInRange(1, this.player.getLevel().get());
+        const level = this.game.rnd.integerInRange(1, this.player.level.get());
 
         enemy.loadTexture(this.resolveSprite(level));
-        enemy.setDamageAmount(this.resolveDamage(level));
         enemy.maxHealth = this.resolveHealth(level);
         enemy.reset(x, -enemy.height, enemy.maxHealth);
         enemy.body.setSize(enemy.width, enemy.height);
@@ -47,10 +46,6 @@ export default class EnemyLauncher {
     }
 
     private resolveHealth(level: number): number {
-        return 20 * level;
-    }
-
-    private resolveDamage(level: number): number {
         return 20 * level;
     }
 

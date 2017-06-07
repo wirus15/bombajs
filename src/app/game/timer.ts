@@ -1,34 +1,41 @@
 export default class Timer {
-    private value: number = 0;
-    private timeoutSinal: Phaser.Signal;
+    private _value: number = 0;
+    private timeoutSignal: Phaser.Signal;
 
     constructor(private game: Phaser.Game) {
-        this.timeoutSinal = new Phaser.Signal();
+        this.timeoutSignal = new Phaser.Signal();
         game.time.events.loop(1000, this.tick, this);
     }
 
-    getValue(): number {
-        return this.value;
+    get value(): number {
+        return this._value;
     }
 
-    setValue(value: number) {
-        this.value = value;
+    set value(value: number) {
+        if (value < 0) {
+            throw new Error(`Invalid timer value: ${value}`);
+        }
+        this._value = value;
     }
 
     onTimeout(callback: Function, context?: any): Phaser.SignalBinding {
-        return this.timeoutSinal.add(callback, context);
+        return this.timeoutSignal.add(callback, context);
+    }
+
+    toString(): string {
+        return this._value.toString();
     }
 
     private tick() {
-        if (this.value <= 0) {
+        if (this._value <= 0) {
             return;
         }
 
 
-        this.value--;
+        this._value--;
 
-        if (this.value === 0) {
-            this.timeoutSinal.dispatch();
+        if (this._value === 0) {
+            this.timeoutSignal.dispatch();
         }
     }
 }

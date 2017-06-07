@@ -5,7 +5,7 @@ import {WeaponType} from "./weapon_types";
 abstract class Weapon extends Phaser.Weapon {
     private sound: Phaser.Sound;
     private damage: number;
-    private damageMultiplier = 1;
+    protected damageMultiplier = 1;
 
     constructor(game: Phaser.Game) {
         super(game, game.plugins);
@@ -30,10 +30,9 @@ abstract class Weapon extends Phaser.Weapon {
         this.bulletKey = type.bulletSprite;
     }
 
-    setDamageMultiplier(value: number = 1) {
-        this.damageMultiplier = value;
+    resetDamageMultiplier() {
+        this.damageMultiplier = 1;
     }
-
 }
 
 export default Weapon;
