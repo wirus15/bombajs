@@ -11,78 +11,78 @@ import Explosions from "./explosions";
 @ConstructorInject
 export default class Player {
     private static readonly MAX_LEVEL = 16;
-    private level: Level;
-    private points: Points;
-    private lives = 3;
+    private _level: Level;
+    private _points: Points;
+    private _lives = 3;
 
     constructor(
-        private ship: PlayerShip,
+        private _ship: PlayerShip,
         private controls: PlayerControl,
         private gameEvents: GameEvents,
         private explosions: Explosions
     ) {}
 
     create() {
-        this.level = new Level(Player.MAX_LEVEL);
-        this.points = new Points();
+        this._level = new Level(Player.MAX_LEVEL);
+        this._points = new Points();
 
-        this.ship.create();
-        this.ship.events.onKilled.add(this.onPlayerKilled, this);
+        this._ship.create();
+        this._ship.events.onKilled.add(this.onPlayerKilled, this);
         this.controls.create();
 
         this.useNextShip();
     }
 
     update() {
-        this.controls.handleMovementKeys(this.ship);
-        this.controls.handleFireKey(this.ship, this.ship.getWeapon());
+        this.controls.handleMovementKeys(this._ship);
+        this.controls.handleFireKey(this._ship, this._ship.weapon);
     }
 
     useNextShip() {
-        if (this.lives <= 0) {
+        if (this._lives <= 0) {
             throw new NoMoreLivesError();
         }
 
-        this.lives--;
-        this.ship.flyIn();
+        this._lives--;
+        this._ship.flyIn();
     }
 
     addPoints(points: number) {
-        this.points.add(points);
+        this._points.add(points);
         this.checkLevel();
     }
 
-    getLevel(): Level {
-        return this.level;
+    get level(): Level {
+        return this._level;
+    }
+
+    get ship(): PlayerShip {
+        return this._ship;
+    }
+
+    get points(): Points {
+        return this._points;
+    }
+
+    get lives(): number {
+        return this._lives;
     }
 
     onLevelChange(listener, context): Phaser.SignalBinding {
-        return this.level.onChange.add(listener, context);
-    }
-
-    getShip(): PlayerShip {
-        return this.ship;
-    }
-
-    getPoints(): Points {
-        return this.points;
-    }
-
-    getLives(): number {
-        return this.lives;
+        return this._level.onChange.add(listener, context);
     }
 
     private checkLevel() {
-        const shouldHaveLevel = LevelCalculator.calculateLevel(this.points);
-        while (this.level.get() < shouldHaveLevel) {
-            this.level.next();
+        const shouldHaveLevel = LevelCalculator.calculateLevel(this._points);
+        while (this._level.get() < shouldHaveLevel) {
+            this._level.next();
         }
     }
 
     private onPlayerKilled() {
-        this.explosions.displayMultiple(this.ship);
+        this.explosions.displayMultiple(this._ship);
 
-        if (this.lives > 0) {
+        if (this._lives > 0) {
             this.useNextShip();
         } else {
             this.gameEvents.onGameOver.dispatch();

@@ -8,7 +8,7 @@ export default class GameEvents {
     readonly onBossKilled: Phaser.Signal;
     readonly onPlayerKilled: Phaser.Signal;
 
-    constructor(private game: Phaser.Game) {
+    constructor() {
         this.onGameOver = new Phaser.Signal();
         this.onBossAppear = new Phaser.Signal();
         this.onBossKilled = new Phaser.Signal();

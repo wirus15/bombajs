@@ -31,7 +31,7 @@ export default class BossLauncher {
     }
 
     launch(boss: BossShip): BossShip {
-        const playerLevel = this.player.getLevel().get();
+        const playerLevel = this.player.level.get();
         const isOdd = Boolean(playerLevel % 2);
 
         if (playerLevel < 1 || !isOdd || boss.exists) {
@@ -42,8 +42,7 @@ export default class BossLauncher {
 
         boss.loadTexture(this.resolveSprite(this.level));
         boss.maxHealth = this.resolveHealth(this.level);
-        boss.setDamageAmount(this.resolveDamage(this.level));
-        boss.getWeapon().changeType(this.game.rnd.pick([
+        boss.weapon.changeType(this.game.rnd.pick([
             WeaponTypes.BossPrimaryWeapon,
             WeaponTypes.BossSecondaryWeapon,
             WeaponTypes.BossTertiaryWeapon,
@@ -60,10 +59,6 @@ export default class BossLauncher {
 
     private resolveHealth(level: Level): number {
         return 1000 * level.get();
-    }
-
-    private resolveDamage(level: Level): number {
-        return 20 * level.get();
     }
 
     private resolveSprite(level: Level): string {

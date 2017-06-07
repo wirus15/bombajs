@@ -8,6 +8,6 @@ export default class RepairPickup extends Pickup {
     }
 
     onPickup(player: Player) {
-        player.getShip().health = player.getShip().maxHealth;
+        player.ship.health = player.ship.maxHealth;
     }
 }

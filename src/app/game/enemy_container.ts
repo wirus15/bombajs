@@ -11,9 +11,9 @@ import * as WeaponTypes from "./weapon_types";
 
 @ConstructorInject
 export default class EnemyContainer {
-    private enemies: Phaser.Group;
-    private boss: BossShip;
-    private enemyWeapon: EnemyWeapon;
+    private _enemies: Phaser.Group;
+    private _boss: BossShip;
+    private _enemyWeapon: EnemyWeapon;
 
     constructor(
         private game: Phaser.Game,
@@ -24,41 +24,41 @@ export default class EnemyContainer {
     ) {}
 
     create() {
-        this.enemies = this.game.add.physicsGroup();
-        this.enemies.classType = Enemy;
-        this.enemies.ignoreDestroy = true;
-        this.boss = new BossShip(this.game);
-        this.enemyWeapon = new EnemyWeapon(this.game);
+        this._enemies = this.game.add.physicsGroup();
+        this._enemies.classType = Enemy;
+        this._enemies.ignoreDestroy = true;
+        this._boss = new BossShip(this.game);
+        this._enemyWeapon = new EnemyWeapon(this.game);
 
         this.player.onLevelChange(this.launchBoss, this);
-        this.boss.events.onKilled.add(() => this.gameEvents.onBossKilled.dispatch(this.boss));
+        this._boss.events.onKilled.add(() => this.gameEvents.onBossKilled.dispatch(this._boss));
 
         this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
         this.game.time.events.add(Phaser.Timer.SECOND, this.fireFromRandomEnemy, this);
     }
 
     update() {
-        this.boss.fireWeapon(this.player.getShip());
+        this._boss.fireWeapon(this.player.ship);
     }
 
     launchEnemy(): Enemy {
-        return this.enemyLauncher.launch(this.enemies);
+        return this.enemyLauncher.launch(this._enemies);
     }
 
     launchBoss(): BossShip {
-        return this.bossLauncher.launch(this.boss);
+        return this.bossLauncher.launch(this._boss);
     }
 
-    getEnemies(): Phaser.Group {
-        return this.enemies;
+    get enemies(): Phaser.Group {
+        return this._enemies;
     }
 
-    getBoss(): BossShip {
-        return this.boss;
+    get boss(): BossShip {
+        return this._boss;
     }
 
-    getEnemyWeapon(): EnemyWeapon {
-        return this.enemyWeapon;
+    get enemyWeapon(): EnemyWeapon {
+        return this._enemyWeapon;
     }
 
     private fireFromRandomEnemy() {
@@ -71,10 +71,10 @@ export default class EnemyContainer {
         ]);
 
         if (enemy) {
-            this.enemyWeapon.changeType(type);
-            this.enemyWeapon.fireFrom.x = enemy.centerX;
-            this.enemyWeapon.fireFrom.y = enemy.centerY;
-            this.enemyWeapon.fire();
+            this._enemyWeapon.changeType(type);
+            this._enemyWeapon.fireFrom.x = enemy.centerX;
+            this._enemyWeapon.fireFrom.y = enemy.centerY;
+            this._enemyWeapon.fire();
         }
 
         this.game.time.events.add(
@@ -86,7 +86,7 @@ export default class EnemyContainer {
 
     private pickRandomEnemy(): Enemy {
         return Phaser.ArrayUtils.getRandomItem(
-            this.enemies.filter((enemy: Enemy) => enemy.exists).list
+            this._enemies.filter((enemy: Enemy) => enemy.exists).list
         );
     }
 }

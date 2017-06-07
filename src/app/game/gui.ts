@@ -48,21 +48,21 @@ export default class GUI {
 
     update() {
         this.textFps.text = `FPS: ${this.game.time.fps}`;
-        this.textHp.text = `HP: ${this.player.getShip().getHealth()}`;
-        this.textLives.text = `LIVES: ${this.player.getLives()}`;
-        this.textPoints.text = `POINTS: ${this.player.getPoints()}`;
-        this.textLevel.text = `LEVEL: ${this.player.getLevel()}`;
+        this.textHp.text = `HP: ${this.player.ship.health}`;
+        this.textLives.text = `LIVES: ${this.player.lives}`;
+        this.textPoints.text = `POINTS: ${this.player.points}`;
+        this.textLevel.text = `LEVEL: ${this.player.level}`;
 
-        const currentBoss = this.enemies.getBoss();
+        const currentBoss = this.enemies.boss;
         this.textBossHealth.text = `BOSS: ${currentBoss.health} / ${currentBoss.maxHealth}`;
         this.textBossHealth.visible = currentBoss.exists;
 
-        const doubleDamageTimer = this.player.getShip().getWeapon().getDoubleDamageTimer();
-        this.textDoubleDamage.visible = doubleDamageTimer.getValue() > 0;
-        this.textDoubleDamage.text = `2X DAMAGE: ${doubleDamageTimer.getValue()}`;
+        const doubleDamageTimer = this.player.ship.weapon.doubleDamageTimer;
+        this.textDoubleDamage.visible = doubleDamageTimer.value > 0;
+        this.textDoubleDamage.text = `2X DAMAGE: ${doubleDamageTimer}`;
 
-        const shieldTimer = this.player.getShip().getShield().getTimer();
-        this.textShield.visible = shieldTimer.getValue() > 0;
-        this.textShield.text = `SHIELD: ${shieldTimer.getValue()}`;
+        const shieldTimer = this.player.ship.shieldTimer;
+        this.textShield.visible = shieldTimer.value > 0;
+        this.textShield.text = `SHIELD: ${shieldTimer}`;
     }
 }

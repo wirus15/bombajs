@@ -8,6 +8,6 @@ export default class ShieldPickup extends Pickup {
     }
 
     onPickup(player: Player) {
-        player.getShip().enableShield(20);
+        player.ship.enableShield(20);
     }
 }

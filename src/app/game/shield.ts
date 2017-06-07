@@ -5,12 +5,12 @@ export default class Shield extends Phaser.Sprite {
     private animation: Phaser.Tween;
     private fadeIn: Phaser.Tween;
     private fadeOut: Phaser.Tween;
-    private timer: Timer;
+    private _timer: Timer;
 
     constructor(game: Phaser.Game) {
         super(game, 0, 0, Assets.shield);
-        this.timer = new Timer(this.game);
-        this.timer.onTimeout(this.hide, this);
+        this._timer = new Timer(this.game);
+        this._timer.onTimeout(this.hide, this);
         this.anchor.x = 0.5;
         this.anchor.y = 0.5;
         this.alpha = 0;
@@ -19,7 +19,7 @@ export default class Shield extends Phaser.Sprite {
     }
 
     show(duration: number) {
-        this.timer.setValue(duration);
+        this._timer.value = duration;
         this.animation = this.game.add.tween(this);
         this.fadeIn = this.game.add.tween(this);
         this.fadeOut = this.game.add.tween(this);
@@ -42,7 +42,7 @@ export default class Shield extends Phaser.Sprite {
         this.animation.pendingDelete = false;
     }
 
-    getTimer(): Timer {
-        return this.timer;
+    get timer(): Timer {
+        return this._timer;
     }
 }

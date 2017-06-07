@@ -8,6 +8,6 @@ export default class DoubleDamagePickup extends Pickup {
     }
 
     onPickup(player: Player) {
-        player.getShip().getWeapon().enableDoubleDamage(20);
+        player.ship.weapon.enableDoubleDamage(20);
     }
 }
