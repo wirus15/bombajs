@@ -4,28 +4,31 @@ import * as WeaponTypes from "./weapon_types";
 import RepairPickup from "./repair_pickup";
 import DoubleDamagePickup from "./double_damage_pickup";
 import ShieldPickup from "./shield_pickup";
+import PhysicsGroup from "./physics_group";
 
 @ConstructorInject
 export default class PickupDispenser {
-    private _pickups: Phaser.Group;
+    public readonly pickups: Phaser.Group;
 
-    constructor(private game: Phaser.Game) {}
+    constructor(private game: Phaser.Game) {
+        this.pickups = new PhysicsGroup(game);
+    }
 
     create() {
-        this._pickups = this.game.add.physicsGroup();
-        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerPrimaryWeapon));
-        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerSecondaryWeapon));
-        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerTertiaryWeapon));
-        this._pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerQuaternaryWeapon));
-        this._pickups.add(new RepairPickup(this.game));
-        this._pickups.add(new DoubleDamagePickup(this.game));
-        this._pickups.add(new ShieldPickup(this.game));
+        this.game.add.existing(this.pickups);
+        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerPrimaryWeapon));
+        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerSecondaryWeapon));
+        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerTertiaryWeapon));
+        this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerQuaternaryWeapon));
+        this.pickups.add(new RepairPickup(this.game));
+        this.pickups.add(new DoubleDamagePickup(this.game));
+        this.pickups.add(new ShieldPickup(this.game));
     }
 
     dispense(from: Phaser.Sprite) {
         let pickup;
         do {
-            pickup = this._pickups.getRandom();
+            pickup = this.pickups.getRandom();
         } while (pickup.exists);
 
         pickup.reset(from.x, from.y);
@@ -41,9 +44,5 @@ export default class PickupDispenser {
         if (roll <= chance) {
             this.dispense(from);
         }
-    }
-
-    get pickups(): Phaser.Group {
-        return this._pickups;
     }
 }

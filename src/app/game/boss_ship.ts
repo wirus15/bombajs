@@ -7,39 +7,42 @@ import * as WeaponTypes from "./weapon_types";
 
 export default class BossShip extends Enemy {
     public static readonly MAX_LEVEL = 9;
+    private bossWeapon: EnemyWeapon;
     private animation: BossAnimation;
-    private _weapon: EnemyWeapon;
 
     constructor(readonly game: Phaser.Game) {
         super(game);
+    }
+
+    create() {
         this.game.add.existing(this);
         this.game.physics.enable(this);
-        this.animation = new BossAnimation(this, game);
+        this.animation = new BossAnimation(this, this.game);
 
-        this._weapon = new EnemyWeapon(game);
-        this._weapon.autofire = true;
-        this._weapon.trackedSprite = this;
-        this._weapon.changeType(WeaponTypes.BossPrimaryWeapon);
-        this._weapon.onFireLimit.add(() => {
+        this.bossWeapon = new EnemyWeapon(this.game);
+        this.bossWeapon.autofire = true;
+        this.bossWeapon.trackedSprite = this;
+        this.bossWeapon.changeType(WeaponTypes.BossPrimaryWeapon);
+        this.bossWeapon.onFireLimit.add(() => {
             this.game.time.events.add(2000, () => {
-                this._weapon.resetShots();
+                this.bossWeapon.resetShots();
             });
         });
 
         this.events.onKilled.add(() => this.animation.stop());
     }
 
-    get weapon(): EnemyWeapon {
-        return this._weapon;
-    }
-
     fireWeapon(target: PlayerShip) {
         if (target.alive && this.exists) {
-            this._weapon.fireAtSprite(target);
+            this.bossWeapon.fireAtSprite(target);
         }
     }
 
     startAnimation() {
         this.animation.start();
+    }
+
+    get weapon(): EnemyWeapon {
+        return this.bossWeapon;
     }
 }
