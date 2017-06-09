@@ -11,6 +11,8 @@ import BossShip from "./boss_ship";
 import PickupDispenser from "./pickup_dispenser";
 import Pickup from "./pickup";
 import PickupHandler from "./pickup_handler";
+import ObstacleContainer from "./obstacle_container";
+import Rock from "./rock";
 
 @ConstructorInject
 export default class Collisions {
@@ -22,7 +24,8 @@ export default class Collisions {
         private shipCollisionHandler: ShipCollisionHandler,
         private enemyHitHandler: EnemyHitHandler,
         private playerHitHandler: PlayerHitHandler,
-        private pickupHandler: PickupHandler
+        private pickupHandler: PickupHandler,
+        private obstacles: ObstacleContainer
     ) {}
 
     update() {
@@ -81,6 +84,22 @@ export default class Collisions {
             this.pickups.pickups,
             (player: PlayerShip, pickup: Pickup) => {
                 this.pickupHandler.handle(player, pickup);
+            }
+        );
+
+        physics.overlap(
+            this.player.ship,
+            this.obstacles.rocks,
+            (player: PlayerShip, rock: Rock) => {
+                this.shipCollisionHandler.handle(player, rock);
+            }
+        );
+
+        physics.overlap(
+            this.obstacles.rocks,
+            this.player.ship.weapon.bullets,
+            (rock: Rock, bullet: Bullet) => {
+                this.enemyHitHandler.handle(rock, bullet);
             }
         );
     }

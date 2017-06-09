@@ -21,6 +21,7 @@ import PlayerShip from "./player_ship";
 import PickupDispenser from "./pickup_dispenser";
 import PickupHandler from "./pickup_handler";
 import StateManager from "./state_manager";
+import ObstacleContainer from "./obstacle_container";
 
 export default class ServiceLoader {
     static load(container: Container) {
@@ -48,5 +49,6 @@ export default class ServiceLoader {
         container.register(PickupDispenser).as(FactoryMethod.SINGLETON);
         container.register(PickupHandler).as(FactoryMethod.SINGLETON);
         container.register(StateManager).as(FactoryMethod.SINGLETON);
+        container.register(ObstacleContainer).as(FactoryMethod.SINGLETON);
     }
 }
