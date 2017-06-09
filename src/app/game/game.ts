@@ -1,19 +1,31 @@
-import {ConstructorInject} from 'huject';
-import BootState from "./boot_state";
-import GameState from "./game_state";
+import StateManager from "./state_manager";
+import ServiceLoader from "./service_loader";
+import {Container} from "huject";
 
-@ConstructorInject
 export default class Game {
-    constructor(
-        private game: Phaser.Game,
-        private bootState: BootState,
-        private gameState: GameState
-    ) {}
+    private game: Phaser.Game;
+    private stateManager: StateManager;
+
+    constructor(container: Container) {
+        ServiceLoader.load(container);
+        this.game = container.resolve(Phaser.Game);
+        this.stateManager = container.resolve(StateManager);
+    }
+
+    get ready(): Promise<Game> {
+        return new Promise((resolve: Function) => {
+            const interval = setInterval(() => {
+                if (this.game.isBooted && this.game.isRunning) {
+                    resolve(this.game);
+                    clearInterval(interval);
+                }
+            }, 100);
+        });
+    }
 
     start() {
-        this.game.state.add('boot', this.bootState);
-        this.game.state.add('game', this.gameState);
-
-        this.game.state.start('boot');
+        this.ready.then(() => {
+            this.stateManager.start('boot')
+        });
     }
 }
