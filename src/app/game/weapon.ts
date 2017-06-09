@@ -9,18 +9,17 @@ abstract class Weapon extends Phaser.Weapon {
 
     constructor(game: Phaser.Game) {
         super(game, game.plugins);
-
         this.createBullets();
-        this.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
-        this.bulletClass = Bullet;
         this.sound = this.game.add.audio(Assets.fire_0);
-        this.autoExpandBulletsGroup = true;
-
         this.onFire.add((bullet: Bullet) => {
             bullet.damageAmount = this.damage * this.damageMultiplier;
             bullet.loadTexture(this.bulletKey);
             this.sound.play();
         });
+
+        this.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+        this.bulletClass = Bullet;
+        this.autoExpandBulletsGroup = true;
     }
 
     changeType(type: WeaponType) {

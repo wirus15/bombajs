@@ -31,7 +31,7 @@ export default class BossLauncher {
     }
 
     launch(boss: BossShip): BossShip {
-        const playerLevel = this.player.level.get();
+        const playerLevel = this.player.level.value;
         const isOdd = Boolean(playerLevel % 2);
 
         if (playerLevel < 1 || !isOdd || boss.exists) {
@@ -58,10 +58,10 @@ export default class BossLauncher {
     }
 
     private resolveHealth(level: Level): number {
-        return 1000 * level.get();
+        return 1000 * level.value;
     }
 
     private resolveSprite(level: Level): string {
-        return BossLauncher.sprites[level.get() - 1];
+        return BossLauncher.sprites[level.value - 1];
     }
 }

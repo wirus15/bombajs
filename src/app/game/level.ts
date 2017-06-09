@@ -6,7 +6,7 @@ export default class Level {
         this.onChange = new Phaser.Signal();
     }
 
-    get(): number {
+    get value(): number {
         return this.level;
     }
 

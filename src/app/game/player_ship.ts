@@ -8,7 +8,7 @@ import Timer from "./timer";
 @ConstructorInject
 export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
-    private _weapon: PlayerWeapon;
+    private playerWeapon: PlayerWeapon;
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
     private shieldEnabled = false;
@@ -37,9 +37,9 @@ export default class PlayerShip extends Phaser.Sprite {
         this.shield = new Shield(this.game);
         this.shield.timer.onTimeout(() => this.shieldEnabled = false);
 
-        this._weapon = new PlayerWeapon(this.game);
-        this._weapon.changeType(WeaponType.PlayerPrimaryWeapon);
-        this._weapon.trackSprite(this, 0, -50);
+        this.playerWeapon = new PlayerWeapon(this.game);
+        this.playerWeapon.changeType(WeaponType.PlayerPrimaryWeapon);
+        this.playerWeapon.trackSprite(this, 0, -50);
         this.addChild(this.shield);
     }
 
@@ -71,7 +71,7 @@ export default class PlayerShip extends Phaser.Sprite {
     }
 
     get weapon(): PlayerWeapon {
-        return this._weapon;
+        return this.playerWeapon;
     }
 
     get shieldTimer(): Timer {

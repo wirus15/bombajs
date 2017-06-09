@@ -33,7 +33,7 @@ export default class EnemyLauncher {
     launch(enemies: Phaser.Group): Enemy {
         const enemy = enemies.getFirstExists(false, true);
         const x = this.game.rnd.integerInRange(0, this.game.width);
-        const level = this.game.rnd.integerInRange(1, this.player.level.get());
+        const level = this.game.rnd.integerInRange(1, this.player.level.value);
 
         enemy.loadTexture(this.resolveSprite(level));
         enemy.maxHealth = this.resolveHealth(level);

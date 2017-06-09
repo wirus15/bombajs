@@ -1,5 +1,5 @@
 export default class Timer {
-    private _value: number = 0;
+    private timerValue: number = 0;
     private timeoutSignal: Phaser.Signal;
 
     constructor(private game: Phaser.Game) {
@@ -8,14 +8,14 @@ export default class Timer {
     }
 
     get value(): number {
-        return this._value;
+        return this.timerValue;
     }
 
     set value(value: number) {
         if (value < 0) {
             throw new Error(`Invalid timer value: ${value}`);
         }
-        this._value = value;
+        this.timerValue = value;
     }
 
     onTimeout(callback: Function, context?: any): Phaser.SignalBinding {
@@ -23,18 +23,18 @@ export default class Timer {
     }
 
     toString(): string {
-        return this._value.toString();
+        return this.timerValue.toString();
     }
 
     private tick() {
-        if (this._value <= 0) {
+        if (this.timerValue <= 0) {
             return;
         }
 
 
-        this._value--;
+        this.timerValue--;
 
-        if (this._value === 0) {
+        if (this.timerValue === 0) {
             this.timeoutSignal.dispatch();
         }
     }
