@@ -7,6 +7,7 @@ import Collisions from "./collisions";
 import Explosions from "./explosions";
 import GUI from "./gui";
 import PickupDispenser from "./pickup_dispenser";
+import ObstacleContainer from "./obstacle_container";
 
 @ConstructorInject
 export default class GameState extends Phaser.State {
@@ -18,6 +19,7 @@ export default class GameState extends Phaser.State {
         private collisions: Collisions,
         private explosions: Explosions,
         private pickups: PickupDispenser,
+        private obstacles: ObstacleContainer,
         private gui: GUI
     ) {
         super();
