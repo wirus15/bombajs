@@ -1,6 +1,13 @@
+import {ConstructorInject, Container} from "huject";
 import Assets from "./assets";
+import StateManager from "./state_manager";
 
+@ConstructorInject
 export default class BootState extends Phaser.State {
+    constructor(private container: Container) {
+        super();
+    }
+
     preload() {
         Assets.load(this.game);
     }
@@ -9,6 +16,6 @@ export default class BootState extends Phaser.State {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.time.advancedTiming = true;
-        this.game.state.start('game');
+        this.container.resolve(StateManager).start('game');
     }
 }
