@@ -20,9 +20,7 @@ export default class GUI {
         private player: Player,
         private gameEvents: GameEvents,
         private enemies: EnemyContainer
-    ) {}
-
-    create() {
+    ) {
         this.gameEvents.onGameOver.add(() => this.textGameOver.visible = true);
         this.gameEvents.onBossAppear.add(() => this.textBossHealth.visible = true);
         this.gameEvents.onBossKilled.add(() => this.textBossHealth.visible = false);

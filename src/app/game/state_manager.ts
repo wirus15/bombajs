@@ -23,6 +23,6 @@ export default class StateManager {
             stateManager.add(stateName, state);
         }
 
-        this.game.state.start(stateName);
+        this.game.state.start(stateName, false);
     }
 }

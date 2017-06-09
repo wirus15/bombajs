@@ -8,16 +8,13 @@ import Timer from "./timer";
 @ConstructorInject
 export default class PlayerShip extends Phaser.Sprite {
     private static MAX_HEALTH = 100;
-    private playerWeapon: PlayerWeapon;
+    public readonly weapon: PlayerWeapon;
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
     private shieldEnabled = false;
 
     constructor(game: Phaser.Game) {
         super(game, 0, 0);
-    }
-
-    create() {
         this.loadTexture(Assets.ship_player);
         this.game.world.add(this);
         this.game.physics.arcade.enable(this);
@@ -28,18 +25,12 @@ export default class PlayerShip extends Phaser.Sprite {
         this.body.drag.x = this.body.drag.y = 800;
         this.body.maxVelocity.x = this.body.maxVelocity.y = 300;
 
-        this.flyInAnimation = this.game.add.tween(this);
-        this.flyInAnimation.to({y: this.game.height - this.height}, 1000, Phaser.Easing.Cubic.Out, false, 1000);
-        this.flyInAnimation.onComplete.add(() => {
-            this.body.collideWorldBounds = true;
-        });
-
         this.shield = new Shield(this.game);
         this.shield.timer.onTimeout(() => this.shieldEnabled = false);
 
-        this.playerWeapon = new PlayerWeapon(this.game);
-        this.playerWeapon.changeType(WeaponType.PlayerPrimaryWeapon);
-        this.playerWeapon.trackSprite(this, 0, -50);
+        this.weapon = new PlayerWeapon(this.game);
+        this.weapon.changeType(WeaponType.PlayerPrimaryWeapon);
+        this.weapon.trackSprite(this, 0, -50);
         this.addChild(this.shield);
     }
 
@@ -62,16 +53,17 @@ export default class PlayerShip extends Phaser.Sprite {
     flyIn() {
         this.reset(this.game.width / 2, this.game.height + this.height, this.maxHealth);
         this.body.collideWorldBounds = false;
-        this.flyInAnimation.start();
         this.enableShield(5);
+
+        this.flyInAnimation = this.game.add.tween(this);
+        this.flyInAnimation.to({y: this.game.height - this.height}, 1000, Phaser.Easing.Cubic.Out, true, 1000);
+        this.flyInAnimation.onComplete.add(() => {
+            this.body.collideWorldBounds = true;
+        });
     }
 
     isFlyingIn(): boolean {
-        return this.flyInAnimation.isRunning;
-    }
-
-    get weapon(): PlayerWeapon {
-        return this.playerWeapon;
+        return this.flyInAnimation && this.flyInAnimation.isRunning;
     }
 
     get shieldTimer(): Timer {

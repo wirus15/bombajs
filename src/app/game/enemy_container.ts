@@ -14,7 +14,7 @@ import EnemyGroup from "./enemy_group";
 export default class EnemyContainer {
     public readonly enemies: Phaser.Group;
     public readonly boss: BossShip;
-    private weapon: EnemyWeapon;
+    public readonly enemyWeapon: EnemyWeapon;
 
     constructor(
         private game: Phaser.Game,
@@ -25,19 +25,18 @@ export default class EnemyContainer {
     ) {
         this.enemies = new EnemyGroup(game);
         this.boss = new BossShip(game);
-    }
 
-    create() {
         this.game.add.existing(this.enemies);
         this.game.add.existing(this.boss);
 
         this.player.onLevelChange(this.launchBoss, this);
-        this.weapon = new EnemyWeapon(this.game);
-        this.boss.create();
+        this.enemyWeapon = new EnemyWeapon(this.game);
         this.boss.events.onKilled.add(() => this.gameEvents.onBossKilled.dispatch(this.boss));
 
-        this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
-        this.game.time.events.add(Phaser.Timer.SECOND, this.fireFromRandomEnemy, this);
+        setTimeout(() => {
+            this.game.time.events.loop(Phaser.Timer.HALF, this.launchEnemy, this);
+            this.game.time.events.add(Phaser.Timer.SECOND, this.fireFromRandomEnemy, this);
+        });
     }
 
     update() {
@@ -52,10 +51,6 @@ export default class EnemyContainer {
         return this.bossLauncher.launch(this.boss);
     }
 
-    get enemyWeapon(): EnemyWeapon {
-        return this.weapon;
-    }
-
     private fireFromRandomEnemy() {
         const enemy = this.pickRandomEnemy();
         const type = this.game.rnd.pick([
@@ -66,10 +61,10 @@ export default class EnemyContainer {
         ]);
 
         if (enemy) {
-            this.weapon.changeType(type);
-            this.weapon.fireFrom.x = enemy.centerX;
-            this.weapon.fireFrom.y = enemy.centerY;
-            this.weapon.fire();
+            this.enemyWeapon.changeType(type);
+            this.enemyWeapon.fireFrom.x = enemy.centerX;
+            this.enemyWeapon.fireFrom.y = enemy.centerY;
+            this.enemyWeapon.fire();
         }
 
         this.game.time.events.add(

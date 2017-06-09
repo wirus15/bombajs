@@ -46,6 +46,7 @@ export default class Assets {
     static readonly pickup_double_damage = 'pickup_double_damage';
     static readonly pickup_shield = 'pickup_shield';
     static readonly pickup_repair = 'pickup_repair';
+    static readonly pickup_life = 'pickup_life';
 
     static load(game: Phaser.Game) {
         game.load.image(this.ship_player, 'public/images/ship_player.png');
@@ -95,5 +96,6 @@ export default class Assets {
         game.load.image(this.pickup_double_damage, 'public/images/bonus_doubledamage.png');
         game.load.image(this.pickup_shield, 'public/images/bonus_invulnerability.png');
         game.load.image(this.pickup_repair, 'public/images/bonus_repair.png');
+        game.load.image(this.pickup_life, 'public/images/bonus_life.png');
     }
 }

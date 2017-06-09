@@ -7,9 +7,7 @@ export default class PlayerControl {
     private cursors: Phaser.CursorKeys;
     private fireButton: Phaser.Key;
 
-    constructor(private game: Phaser.Game) {}
-
-    create() {
+    constructor(private game: Phaser.Game) {
         this.cursors = this.game.input.keyboard.createCursorKeys();
         this.fireButton = this.game.input.keyboard.addKey(Phaser.KeyCode.SPACEBAR);
     }

@@ -23,16 +23,6 @@ export default class GameState extends Phaser.State {
         super();
     }
 
-    create() {
-        this.background.create();
-        this.backgroundMusic.create();
-        this.player.create();
-        this.enemies.create();
-        this.explosions.create();
-        this.pickups.create();
-        this.gui.create();
-    }
-
     update() {
         this.player.update();
         this.enemies.update();

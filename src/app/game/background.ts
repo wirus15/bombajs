@@ -4,9 +4,7 @@ import {ConstructorInject} from 'huject';
 export default class Background {
     private static readonly STAR_COLOR = '#ffffff';
 
-    constructor(private game: Phaser.Game) {}
-
-    create() {
+    constructor(private game: Phaser.Game) {
         for (let i = 0; i < 3; i++) {
             const bitmap = this.createBitmap(600, 600, 20);
             this.createTileSprite(bitmap, i);
