@@ -10,9 +10,7 @@ export default class BackgroundMusic {
     constructor(
         private game: Phaser.Game,
         private gameEvents: GameEvents
-    ) {}
-
-    create() {
+    ) {
         this.normalMusic = this.game.add.audio(Assets.background_music_0, 1, true);
         this.bossMusic = this.game.add.audio(Assets.background_music_1, 1, true);
 

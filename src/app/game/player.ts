@@ -24,13 +24,7 @@ export default class Player {
         this.level = new Level(Player.MAX_LEVEL);
         this.points = new Points();
         this.lives = new Lives(3);
-    }
-
-    create() {
-        this.ship.create();
         this.ship.events.onKilled.add(this.onPlayerKilled, this);
-        this.controls.create();
-
         this.useNextShip();
     }
 
@@ -40,8 +34,10 @@ export default class Player {
     }
 
     useNextShip() {
-        this.lives.decrease();
-        this.ship.flyIn();
+        setTimeout(() => {
+            this.lives.decrease();
+            this.ship.flyIn();
+        });
     }
 
     addPoints(points: number) {

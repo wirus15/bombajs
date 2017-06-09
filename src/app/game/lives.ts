@@ -19,6 +19,10 @@ export default class Lives {
         this.lives--;
     }
 
+    increase() {
+        this.lives++;
+    }
+
     hasAnyLeft(): boolean {
         return this.lives > 0;
     }

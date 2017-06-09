@@ -5,17 +5,14 @@ import RepairPickup from "./repair_pickup";
 import DoubleDamagePickup from "./double_damage_pickup";
 import ShieldPickup from "./shield_pickup";
 import PhysicsGroup from "./physics_group";
+import LifePickup from "./life_pickup";
 
 @ConstructorInject
 export default class PickupDispenser {
     public readonly pickups: Phaser.Group;
 
     constructor(private game: Phaser.Game) {
-        this.pickups = new PhysicsGroup(game);
-    }
-
-    create() {
-        this.game.add.existing(this.pickups);
+        this.pickups = this.game.add.physicsGroup();
         this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerPrimaryWeapon));
         this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerSecondaryWeapon));
         this.pickups.add(new WeaponPickup(this.game, WeaponTypes.PlayerTertiaryWeapon));
@@ -23,6 +20,7 @@ export default class PickupDispenser {
         this.pickups.add(new RepairPickup(this.game));
         this.pickups.add(new DoubleDamagePickup(this.game));
         this.pickups.add(new ShieldPickup(this.game));
+        this.pickups.add(new LifePickup(this.game));
     }
 
     dispense(from: Phaser.Sprite) {
