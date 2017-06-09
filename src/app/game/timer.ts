@@ -4,7 +4,7 @@ export default class Timer {
 
     constructor(private game: Phaser.Game) {
         this.timeoutSignal = new Phaser.Signal();
-        game.time.events.loop(1000, this.tick, this);
+        setTimeout(() => game.time.events.loop(1000, this.tick, this));
     }
 
     get value(): number {

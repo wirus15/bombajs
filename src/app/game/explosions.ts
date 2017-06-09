@@ -6,9 +6,7 @@ export default class Explosions {
     private sound: Phaser.Sound;
     private explosions: Phaser.Group;
 
-    constructor(private game: Phaser.Game) {}
-
-    create() {
+    constructor(private game: Phaser.Game) {
         this.explosions = this.game.add.physicsGroup();
         this.explosions.createMultiple(30, Assets.explosion);
         this.explosions.forEach((explosion: Phaser.Sprite) => {
