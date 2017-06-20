@@ -23,6 +23,8 @@ export default class EnemyHitHandler implements CollisionHandler {
             this.showExplosions(enemy);
             this.player.addPoints(enemy.maxHealth);
             this.pickups.dispenseRoll(enemy);
+        } else {
+            enemy.flash();
         }
     }
 
