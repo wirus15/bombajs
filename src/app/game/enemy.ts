@@ -1,9 +1,4 @@
-import FlashImage from "./flash_image";
-
 export default class Enemy extends Phaser.Sprite {
-
-    private flashImage: FlashImage;
-
     constructor(readonly game: Phaser.Game) {
         super(game, 0, 0);
         this.exists = false;
@@ -15,10 +10,5 @@ export default class Enemy extends Phaser.Sprite {
                 this.kill();
             }
         });
-        this.flashImage = new FlashImage(this);
-    }
-
-    flash() {
-        this.flashImage.flash();
     }
 }
