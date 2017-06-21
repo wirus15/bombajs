@@ -66,6 +66,10 @@ export default class PlayerShip extends Phaser.Sprite {
         return this.flyInAnimation && this.flyInAnimation.isRunning;
     }
 
+    isShieldEnabled(): boolean {
+        return this.shieldEnabled;
+    }
+
     get shieldTimer(): Timer {
         return this.shield.timer;
     }
