@@ -7,6 +7,7 @@ import Enemy from "./enemy";
 import BossShip from "./boss_ship";
 import PickupDispenser from "./pickup_dispenser";
 import FlashEffect from "./flash_effect";
+import BulletParticles from "./bullet_particles";
 
 @ConstructorInject
 export default class EnemyHitHandler implements CollisionHandler {
@@ -14,7 +15,8 @@ export default class EnemyHitHandler implements CollisionHandler {
         private player: Player,
         private explosions: Explosions,
         private pickups: PickupDispenser,
-        private flash: FlashEffect
+        private flash: FlashEffect,
+        private bulletParticles: BulletParticles
     ) {}
 
     handle(enemy: Enemy, bullet: Bullet) {
@@ -22,6 +24,7 @@ export default class EnemyHitHandler implements CollisionHandler {
         bullet.kill();
 
         this.flash.flash(enemy);
+        this.bulletParticles.explode(bullet);
 
         if (enemy.alive === false) {
             this.showExplosions(enemy);
