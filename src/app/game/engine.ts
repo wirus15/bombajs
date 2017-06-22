@@ -26,6 +26,7 @@ export default class Engine extends Phaser.Plugin {
             return;
         }
 
+        this.emitter.visible = this.ship.visible;
         this.emitter.x = this.ship.x;
         this.emitter.y = this.ship.y + 30;
     }
