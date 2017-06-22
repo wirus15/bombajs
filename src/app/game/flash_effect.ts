@@ -49,12 +49,10 @@ export default class FlashEffect {
 
     private isAlreadyFlashing(sprite: Phaser.Sprite) {
         if (sprite.key instanceof Phaser.BitmapData) {
-            console.log(sprite.key.key);
             return sprite.key.key.endsWith('_flash');
         }
 
         if (typeof sprite.key === 'string') {
-            console.log(sprite.key);
             return sprite.key.endsWith('_flash');
         }
 

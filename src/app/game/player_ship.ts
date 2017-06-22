@@ -4,6 +4,7 @@ import Shield from "./shield";
 import PlayerWeapon from "./player_weapon";
 import * as WeaponType from "./weapon_types";
 import Timer from "./timer";
+import Engine from "./engine";
 
 @ConstructorInject
 export default class PlayerShip extends Phaser.Sprite {
@@ -12,6 +13,7 @@ export default class PlayerShip extends Phaser.Sprite {
     private shield: Shield;
     private flyInAnimation: Phaser.Tween;
     private shieldEnabled = false;
+    private engine: Engine;
 
     constructor(game: Phaser.Game) {
         super(game, 0, 0);
@@ -32,6 +34,8 @@ export default class PlayerShip extends Phaser.Sprite {
         this.weapon.changeType(WeaponType.PlayerPrimaryWeapon);
         this.weapon.trackSprite(this, 0, -50);
         this.addChild(this.shield);
+
+        this.engine = this.game.plugins.add(Engine, this);
     }
 
     damage(amount: number): Phaser.Sprite {
