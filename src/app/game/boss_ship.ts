@@ -1,4 +1,3 @@
-import * as Phaser from "phaser";
 import Enemy from "./enemy";
 import BossAnimation from "./boss_animation";
 import EnemyWeapon from "./enemy_weapon";

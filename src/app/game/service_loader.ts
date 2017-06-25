@@ -27,7 +27,7 @@ import BulletParticles from "./bullet_particles";
 
 export default class ServiceLoader {
     static load(container: Container) {
-        container.register(Phaser.Game, [800, 600, Phaser.AUTO, 'gameCanvas']).as(FactoryMethod.SINGLETON);
+        container.register(Phaser.Game, [800, 600, Phaser.CANVAS, 'gameCanvas']).as(FactoryMethod.SINGLETON);
         container.register(Container, container);
         container.register(Game).as(FactoryMethod.SINGLETON);
         container.register(BootState).as(FactoryMethod.SINGLETON);
