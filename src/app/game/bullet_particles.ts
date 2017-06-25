@@ -13,7 +13,7 @@ export default class BulletParticles {
         this.emitter.minParticleSpeed.set(-100, -100);
         this.emitter.maxParticleSpeed.set(100, 100);
         this.emitter.setAlpha(1, 0, 500);
-        this.emitter.gravity = 0;
+        this.emitter.gravity.set(0, 0);
         this.emitter.makeParticles(bitmap);
     }
 

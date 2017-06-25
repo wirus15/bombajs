@@ -16,6 +16,7 @@ export default class BootState extends Phaser.State {
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.physics.startSystem(Phaser.Physics.ARCADE);
         this.time.advancedTiming = true;
+        this.time.desiredFps = 48;
         this.container.resolve(StateManager).start('game');
     }
 }

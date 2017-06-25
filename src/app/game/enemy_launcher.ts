@@ -1,4 +1,3 @@
-import * as Phaser from "phaser";
 import Enemy from "./enemy";
 import Assets from "./assets";
 import {ConstructorInject} from "huject";
